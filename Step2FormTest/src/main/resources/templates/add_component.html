@@ -36,10 +36,9 @@
 <script type="text/javascript">
 
     function send() {
-        var person = {
+        var component = {
             name: $("#name").val(),
         }
-        alert(person);
 
         $('#target').html('sending..');
 
@@ -51,7 +50,7 @@
             success: function (data) {
                 $('#target').html(data.msg);
             },
-            data: JSON.stringify(person)
+            data: JSON.stringify(component)
         });
     }
 

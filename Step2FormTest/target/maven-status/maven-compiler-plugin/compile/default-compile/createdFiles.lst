@@ -1,5 +1,7 @@
 Step2FormTest\models\ControlStructure.class
+Step2FormTest\controllers\ActuatorController.class
 Step2FormTest\models\Connection.class
+Step2FormTest\controllers\ComponentController.class
 Step2FormTest\models\ConnectionType.class
 Step2FormTest\models\Component.class
 Step2FormTest\repositories\ActuatorRepository.class
@@ -15,6 +17,7 @@ Step2FormTest\repositories\ControlledProcessRepository.class
 Step2FormTest\controllers\SensorController.class
 Step2FormTest\models\Sensor.class
 Step2FormTest\repositories\SensorRepository.class
+Step2FormTest\controllers\ErrorController.class
 Step2FormTest\repositories\ComponentRepository.class
 Step2FormTest\models\Controller.class
 Step2FormTest\controllers\ControlledProcessController.class

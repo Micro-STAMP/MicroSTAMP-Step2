@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Home</title>
+</head>
+<body>
+    <form action="/add_component" method="get">
+        <div align="Left">
+            <h1>Step 2 Form test</h1>
+            <div align="Left">
+                <h2>Components</h2><br />
+                <h2>Connections</h2><br />
+
+                <input type="radio" id="controller" name="componentValue" value="controller" checked>
+                <label for="controller">Controller</label>
+
+                <input type="radio" id="controlledProcess" name="componentValue" value="controlledProcess">
+                <label for="controlledProcess">Controlled Process</label>
+
+                <input type="radio" id="actuator" name="componentValue" value="actuator">
+                <label for="actuator">Actuator</label>
+
+                <input type="radio" id="sensor" name="componentValue" value="sensor">
+                <label for="sensor">Sensor</label>
+            </div>
+            <br />
+            <div align="Left">
+                <button type="submit" >Add Component</button>
+
+                <a href="/add_connection">
+                    <input type="button" value="Add Connection" />
+                </a>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

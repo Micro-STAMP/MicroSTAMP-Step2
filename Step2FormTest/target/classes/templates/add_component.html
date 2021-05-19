@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Add Component</title>
+</head>
+<body>
+<div align="Left">
+    <h1>Add Component</h1>
+    <form th:action="@{/actuators}" id="add_component" th:object="${component}">
+        <label>Name:</label>
+        <input id="name" type="text" th:field="*{name}"/><br/>
+
+        <label>Border:</label>
+        <select>
+            <option th:each="p : ${border}" th:value="${p}" th:text="${p}"/>
+        </select><br/>
+
+        <label>Father:</label><br/>
+
+
+        <label>IsVisible:</label>
+
+        <input type="radio" id="visible" th:field="*{isVisible}" value="True">
+        <label for="visible">True</label>
+
+        <input type="radio" id="notVisible" th:field="*{isVisible}" value="False">
+        <label for="notVisible">False</label>
+
+        <br/>
+
+        <button type="submit" onclick="send()">Add Component</button>
+    </form>
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function send() {
+        var person = {
+            name: $("#name").val(),
+        }
+        alert(person);
+
+        $('#target').html('sending..');
+
+        $.ajax({
+            url: '/actuators',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                $('#target').html(data.msg);
+            },
+            data: JSON.stringify(person)
+        });
+    }
+
+
+</script>
+</body>
+</html>

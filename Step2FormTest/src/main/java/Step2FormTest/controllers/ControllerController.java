@@ -1,6 +1,7 @@
 package Step2FormTest.controllers;
 
 
+import Step2FormTest.domain.ControllerDomain;
 import Step2FormTest.models.Controller;
 import Step2FormTest.repositories.ControllerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,12 @@ public class ControllerController {
     }
 
     @PostMapping
-    public Controller create(@RequestBody Controller controllerParam){
+    public Controller create(@RequestBody ControllerDomain controllerDomain){
         Controller controller = new Controller();
-        controller.setName(controllerParam.getName());
-        //actuator.setBorder(actuatorParam.getBorder());
-        //actuator.setFather(actuatorParam.getFather());
-        //actuator.setVisible(actuatorParam.isIsVisible());
+        controller.setName(controllerDomain.getName());
+        //actuator.setBorder(controllerDomain.getBorder());
+        //actuator.setFather(controllerDomain.getFather());
+        //actuator.setVisible(controllerDomain.isIsVisible());
         controllerRepository.save(controller);
         return controller;
     }

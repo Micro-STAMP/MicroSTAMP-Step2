@@ -1,5 +1,6 @@
 package Step2FormTest.controllers;
 
+import Step2FormTest.domain.ActuatorDomain;
 import Step2FormTest.models.Actuator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,12 +36,12 @@ public class ActuatorController {
 
 
     @PostMapping
-    public Actuator create(@RequestBody Actuator actuatorParam){
+    public Actuator create(@RequestBody ActuatorDomain actuatorDomain){
         Actuator actuator = new Actuator();
-        actuator.setName(actuatorParam.getName());
-        //actuator.setBorder(actuatorParam.getBorder());
-        //actuator.setFather(actuatorParam.getFather());
-        //actuator.setVisible(actuatorParam.isIsVisible());
+        actuator.setName(actuatorDomain.getName());
+        //actuator.setBorder(actuatorDomain.getBorder());
+        //actuator.setFather(actuatorDomain.getFather());
+        //actuator.setVisible(actuatorDomain.isIsVisible());
         actuatorRepository.save(actuator);
         return actuator;
     }

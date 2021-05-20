@@ -1,6 +1,7 @@
 package Step2FormTest.controllers;
 
 
+import Step2FormTest.domain.ControlledProcessDomain;
 import Step2FormTest.models.ControlledProcess;
 import Step2FormTest.repositories.ControlledProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,12 @@ public class ControlledProcessController {
     }
 
     @PostMapping
-    public ControlledProcess create(@RequestBody ControlledProcess controlledProcessParam){
+    public ControlledProcess create(@RequestBody ControlledProcessDomain controlledProcessDomain){
         ControlledProcess controlledProcess = new ControlledProcess();
-        controlledProcess.setName(controlledProcessParam.getName());
-        //actuator.setBorder(actuatorParam.getBorder());
-        //actuator.setFather(actuatorParam.getFather());
-        //actuator.setVisible(actuatorParam.isIsVisible());
+        controlledProcess.setName(controlledProcessDomain.getName());
+        //actuator.setBorder(controlledProcessDomain.getBorder());
+        //actuator.setFather(controlledProcessDomain.getFather());
+        //actuator.setVisible(controlledProcessDomain.isIsVisible());
         controlledProcessRepository.save(controlledProcess);
         return controlledProcess;
     }

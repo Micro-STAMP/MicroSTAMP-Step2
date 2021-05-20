@@ -1,5 +1,6 @@
 package Step2FormTest.controllers;
 
+import Step2FormTest.domain.SensorDomain;
 import Step2FormTest.models.Sensor;
 import Step2FormTest.repositories.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,12 @@ public class SensorController {
     }
 
     @PostMapping
-    public Sensor create(@RequestBody Sensor sensorParam){
+    public Sensor create(@RequestBody SensorDomain sensorDomain){
         Sensor sensor = new Sensor();
-        sensor.setName(sensorParam.getName());
-        //actuator.setBorder(actuatorParam.getBorder());
-        //actuator.setFather(actuatorParam.getFather());
-        //actuator.setVisible(actuatorParam.isIsVisible());
+        sensor.setName(sensorDomain.getName());
+        //actuator.setBorder(sensorDomain.getBorder());
+        //actuator.setFather(sensorDomain.getFather());
+        //actuator.setVisible(sensorDomain.isIsVisible());
         sensorRepository.save(sensor);
         return sensor;
     }

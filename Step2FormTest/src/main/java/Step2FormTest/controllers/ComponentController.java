@@ -36,6 +36,8 @@ public class ComponentController {
 
         model.addAttribute("border", border);
 
+        model.addAttribute("componentValue", componentValue);
+
         return new ModelAndView("add_component");
     }
 

@@ -7,7 +7,7 @@
 <body>
 <div align="Left">
     <h1>Add Component</h1>
-    <form th:action="@{/actuators}" id="add_component" th:object="${component}">
+    <form th:action="@{/}" id="add_component" th:object="${component}">
         <label>Name:</label>
         <input id="name" type="text" th:field="*{name}"/><br/>
 
@@ -27,9 +27,10 @@
         <input type="radio" id="notVisible" th:field="*{isVisible}" value="False">
         <label for="notVisible">False</label>
 
+        <input id="typeComponent" type="hidden" th:value="${componentValue}"/><br/>
         <br/>
 
-        <button type="submit" onclick="send()">Add Component</button>
+        <button type="submit" onclick = send()>Add Component</button>
     </form>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -42,8 +43,12 @@
 
         $('#target').html('sending..');
 
+        if($("#typeComponent").val() == "controlledProcess")
+            var componentType = $("#typeComponent").val() + "es";
+        else var componentType = $("#typeComponent").val() + "s";
+
         $.ajax({
-            url: '/actuators',
+            url: '/'+ componentType,
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',

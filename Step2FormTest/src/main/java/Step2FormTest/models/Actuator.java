@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 public class Actuator extends Component{
 
     //teste pra commit do git :D
+    //new teste :D
 
     public Actuator(){super();}
 

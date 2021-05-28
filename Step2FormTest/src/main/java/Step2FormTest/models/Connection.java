@@ -18,8 +18,8 @@ public class Connection {
     private Component source;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="destination_id")
-    private Component destination;
+    @JoinColumn(name="target_id")
+    private Component target;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_id")
@@ -27,11 +27,11 @@ public class Connection {
 
     public Connection(){}
 
-    public Connection(long id, ConnectionType connectionType, Component source, Component destination) {
+    public Connection(long id, ConnectionType connectionType, Component source, Component target) {
         this.id = id;
         this.connectionType = connectionType;
         this.source = source;
-        this.destination = destination;
+        this.target = target;
         this.labels = new ArrayList<>();
     }
 
@@ -52,10 +52,10 @@ public class Connection {
     public String toString() {
         String print = "";
         if(this.source == null)
-            return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source= null" +", Destination=" + destination.getName() + '}';
-        if(this.destination==null)
-            return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source=" + source.getName() +", Destination= null"+ '}';
-        return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source=" + source.getName() +", Destination=" + destination.getName() + '}';
+            return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source= null" +", Target=" + target.getName() + '}';
+        if(this.target==null)
+            return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source=" + source.getName() +", Target= null"+ '}';
+        return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source=" + source.getName() +", Target=" + target.getName() + '}';
 
     }
 
@@ -83,12 +83,12 @@ public class Connection {
         this.source = source;
     }
 
-    public Component getDestination() {
-        return destination;
+    public Component getTarget() {
+        return target;
     }
 
-    public void setDestination(Component destination) {
-        this.destination = destination;
+    public void setTarget(Component target) {
+        this.target = target;
     }
 
     public List<Label> getLabels() {

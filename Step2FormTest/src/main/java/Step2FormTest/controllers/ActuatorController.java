@@ -2,6 +2,8 @@ package Step2FormTest.controllers;
 
 import Step2FormTest.domain.ActuatorDomain;
 import Step2FormTest.models.Actuator;
+import Step2FormTest.models.Component;
+import Step2FormTest.repositories.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import Step2FormTest.repositories.ActuatorRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/actuators")
@@ -18,8 +21,12 @@ public class ActuatorController {
     private final ActuatorRepository actuatorRepository;
 
     @Autowired
-    public ActuatorController(ActuatorRepository actuatorRepository) {
+    private final ComponentRepository componentRepository;
+
+    @Autowired
+    public ActuatorController(ActuatorRepository actuatorRepository, ComponentRepository componentRepository) {
         this.actuatorRepository = actuatorRepository;
+        this.componentRepository = componentRepository;
     }
 
     @GetMapping
@@ -39,9 +46,14 @@ public class ActuatorController {
     public Actuator create(@RequestBody ActuatorDomain actuatorDomain){
         Actuator actuator = new Actuator();
         actuator.setName(actuatorDomain.getName());
-        //actuator.setBorder(actuatorDomain.getBorder());
-        //actuator.setFather(actuatorDomain.getFather());
-        //actuator.setVisible(actuatorDomain.isIsVisible());
+        try {
+            Optional<Component> father = componentRepository.findById(actuatorDomain.getFather_id());
+            actuator.setFather(father.get());
+        }catch (Exception ex){
+            actuator.setFather(null);
+        }
+        actuator.setBorder(actuatorDomain.getBorder());
+        actuator.setIsVisible(actuatorDomain.getIsVisible());
         actuatorRepository.save(actuator);
         return actuator;
     }

@@ -2,13 +2,16 @@ package Step2FormTest.controllers;
 
 
 import Step2FormTest.domain.ControlledProcessDomain;
+import Step2FormTest.models.Component;
 import Step2FormTest.models.ControlledProcess;
+import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlledProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/controlledProcesses")
@@ -18,8 +21,12 @@ public class ControlledProcessController {
     private final ControlledProcessRepository controlledProcessRepository;
 
     @Autowired
-    public ControlledProcessController(ControlledProcessRepository controlledProcessRepository) {
+    private final ComponentRepository componentRepository;
+
+    @Autowired
+    public ControlledProcessController(ControlledProcessRepository controlledProcessRepository, ComponentRepository componentRepository) {
         this.controlledProcessRepository = controlledProcessRepository;
+        this.componentRepository = componentRepository;
     }
 
     @GetMapping
@@ -38,9 +45,14 @@ public class ControlledProcessController {
     public ControlledProcess create(@RequestBody ControlledProcessDomain controlledProcessDomain){
         ControlledProcess controlledProcess = new ControlledProcess();
         controlledProcess.setName(controlledProcessDomain.getName());
-        //actuator.setBorder(controlledProcessDomain.getBorder());
-        //actuator.setFather(controlledProcessDomain.getFather());
-        //actuator.setVisible(controlledProcessDomain.isIsVisible());
+        try {
+            Optional<Component> father = componentRepository.findById(controlledProcessDomain.getFather_id());
+            controlledProcess.setFather(father.get());
+        }catch (Exception ex){
+            controlledProcess.setFather(null);
+        }
+        controlledProcess.setBorder(controlledProcessDomain.getBorder());
+        controlledProcess.setIsVisible(controlledProcessDomain.getIsVisible());
         controlledProcessRepository.save(controlledProcess);
         return controlledProcess;
     }

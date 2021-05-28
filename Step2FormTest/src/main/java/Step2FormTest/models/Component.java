@@ -11,7 +11,7 @@ public abstract class Component {
 
     private int layer;
     private String name;
-    private boolean isVisible;
+    private Boolean isVisible;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="father_id")
@@ -43,10 +43,6 @@ public abstract class Component {
         return name;
     }
 
-    public boolean isIsVisible(){
-        return isVisible;
-    }
-
     public abstract void verify();
 
     public long getId() {
@@ -69,11 +65,11 @@ public abstract class Component {
         this.name = name;
     }
 
-    public boolean isVisible() {
+    public Boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setVisible(boolean visible) {
+    public void setIsVisible(Boolean visible) {
         isVisible = visible;
     }
 

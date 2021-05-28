@@ -2,13 +2,16 @@ package Step2FormTest.controllers;
 
 
 import Step2FormTest.domain.ControllerDomain;
+import Step2FormTest.models.Component;
 import Step2FormTest.models.Controller;
+import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControllerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/controllers")
@@ -18,8 +21,12 @@ public class ControllerController {
     private final ControllerRepository controllerRepository;
 
     @Autowired
-    public ControllerController(ControllerRepository controllerRepository) {
+    private final ComponentRepository componentRepository;
+
+    @Autowired
+    public ControllerController(ControllerRepository controllerRepository, ComponentRepository componentRepository) {
         this.controllerRepository = controllerRepository;
+        this.componentRepository = componentRepository;
     }
 
     @GetMapping
@@ -38,9 +45,14 @@ public class ControllerController {
     public Controller create(@RequestBody ControllerDomain controllerDomain){
         Controller controller = new Controller();
         controller.setName(controllerDomain.getName());
-        //actuator.setBorder(controllerDomain.getBorder());
-        //actuator.setFather(controllerDomain.getFather());
-        //actuator.setVisible(controllerDomain.isIsVisible());
+        try {
+            Optional<Component> father = componentRepository.findById(controllerDomain.getFather_id());
+            controller.setFather(father.get());
+        }catch (Exception ex){
+            controller.setFather(null);
+        }
+        controller.setBorder(controllerDomain.getBorder());
+        controller.setIsVisible(controllerDomain.getIsVisible());
         controllerRepository.save(controller);
         return controller;
     }

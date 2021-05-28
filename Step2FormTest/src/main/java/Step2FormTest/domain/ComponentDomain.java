@@ -35,14 +35,6 @@ public abstract class ComponentDomain {
         this.name = name;
     }
 
-    public Boolean getVisible() {
-        return isVisible;
-    }
-
-    public void setVisible(Boolean visible) {
-        isVisible = visible;
-    }
-
     public Long getFather_id() {
         return father_id;
     }
@@ -57,5 +49,13 @@ public abstract class ComponentDomain {
 
     public void setBorder(Border border) {
         this.border = border;
+    }
+
+    public Boolean getIsVisible() {
+        return isVisible;
+    }
+
+    public void setIsVisible(Boolean visible) {
+        isVisible = visible;
     }
 }

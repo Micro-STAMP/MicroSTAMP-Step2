@@ -3,7 +3,6 @@ package Step2FormTest.controllers;
 import java.util.*;
 
 import Step2FormTest.models.*;
-import Step2FormTest.repositories.ActuatorRepository;
 import Step2FormTest.repositories.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +40,7 @@ public class PageController {
         }
         model.addAttribute("component", component);
 
-        List<String> border = Border.carregarAtributos();
+        List<String> border = Style.carregarAtributos();
         model.addAttribute("border", border);
 
         model.addAttribute("componentValue", componentValue);
@@ -63,6 +62,9 @@ public class PageController {
 
         List<Component> components = componentRepository.findAll();
         model.addAttribute("components", components);
+
+        List<String> style = Style.carregarAtributos();
+        model.addAttribute("style", style);
 
         return new ModelAndView("add_connection");
     }

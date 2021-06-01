@@ -1,6 +1,6 @@
 package Step2FormTest.domain;
 
-import Step2FormTest.models.Border;
+import Step2FormTest.models.Style;
 
 public abstract class ComponentDomain {
 
@@ -9,7 +9,7 @@ public abstract class ComponentDomain {
     private String name;
     private Boolean isVisible;
     private Long father_id;
-    private Border border;
+    private Style border;
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public abstract class ComponentDomain {
         this.father_id = father_id;
     }
 
-    public Border getBorder() {
+    public Style getBorder() {
         return border;
     }
 
-    public void setBorder(Border border) {
+    public void setBorder(Style border) {
         this.border = border;
     }
 

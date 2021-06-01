@@ -7,7 +7,7 @@ public class ControlledProcess extends Component{
 
     public ControlledProcess(){super();}
 
-    public ControlledProcess(long id, int layer, String name, boolean isVisible, Component father, Border border) {
+    public ControlledProcess(long id, int layer, String name, boolean isVisible, Component father, Style border) {
         super(id, layer, name, isVisible, father,border);
     }
 

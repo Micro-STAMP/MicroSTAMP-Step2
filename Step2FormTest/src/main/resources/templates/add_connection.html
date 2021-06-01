@@ -23,6 +23,11 @@
                 <option th:each="p : ${connectionType}" th:value="${p}" th:text="${p}" />
             </select><br/>
 
+            <label>Style:</label>
+            <select id="style">
+                <option th:each="p : ${style}" th:value="${p}" th:text="${p}"/>
+            </select><br/>
+
             <br/>
 
             <button type="submit" onclick = send()>Add Connection</button>
@@ -36,6 +41,7 @@
             source_id: $("#componentSource").val(),
             target_id: $("#componentTarget").val(),
             connectionType: $("#connectionType").val(),
+            style: $("#style").val(),
         }
 
         $('#target').html('sending..');

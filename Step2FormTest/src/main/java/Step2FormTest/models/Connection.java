@@ -25,14 +25,17 @@ public class Connection {
     @JoinColumn(name = "connection_id")
     private List<Label> labels;
 
+    private Style style;
+
     public Connection(){}
 
-    public Connection(long id, ConnectionType connectionType, Component source, Component target) {
+    public Connection(long id, ConnectionType connectionType, Component source, Component target, Style style) {
         this.id = id;
         this.connectionType = connectionType;
         this.source = source;
         this.target = target;
         this.labels = new ArrayList<>();
+        this.style = style;
     }
 
     public void addLabel(Label label){
@@ -97,5 +100,13 @@ public class Connection {
 
     public void setLabels(List<Label> labels) {
         this.labels = labels;
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
     }
 }

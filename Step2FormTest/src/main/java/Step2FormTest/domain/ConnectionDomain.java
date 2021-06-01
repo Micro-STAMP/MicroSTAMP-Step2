@@ -1,6 +1,7 @@
 package Step2FormTest.domain;
 
 import Step2FormTest.models.ConnectionType;
+import Step2FormTest.models.Style;
 
 import java.util.List;
 
@@ -10,7 +11,16 @@ public class ConnectionDomain {
     private ConnectionType connectionType;
     private Long source_id;
     private Long target_id;
+    private Style style;
     private List<String> labels_ids;
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
+    }
 
     public Long getId() {
         return id;

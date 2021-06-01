@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 public class Controller extends Component{
 
     public Controller(){super();}
-    public Controller(long id, int layer, String name, boolean isVisible, Component father, Border border) {
+    public Controller(long id, int layer, String name, boolean isVisible, Component father, Style border) {
         super(id, layer, name, isVisible, father,border);
     }
 

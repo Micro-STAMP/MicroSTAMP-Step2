@@ -7,26 +7,57 @@
 <body>
     <div align="Left">
         <h1>Add Connection</h1>
-        <form action="#" th:action="@{/add_connection}" method="post" th:object="${connection}">
+        <form th:action="@{/}" id="add_connection" th:object="${connection}">
             <label>Source:</label>
-            <select>
-                <option th:each="s : ${componentSource}" th:value="${s}" th:text="${s}"/>
+            <select id="componentSource">
+                <option th:each="s : ${components}" th:value="${s.id}" th:text="${s.name}"/>
             </select><br/>
 
             <label>Target:</label>
-            <select>
-                <option th:each="l : ${componentTarget}" th:value="${l}" th:text="${l}"/>
+            <select id="componentTarget">
+                <option th:each="t : ${components}" th:value="${t.id}" th:text="${t.name}"/>
             </select><br/>
 
             <label>Connection Type:</label>
-            <select>
+            <select id="connectionType">
                 <option th:each="p : ${connectionType}" th:value="${p}" th:text="${p}" />
+            </select><br/>
+
+            <label>Style:</label>
+            <select id="style">
+                <option th:each="p : ${style}" th:value="${p}" th:text="${p}"/>
             </select><br/>
 
             <br/>
 
-            <button type="submit">Add Connection</button>
+            <button type="submit" onclick = send()>Add Connection</button>
         </form>
     </div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    function send() {
+        var connection = {
+            source_id: $("#componentSource").val(),
+            target_id: $("#componentTarget").val(),
+            connectionType: $("#connectionType").val(),
+            style: $("#style").val(),
+        }
+
+        $('#target').html('sending..');
+
+        $.ajax({
+            url: '/connections',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                $('#target').html(data.msg);
+            },
+            data: JSON.stringify(connection)
+        });
+    }
+
+</script>
 </body>
 </html>

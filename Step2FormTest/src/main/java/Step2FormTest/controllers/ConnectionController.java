@@ -58,6 +58,7 @@ public class ConnectionController {
             connection.setTarget(null);
         }
         //connection.setLabels();
+        connection.setStyle(connectionDomain.getStyle());
         connectionRepository.save(connection);
         return connection;
     }
@@ -67,6 +68,7 @@ public class ConnectionController {
         return connectionRepository.findById(id)
                 .map(record -> {
                     record.setConnectionType(connectionDomain.getConnectionType());
+                    record.setStyle(connectionDomain.getStyle());
                     record.setTarget(componentRepository.findById(connectionDomain.getTarget_id()).get());
                     record.setSource(componentRepository.findById(connectionDomain.getSource_id()).get());
                     Connection updated = connectionRepository.save(record);

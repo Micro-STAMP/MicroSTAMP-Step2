@@ -11,7 +11,7 @@ public class Actuator extends Component{
 
     public Actuator(){super();}
 
-    public Actuator(long id, int layer, String name, boolean isVisible, Component father, Border border) {
+    public Actuator(long id, int layer, String name, boolean isVisible, Component father, Style border) {
         super(id, layer, name, isVisible, father, border);
     }
 

@@ -17,10 +17,10 @@ public abstract class Component {
     @JoinColumn(name="father_id")
     private Component father;
 
-    private Border border;
+    private Style border;
 
     public Component(){}
-    public Component(long id, int layer, String name, boolean isVisible, Component father, Border border) {
+    public Component(long id, int layer, String name, boolean isVisible, Component father, Style border) {
         this.id = id;
         this.layer = layer;
         this.name = name;
@@ -32,7 +32,7 @@ public abstract class Component {
     public void show(){
         System.out.println("Name:.." + this.name);
         System.out.println("Layer:.." + this.layer);
-        System.out.println("Border:.."+ this.border);
+        System.out.println("Style:.."+ this.border);
         if(this.father == null)
             System.out.println("Father:.. null");
         else
@@ -81,11 +81,11 @@ public abstract class Component {
         this.father = father;
     }
 
-    public Border getBorder() {
+    public Style getBorder() {
         return border;
     }
 
-    public void setBorder(Border border) {
+    public void setBorder(Style border) {
         this.border = border;
     }
 }

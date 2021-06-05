@@ -13,11 +13,11 @@ public class Connection {
 
     private ConnectionType connectionType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="source_id")
     private Component source;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="target_id")
     private Component target;
 

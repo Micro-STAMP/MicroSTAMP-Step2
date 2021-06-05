@@ -10,6 +10,7 @@
         <form th:action="@{/}" id="add_connection" th:object="${connection}">
             <label>Source:</label>
             <select id="componentSource">
+                <option value="null">ENVIRONMENT</option>
                 <option th:each="s : ${components}" th:value="${s.id}" th:text="${s.name}"/>
             </select><br/>
 
@@ -35,6 +36,28 @@
     </div>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript">
+
+    var previous;
+    var previousText;
+
+    $(window).on('load', function() {
+        previous = $("#componentSource").val();
+        previousText = $("#componentSource option[value="+previous+"]").text();
+        $("#componentTarget option[value="+previous+"]").remove();
+    });
+
+    $("#componentSource").on('focus', function () {
+        previous = this.value;
+        previousText = $("#componentSource option[value="+previous+"]").text();
+    }).change(function() {
+        var selected = this.value;
+        $("#componentTarget option[value="+selected+"]").remove();
+        $('#componentTarget').append($('<option>', {
+            value: previous,
+            text: previousText
+        }));
+        previous = this.value;
+    });
 
     function send() {
         var connection = {

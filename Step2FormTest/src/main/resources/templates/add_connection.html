@@ -10,6 +10,7 @@
         <form th:action="@{/}" id="add_connection" th:object="${connection}">
             <label>Source:</label>
             <select id="componentSource">
+                <option value="null">ENVIRONMENT</option>
                 <option th:each="s : ${components}" th:value="${s.id}" th:text="${s.name}"/>
             </select><br/>
 

@@ -3,8 +3,10 @@ package Step2FormTest.controllers;
 import Step2FormTest.domain.ConnectionDomain;
 import Step2FormTest.models.Component;
 import Step2FormTest.models.Connection;
+import Step2FormTest.models.ControlStructure;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ConnectionRepository;
+import Step2FormTest.repositories.ControlStructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +25,13 @@ public class ConnectionController {
     private final ComponentRepository componentRepository;
 
     @Autowired
-    public ConnectionController(ConnectionRepository connectionRepository, ComponentRepository componentRepository) {
+    private final ControlStructureRepository controlStructureRepository;
+
+    @Autowired
+    public ConnectionController(ConnectionRepository connectionRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
         this.connectionRepository = connectionRepository;
         this.componentRepository = componentRepository;
+        this.controlStructureRepository = controlStructureRepository;
     }
 
     @GetMapping
@@ -59,7 +65,9 @@ public class ConnectionController {
         }
         //connection.setLabels();
         connection.setStyle(connectionDomain.getStyle());
-        connectionRepository.save(connection);
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(connectionDomain.getControl_structure_id());
+        c1.get().getConnections().add(connection);
+        controlStructureRepository.save(c1.get());
         return connection;
     }
 

@@ -3,8 +3,10 @@ package Step2FormTest.controllers;
 
 import Step2FormTest.domain.ControlledProcessDomain;
 import Step2FormTest.models.Component;
+import Step2FormTest.models.ControlStructure;
 import Step2FormTest.models.ControlledProcess;
 import Step2FormTest.repositories.ComponentRepository;
+import Step2FormTest.repositories.ControlStructureRepository;
 import Step2FormTest.repositories.ControlledProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,13 @@ public class ControlledProcessController {
     private final ComponentRepository componentRepository;
 
     @Autowired
-    public ControlledProcessController(ControlledProcessRepository controlledProcessRepository, ComponentRepository componentRepository) {
+    private final ControlStructureRepository controlStructureRepository;
+
+    @Autowired
+    public ControlledProcessController(ControlledProcessRepository controlledProcessRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
         this.controlledProcessRepository = controlledProcessRepository;
         this.componentRepository = componentRepository;
+        this.controlStructureRepository = controlStructureRepository;
     }
 
     @GetMapping
@@ -48,12 +54,15 @@ public class ControlledProcessController {
         try {
             Optional<Component> father = componentRepository.findById(controlledProcessDomain.getFather_id());
             controlledProcess.setFather(father.get());
+            father.get().setControlStructure(true);
         }catch (Exception ex){
             controlledProcess.setFather(null);
         }
         controlledProcess.setBorder(controlledProcessDomain.getBorder());
         controlledProcess.setIsVisible(controlledProcessDomain.getIsVisible());
-        controlledProcessRepository.save(controlledProcess);
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(controlledProcessDomain.getControl_structure_id());
+        c1.get().getComponents().add(controlledProcess);
+        controlStructureRepository.save(c1.get());
         return controlledProcess;
     }
 

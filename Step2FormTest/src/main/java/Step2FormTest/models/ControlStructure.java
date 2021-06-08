@@ -1,16 +1,17 @@
 package Step2FormTest.models;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class ControlStructure extends Component{
+public class ControlStructure{
 
-    private static ControlStructure controlStructure;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "controlStructure_id")
@@ -20,16 +21,9 @@ public class ControlStructure extends Component{
     @JoinColumn(name = "controlStructure_id")
     private List<Connection> connections;
 
-    private ControlStructure(long id, int layer, String name, boolean isVisible, Component father) {
-        super(id, layer, name, isVisible, father,null);
+    public ControlStructure() {
         components = new ArrayList<>();
         connections= new ArrayList<>();
-    }
-
-    public static ControlStructure getInstance(long id, int layer, String name, boolean isVisible, Component father){
-        if(controlStructure == null)
-            controlStructure = new ControlStructure(id, layer, name, isVisible, father);
-        return controlStructure;
     }
 
     public void addComponent(Component component){
@@ -40,12 +34,6 @@ public class ControlStructure extends Component{
         this.connections.add(connection);
     }
 
-    @Override
-    public void verify() {
-        System.out.println("This is a ControlStructure");
-    }
-
-    @Override
     public void show(){
         for(int i = 0;i<components.size();i++){
             components.get(i).show();
@@ -58,11 +46,27 @@ public class ControlStructure extends Component{
         }
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<Component> getComponents() {
         return components;
     }
 
-    public void setComponents(ArrayList<Component> components) {
+    public void setComponents(List<Component> components) {
         this.components = components;
     }
 

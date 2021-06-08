@@ -9,20 +9,21 @@ public abstract class Component {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private int layer;
     private String name;
     private Boolean isVisible;
+    private Style border;
+    private Boolean isControlStructure;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="father_id")
     private Component father;
 
-    private Style border;
+    public Component(){
+        isControlStructure = false;
+    }
 
-    public Component(){}
-    public Component(long id, int layer, String name, boolean isVisible, Component father, Style border) {
+    public Component(long id, String name, boolean isVisible, Component father, Style border) {
         this.id = id;
-        this.layer = layer;
         this.name = name;
         this.isVisible = isVisible;
         this.father = father;
@@ -31,7 +32,6 @@ public abstract class Component {
 
     public void show(){
         System.out.println("Name:.." + this.name);
-        System.out.println("Layer:.." + this.layer);
         System.out.println("Style:.."+ this.border);
         if(this.father == null)
             System.out.println("Father:.. null");
@@ -51,14 +51,6 @@ public abstract class Component {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public void setLayer(int layer) {
-        this.layer = layer;
     }
 
     public void setName(String name) {
@@ -88,4 +80,24 @@ public abstract class Component {
     public void setBorder(Style border) {
         this.border = border;
     }
+
+    public Boolean getControlStructure() {
+        return isControlStructure;
+    }
+
+    public void setControlStructure(Boolean controlStructure) {
+        isControlStructure = controlStructure;
+    }
+
+    /*public String getType(){
+        return "controller";
+    }*/
+
+    public String getFatherName(){
+        if(father == null)
+            return "null";
+        else
+            return father.getName();
+    }
+
 }

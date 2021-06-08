@@ -2,8 +2,10 @@ package Step2FormTest.controllers;
 
 import Step2FormTest.domain.SensorDomain;
 import Step2FormTest.models.Component;
+import Step2FormTest.models.ControlStructure;
 import Step2FormTest.models.Sensor;
 import Step2FormTest.repositories.ComponentRepository;
+import Step2FormTest.repositories.ControlStructureRepository;
 import Step2FormTest.repositories.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,13 @@ public class SensorController {
     private final ComponentRepository componentRepository;
 
     @Autowired
-    public SensorController(SensorRepository sensorRepository, ComponentRepository componentRepository) {
+    private final ControlStructureRepository controlStructureRepository;
+
+    @Autowired
+    public SensorController(SensorRepository sensorRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
         this.sensorRepository = sensorRepository;
         this.componentRepository = componentRepository;
+        this.controlStructureRepository = controlStructureRepository;
     }
 
     @GetMapping
@@ -48,12 +54,15 @@ public class SensorController {
         try{
             Optional<Component> father = componentRepository.findById(sensorDomain.getFather_id());
             sensor.setFather(father.get());
+            father.get().setControlStructure(true);
         }catch (Exception ex){
             sensor.setFather(null);
         }
         sensor.setBorder(sensorDomain.getBorder());
         sensor.setIsVisible(sensorDomain.getIsVisible());
-        sensorRepository.save(sensor);
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(sensorDomain.getControl_structure_id());
+        c1.get().getComponents().add(sensor);
+        controlStructureRepository.save(c1.get());
         return sensor;
     }
 

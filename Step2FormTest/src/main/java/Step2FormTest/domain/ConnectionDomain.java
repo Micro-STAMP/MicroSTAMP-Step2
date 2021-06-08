@@ -12,6 +12,16 @@ public class ConnectionDomain {
     private Long source_id;
     private Long target_id;
     private Style style;
+    private Long control_structure_id;
+
+    public Long getControl_structure_id() {
+        return control_structure_id;
+    }
+
+    public void setControl_structure_id(Long control_structure_id) {
+        this.control_structure_id = control_structure_id;
+    }
+
     private List<String> labels_ids;
 
     public Style getStyle() {

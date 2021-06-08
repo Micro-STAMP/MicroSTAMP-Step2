@@ -109,4 +109,18 @@ public class Connection {
     public void setStyle(Style style) {
         this.style = style;
     }
+
+    public String getSourceName(){
+        if(source == null)
+            return "ENVIRONMENT";
+        else
+            return source.getName();
+    }
+
+    public String getTargetName(){
+        if(target == null)
+            return "ENVIRONMENT";
+        else
+            return target.getName();
+    }
 }

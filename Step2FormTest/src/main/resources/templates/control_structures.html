@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Home</title>
+</head>
+<body>
+    <div align="Left">
+        <h1>Step 2 Form test</h1>
+        <div>
+            <h4>control structures</h4>
+                <div th:switch="${controlStructures.size}">
+                    <h5 th:case='0'>No control structures yet!</h5>
+                    <div th:case="*">
+                        <div th:each="c : ${controlStructures}">
+                             <p>
+                                 <a th:href="@{/{controlStructureId}(controlStructureId=${c.id})}">
+                                     <input type="button" th:value="${c.name}" />
+                                 </a>
+                             </p>
+                         </div>
+                    </div>
+                </div>
+        </div>
+        <div>
+            <br>
+            <br>
+            <a href="/add_control_structure">
+                <input type="button" value="Add ControlStructure"/>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

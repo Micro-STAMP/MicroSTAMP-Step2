@@ -4,11 +4,12 @@ import java.util.*;
 
 import Step2FormTest.models.*;
 import Step2FormTest.repositories.ComponentRepository;
+import Step2FormTest.repositories.ConnectionRepository;
+import Step2FormTest.repositories.ControlStructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -18,12 +19,29 @@ public class PageController {
     private final ComponentRepository componentRepository;
 
     @Autowired
-    public PageController(ComponentRepository componentRepository) {
+    private final ConnectionRepository connectionRepository;
+
+    @Autowired
+    private final ControlStructureRepository controlStructureRepository;
+
+    @Autowired
+    public PageController(ComponentRepository componentRepository, ConnectionRepository connectionRepository, ControlStructureRepository controlStructureRepository) {
         this.componentRepository = componentRepository;
+        this.connectionRepository = connectionRepository;
+        this.controlStructureRepository = controlStructureRepository;
     }
 
-    @RequestMapping(value="/add_component",method=RequestMethod.GET)
-    public ModelAndView showForm(@RequestParam String componentValue,Model model) {
+    @GetMapping("/{controlStructureId}")
+    public String indexPage(@PathVariable Long controlStructureId, Model model) {
+        model.addAttribute("componentsWithoutFather", componentRepository.findComponentsWithoutFather());
+        model.addAttribute("components", componentRepository.findComponentsByControlStructureId(controlStructureId));
+        model.addAttribute("connections", connectionRepository.findConnectionsByControlStructureId(controlStructureId));
+        model.addAttribute("control_structure_id", controlStructureId);
+        return "index";
+    }
+
+    @GetMapping("/{controlStructureId}/add_component")
+    public String showForm(@RequestParam String componentValue, @PathVariable Long controlStructureId, Model model) {
         Component component;
         switch (componentValue) {
             case "controlledProcess":
@@ -45,14 +63,16 @@ public class PageController {
 
         model.addAttribute("componentValue", componentValue);
 
-        List<Component> father = componentRepository.findAll();
+        List<Component> father = componentRepository.findComponentsByControlStructureId(controlStructureId);
         model.addAttribute("father", father);
 
-        return new ModelAndView("add_component");
+        model.addAttribute("control_structure_id", controlStructureId);
+
+        return "add_component";
     }
 
-    @RequestMapping(value="/add_connection",method=RequestMethod.GET)
-    public ModelAndView connectionForm(Model model) {
+    @GetMapping("/{controlStructureId}/add_connection")
+    public String connectionForm(@PathVariable Long controlStructureId, Model model) {
 
         Connection connection = new Connection();
         model.addAttribute("connection", connection);
@@ -60,12 +80,32 @@ public class PageController {
         List<String> connectionType = ConnectionType.carregarAtributos();
         model.addAttribute("connectionType", connectionType);
 
-        List<Component> components = componentRepository.findAll();
+        List<Component> components = componentRepository.findComponentsByControlStructureId(controlStructureId);
         model.addAttribute("components", components);
 
         List<String> style = Style.carregarAtributos();
         model.addAttribute("style", style);
 
-        return new ModelAndView("add_connection");
+        model.addAttribute("control_structure_id", controlStructureId);
+
+        return "add_connection";
+    }
+
+    @GetMapping("/add_control_structure")
+    public String controlStructureForm(Model model){
+        ControlStructure controlStructure = new ControlStructure();
+        model.addAttribute("controlStructure", controlStructure);
+        return "add_control_structure";
+    }
+
+    @GetMapping("/home")
+    public String controlStructures(Model model){
+        model.addAttribute("controlStructures", controlStructureRepository.findAll());
+        return "control_structures";
+    }
+
+    @GetMapping("/")
+    public String redirectHome(Model model){
+        return controlStructures(model);
     }
 }

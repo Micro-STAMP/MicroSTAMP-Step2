@@ -1,17 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
     <title>Home</title>
 </head>
 <body>
-    <form action="/add_component" method="get">
+    <form th:action="@{/{controlStructureId}/add_component(controlStructureId=${control_structure_id})}" method="get">
         <div align="Left">
             <h1>Step 2 Form test</h1>
             <div align="Left">
-                <h2>Components</h2><br />
-                <h2>Connections</h2><br />
+                <h2>Components</h2>
+                <div th:switch="${components.size}">
+                    <h5 th:case='0'>No components yet!</h5>
+                    <div th:case="*">
+                      <!--  <div th:each="c : ${componentsWithoutFather}">
+                            <p>
+                                <input type="button" th:value="${c.name}">
+                                <span th:text="${c.border}"> </span>
+                                <span th:text="${c.isVisible}"> </span>
+                                <span th:text="${c.father}"> </span>
+                            </p>
+                        </div>-->
+                        <table>
+                            <thead style="text-align: left;">
+                            <tr>
+                                <th>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th>Border&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th>isVisible&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th>Father&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="comp : ${components}" >
+                                <td th:text="${comp.name}"></td>
+                                <td th:text="${comp.border}"></td>
+                                <td th:text="${comp.isVisible}"></td>
+                                <td th:text="${comp.fatherName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h2>Connections</h2>
+                <div th:switch="${connections.size}">
+                    <h5 th:case='0'>No connections yet!</h5>
+                    <div th:case="*">
+                        <table>
+                            <thead style="text-align: left;">
+                            <tr>
+                                <th>Source&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th>Target&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th>Connection Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th>Style&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="conn : ${connections}" >
+                                <td th:text="${conn.sourceName}"></td>
+                                <td th:text="${conn.targetName}"></td>
+                                <td th:text="${conn.connectionType}"></td>
+                                <td th:text="${conn.style}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
+                <input type="hidden" id="control_structure_id" th:value="${control_structure_id}"/>
+
+                <br><br><br>
                 <input type="radio" id="controller" name="componentValue" value="controller" checked>
                 <label for="controller">Controller</label>
 
@@ -28,7 +85,7 @@
             <div align="Left">
                 <button type="submit" >Add Component</button>
 
-                <a href="/add_connection">
+                <a th:href="@{/{controlStructureId}/add_connection(controlStructureId=${control_structure_id})}">
                     <input type="button" value="Add Connection" />
                 </a>
             </div>

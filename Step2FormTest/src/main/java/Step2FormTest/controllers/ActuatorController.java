@@ -3,9 +3,10 @@ package Step2FormTest.controllers;
 import Step2FormTest.domain.ActuatorDomain;
 import Step2FormTest.models.Actuator;
 import Step2FormTest.models.Component;
+import Step2FormTest.models.ControlStructure;
 import Step2FormTest.repositories.ComponentRepository;
+import Step2FormTest.repositories.ControlStructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import Step2FormTest.repositories.ActuatorRepository;
@@ -24,9 +25,13 @@ public class ActuatorController {
     private final ComponentRepository componentRepository;
 
     @Autowired
-    public ActuatorController(ActuatorRepository actuatorRepository, ComponentRepository componentRepository) {
+    private final ControlStructureRepository controlStructureRepository;
+
+    @Autowired
+    public ActuatorController(ActuatorRepository actuatorRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
         this.actuatorRepository = actuatorRepository;
         this.componentRepository = componentRepository;
+        this.controlStructureRepository = controlStructureRepository;
     }
 
     @GetMapping
@@ -49,12 +54,15 @@ public class ActuatorController {
         try {
             Optional<Component> father = componentRepository.findById(actuatorDomain.getFather_id());
             actuator.setFather(father.get());
+            father.get().setControlStructure(true);
         }catch (Exception ex){
             actuator.setFather(null);
         }
         actuator.setBorder(actuatorDomain.getBorder());
         actuator.setIsVisible(actuatorDomain.getIsVisible());
-        actuatorRepository.save(actuator);
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(actuatorDomain.getControl_structure_id());
+        c1.get().getComponents().add(actuator);
+        controlStructureRepository.save(c1.get());
         return actuator;
     }
 

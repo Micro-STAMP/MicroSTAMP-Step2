@@ -7,8 +7,8 @@ public class Sensor extends Component{
 
     public Sensor(){super();}
 
-    public Sensor(long id, int layer, String name, boolean isVisible, Component father, Style border) {
-        super(id, layer, name, isVisible, father,border);
+    public Sensor(long id, String name, boolean isVisible, Component father, Style border) {
+        super(id, name, isVisible, father,border);
     }
 
     @Override

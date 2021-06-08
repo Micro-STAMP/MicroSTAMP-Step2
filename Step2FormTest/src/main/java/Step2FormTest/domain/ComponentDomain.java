@@ -5,10 +5,10 @@ import Step2FormTest.models.Style;
 public abstract class ComponentDomain {
 
     private Long id;
-    private Integer layer;
     private String name;
     private Boolean isVisible;
     private Long father_id;
+    private Long control_structure_id;
     private Style border;
 
     public Long getId() {
@@ -17,14 +17,6 @@ public abstract class ComponentDomain {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getLayer() {
-        return layer;
-    }
-
-    public void setLayer(Integer layer) {
-        this.layer = layer;
     }
 
     public String getName() {
@@ -57,5 +49,13 @@ public abstract class ComponentDomain {
 
     public void setIsVisible(Boolean visible) {
         isVisible = visible;
+    }
+
+    public Long getControl_structure_id() {
+        return control_structure_id;
+    }
+
+    public void setControl_structure_id(Long control_structure_id) {
+        this.control_structure_id = control_structure_id;
     }
 }

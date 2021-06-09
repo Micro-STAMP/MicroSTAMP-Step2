@@ -84,12 +84,18 @@
                 <label for="sensor">Sensor</label>
             </div>
             <br />
-            <div align="Left">
-                <button type="submit" >Add Component</button>
+            <div>
+                <div align="Left">
+                    <button type="submit" >Add Component</button>
 
-                <a th:href="@{/{controlStructureId}/add_connection(controlStructureId=${control_structure_id})}">
-                    <input type="button" value="Add Connection" />
-                </a>
+                    <a th:href="@{/{controlStructureId}/add_connection(controlStructureId=${control_structure_id})}" style="text-decoration: none;">
+                        <input type="button" value="Add Connection">
+                    </a>
+
+                    <a th:href="@{/home}" style="margin-left: 110px;">
+                        <input type="button" value="Return"/>
+                    </a>
+                </div>
             </div>
         </div>
     </form>

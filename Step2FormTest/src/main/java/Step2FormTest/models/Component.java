@@ -89,9 +89,11 @@ public abstract class Component {
         isControlStructure = controlStructure;
     }
 
-    /*public String getType(){
-        return "controller";
-    }*/
+    public String getType(){
+        String s = this.getClass().getName();
+        String[] split = s.split("models.");
+        return split[split.length - 1];
+    }
 
     public String getFatherName(){
         if(father == null)

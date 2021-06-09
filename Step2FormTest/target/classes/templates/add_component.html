@@ -7,7 +7,7 @@
 <body>
 <div align="Left">
     <h1>Add Component</h1>
-    <form th:action="@{/}" id="add_component" th:object="${component}">
+    <form th:action="@{/{controlStructureId}(controlStructureId=${control_structure_id})}" id="add_component" th:object="${component}">
         <label>Name:</label>
         <input id="name" type="text" th:field="*{name}" required/><br/>
 
@@ -29,7 +29,8 @@
         <input type="radio" id="isNotVisible" name="visible" value="false">
         <label for="isNotVisible">False</label>
 
-        <input id="typeComponent" type="hidden" th:value="${componentValue}"/><br/>
+        <input type="hidden" id="control_structure_id" th:value="${control_structure_id}"/>
+        <input type="hidden" id="typeComponent" th:value="${componentValue}"/><br/>
         <br/>
 
         <button type="submit" onclick = send()>Add Component</button>
@@ -51,6 +52,7 @@
             father_id: $("#father").val(),
             border: $("#border").val(),
             isVisible: checkedValue,
+            control_structure_id: $("#control_structure_id").val(),
         }
 
         $('#target').html('sending..');

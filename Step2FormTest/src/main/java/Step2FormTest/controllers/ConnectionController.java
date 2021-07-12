@@ -39,13 +39,11 @@ public class ConnectionController {
         return connectionRepository.findAll();
     }
 
+    //get Connection by CS id
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id){
-        return connectionRepository.findById(id)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
+    public List findByControlStructureId(@PathVariable long id){
+        return connectionRepository.findConnectionsByControlStructureId(id);
     }
-
 
     @PostMapping
     public Connection create(@RequestBody ConnectionDomain connectionDomain){

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Control Structure</title>
+</head>
+<body>
+    <div align="Left">
+        <h1>Add Control Structure</h1>
+        <form th:action="@{/home}" id="add_control_structure" th:object="${controlStructure}">
+            <label>Name:</label>
+            <input id="name" type="text" th:field="*{name}" required/><br/>
+            <button type="submit" onclick = send()>Add ControlStructure</button>
+        </form>
+    </div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    function send() {
+
+        var control_structure = {
+            name: $("#name").val(),
+        }
+
+        $('#target').html('sending..');
+
+        $.ajax({
+            url: '/controlstructures',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                $('#target').html(data.msg);
+            },
+            data: JSON.stringify(control_structure)
+        });
+    }
+
+    </script>
+</body>
+</html>

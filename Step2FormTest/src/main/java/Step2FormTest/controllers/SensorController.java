@@ -3,6 +3,7 @@ package Step2FormTest.controllers;
 import Step2FormTest.domain.SensorDomain;
 import Step2FormTest.models.Component;
 import Step2FormTest.models.ControlStructure;
+import Step2FormTest.models.ControlledProcess;
 import Step2FormTest.models.Sensor;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
@@ -67,13 +68,28 @@ public class SensorController {
     }
 
     @PutMapping(value="/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody Sensor sensorParam) {
-        return sensorRepository.findById(id)
-                .map(record -> {
-                    record.setName(sensorParam.getName());
-                    Sensor updated = sensorRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity update(@PathVariable("id") long id, @RequestBody SensorDomain sensorDomain) {
+        if(sensorDomain.getFather_id() != null) {
+            return sensorRepository.findById(id)
+                    .map(record -> {
+                        record.setName(sensorDomain.getName());
+                        record.setBorder(sensorDomain.getBorder());
+                        record.setFather(componentRepository.findById(sensorDomain.getFather_id()).get());
+                        record.setIsVisible(sensorDomain.getIsVisible());
+                        Sensor updated = sensorRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }else{
+            return sensorRepository.findById(id)
+                    .map(record -> {
+                        record.setName(sensorDomain.getName());
+                        record.setBorder(sensorDomain.getBorder());
+                        record.setFather(null);
+                        record.setIsVisible(sensorDomain.getIsVisible());
+                        Sensor updated = sensorRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }
     }
 
     @DeleteMapping(path ={"/{id}"})

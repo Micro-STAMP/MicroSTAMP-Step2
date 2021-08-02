@@ -5,10 +5,6 @@ import javax.persistence.Entity;
 @Entity
 public class Actuator extends Component{
 
-    //teste pra commit do git :D
-    //new teste :D
-    //teste de novo :(
-
     public Actuator(){super();}
 
     public Actuator(long id, String name, boolean isVisible, Component father, Style border) {

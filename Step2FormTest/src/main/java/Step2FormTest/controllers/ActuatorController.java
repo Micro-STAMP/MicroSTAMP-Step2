@@ -67,13 +67,28 @@ public class ActuatorController {
     }
 
     @PutMapping(value="/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody Actuator actuatorParam) {
-        return actuatorRepository.findById(id)
-                .map(record -> {
-                    record.setName(actuatorParam.getName());
-                    Actuator updated = actuatorRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ActuatorDomain actuatorDomain) {
+        if(actuatorDomain.getFather_id() != null) {
+            return actuatorRepository.findById(id)
+                    .map(record -> {
+                        record.setName(actuatorDomain.getName());
+                        record.setBorder(actuatorDomain.getBorder());
+                        record.setFather(componentRepository.findById(actuatorDomain.getFather_id()).get());
+                        record.setIsVisible(actuatorDomain.getIsVisible());
+                        Actuator updated = actuatorRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }else{
+            return actuatorRepository.findById(id)
+                    .map(record -> {
+                        record.setName(actuatorDomain.getName());
+                        record.setBorder(actuatorDomain.getBorder());
+                        record.setFather(null);
+                        record.setIsVisible(actuatorDomain.getIsVisible());
+                        Actuator updated = actuatorRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }
     }
 
     @DeleteMapping(path ={"/{id}"})

@@ -45,22 +45,24 @@ public class ConnectionController {
         return connectionRepository.findConnectionsByControlStructureId(id);
     }
 
+    @GetMapping(path = {"listConnections/{id}"})
+    public ResponseEntity findConnectionById(@PathVariable long id){
+        return connectionRepository.findById(id)
+                .map(record -> ResponseEntity.ok().body(record))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public Connection create(@RequestBody ConnectionDomain connectionDomain){
         Connection connection = new Connection();
         connection.setConnectionType(connectionDomain.getConnectionType());
-        try {
-            Optional<Component> source = componentRepository.findById(connectionDomain.getSource_id());
-            connection.setSource(source.get());
-        }catch (Exception ex){
-            connection.setSource(null);
-        }
-        try {
-            Optional<Component> target = componentRepository.findById(connectionDomain.getTarget_id());
-            connection.setTarget(target.get());
-        }catch (Exception ex){
-            connection.setTarget(null);
-        }
+
+        Optional<Component> source = componentRepository.findById(connectionDomain.getSource_id());
+        connection.setSource(source.get());
+
+        Optional<Component> target = componentRepository.findById(connectionDomain.getTarget_id());
+        connection.setTarget(target.get());
+
         //connection.setLabels();
         connection.setStyle(connectionDomain.getStyle());
         Optional<ControlStructure> c1 = controlStructureRepository.findById(connectionDomain.getControl_structure_id());

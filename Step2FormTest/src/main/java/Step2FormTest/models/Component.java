@@ -1,5 +1,8 @@
 package Step2FormTest.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,7 +17,7 @@ public abstract class Component {
     private Style border;
     private Boolean isControlStructure;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="father_id")
     private Component father;
 

@@ -33,62 +33,21 @@ public class PageController {
 
     @GetMapping("/{controlStructureId}")
     public String indexPage(@PathVariable Long controlStructureId, Model model) {
-        model.addAttribute("componentsWithoutFather", componentRepository.findComponentsWithoutFather());
         model.addAttribute("components", componentRepository.findComponentsByControlStructureId(controlStructureId));
         model.addAttribute("connections", connectionRepository.findConnectionsByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
-        return "index";
-    }
-
-    @GetMapping("/{controlStructureId}/add_component")
-    public String showForm(@RequestParam String componentValue, @PathVariable Long controlStructureId, Model model) {
-        Component component;
-        switch (componentValue) {
-            case "controlledProcess":
-                component = new ControlledProcess();
-                break;
-            case "actuator":
-                component = new Actuator();
-                break;
-            case "sensor":
-                component = new Sensor();
-                break;
-            default:
-                component = new Step2FormTest.models.Controller();
-        }
-        model.addAttribute("component", component);
-
-        List<String> border = Style.carregarAtributos();
-        model.addAttribute("border", border);
-
-        model.addAttribute("componentValue", componentValue);
-
-        List<Component> father = componentRepository.findComponentsByControlStructureId(controlStructureId);
-        model.addAttribute("father", father);
-
-        model.addAttribute("control_structure_id", controlStructureId);
-
-        return "add_component";
-    }
-
-    @GetMapping("/{controlStructureId}/add_connection")
-    public String connectionForm(@PathVariable Long controlStructureId, Model model) {
-
-        Connection connection = new Connection();
-        model.addAttribute("connection", connection);
 
         List<String> connectionType = ConnectionType.carregarAtributos();
         model.addAttribute("connectionType", connectionType);
 
-        List<Component> components = componentRepository.findComponentsByControlStructureId(controlStructureId);
-        model.addAttribute("components", components);
-
         List<String> style = Style.carregarAtributos();
         model.addAttribute("style", style);
 
-        model.addAttribute("control_structure_id", controlStructureId);
+        List<Component> componentsWithoutEnvironment = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        componentsWithoutEnvironment.remove(0);
+        model.addAttribute("componentsWithoutEnvironment",componentsWithoutEnvironment);
 
-        return "add_connection";
+        return "index";
     }
 
     @GetMapping("/add_control_structure")

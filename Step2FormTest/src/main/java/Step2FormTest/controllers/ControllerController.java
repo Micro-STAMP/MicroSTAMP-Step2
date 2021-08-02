@@ -2,6 +2,7 @@ package Step2FormTest.controllers;
 
 
 import Step2FormTest.domain.ControllerDomain;
+import Step2FormTest.models.Actuator;
 import Step2FormTest.models.Component;
 import Step2FormTest.models.ControlStructure;
 import Step2FormTest.models.Controller;
@@ -67,13 +68,28 @@ public class ControllerController {
     }
 
     @PutMapping(value="/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody Controller controllerParam) {
-        return controllerRepository.findById(id)
-                .map(record -> {
-                    record.setName(controllerParam.getName());
-                    Controller updated = controllerRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControllerDomain controllerDomain) {
+        if(controllerDomain.getFather_id() != null) {
+            return controllerRepository.findById(id)
+                    .map(record -> {
+                        record.setName(controllerDomain.getName());
+                        record.setBorder(controllerDomain.getBorder());
+                        record.setFather(componentRepository.findById(controllerDomain.getFather_id()).get());
+                        record.setIsVisible(controllerDomain.getIsVisible());
+                        Controller updated = controllerRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }else{
+            return controllerRepository.findById(id)
+                    .map(record -> {
+                        record.setName(controllerDomain.getName());
+                        record.setBorder(controllerDomain.getBorder());
+                        record.setFather(null);
+                        record.setIsVisible(controllerDomain.getIsVisible());
+                        Controller updated = controllerRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }
     }
 
     @DeleteMapping(path ={"/{id}"})

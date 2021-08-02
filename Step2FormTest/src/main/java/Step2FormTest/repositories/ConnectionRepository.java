@@ -12,4 +12,10 @@ public interface ConnectionRepository extends JpaRepository<Connection, Long> {
 
     @Query(value = "SELECT * FROM connection c WHERE c.control_structure_id = ?1", nativeQuery = true)
     List<Connection> findConnectionsByControlStructureId(long id);
+
+    @Query(value = "SELECT * from connection c WHERE c.source_id = ?1", nativeQuery = true)
+    List<Connection> findConnectionsThatTheComponentIsSource(long id);
+
+    @Query(value = "SELECT * from connection c WHERE c.target_id = ?1", nativeQuery = true)
+    List<Connection> findConnectionsThatTheComponentIsTarget(long id);
 }

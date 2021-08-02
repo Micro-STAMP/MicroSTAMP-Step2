@@ -5,6 +5,7 @@ import Step2FormTest.domain.ControlledProcessDomain;
 import Step2FormTest.models.Component;
 import Step2FormTest.models.ControlStructure;
 import Step2FormTest.models.ControlledProcess;
+import Step2FormTest.models.Controller;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
 import Step2FormTest.repositories.ControlledProcessRepository;
@@ -67,13 +68,28 @@ public class ControlledProcessController {
     }
 
     @PutMapping(value="/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControlledProcess controlledProcessParam) {
-        return controlledProcessRepository.findById(id)
-                .map(record -> {
-                    record.setName(controlledProcessParam.getName());
-                    ControlledProcess updated = controlledProcessRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControlledProcessDomain controlledProcessDomain) {
+        if(controlledProcessDomain.getFather_id() != null) {
+            return controlledProcessRepository.findById(id)
+                    .map(record -> {
+                        record.setName(controlledProcessDomain.getName());
+                        record.setBorder(controlledProcessDomain.getBorder());
+                        record.setFather(componentRepository.findById(controlledProcessDomain.getFather_id()).get());
+                        record.setIsVisible(controlledProcessDomain.getIsVisible());
+                        ControlledProcess updated = controlledProcessRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }else{
+            return controlledProcessRepository.findById(id)
+                    .map(record -> {
+                        record.setName(controlledProcessDomain.getName());
+                        record.setBorder(controlledProcessDomain.getBorder());
+                        record.setFather(null);
+                        record.setIsVisible(controlledProcessDomain.getIsVisible());
+                        ControlledProcess updated = controlledProcessRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElse(ResponseEntity.notFound().build());
+        }
     }
 
     @DeleteMapping(path ={"/{id}"})

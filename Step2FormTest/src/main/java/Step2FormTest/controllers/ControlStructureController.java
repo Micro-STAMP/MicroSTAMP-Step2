@@ -3,6 +3,7 @@ package Step2FormTest.controllers;
 import Step2FormTest.domain.ControlStructureDomain;
 import Step2FormTest.models.Component;
 import Step2FormTest.models.ControlStructure;
+import Step2FormTest.models.Environment;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class ControlStructureController {
     public ControlStructure create(@RequestBody ControlStructureDomain controlStructureDomain){
         ControlStructure controlStructure = new ControlStructure();
         controlStructure.setName(controlStructureDomain.getName());
+        controlStructure.getComponents().add(new Environment());
         controlStructureRepository.save(controlStructure);
         return controlStructure;
     }

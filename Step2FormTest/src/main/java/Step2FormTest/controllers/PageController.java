@@ -50,13 +50,6 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("/add_control_structure")
-    public String controlStructureForm(Model model){
-        ControlStructure controlStructure = new ControlStructure();
-        model.addAttribute("controlStructure", controlStructure);
-        return "add_control_structure";
-    }
-
     @GetMapping("/home")
     public String controlStructures(Model model){
         model.addAttribute("controlStructures", controlStructureRepository.findAll());

@@ -8,14 +8,26 @@ public enum ConnectionType {
 
     CONTROL_ACTION,
     FEEDBACK,
-    COMUNICATION_CHANNEL;
+    COMMUNICATION_CHANNEL,
+    PROCESS_INPUT,
+    PROCESS_OUTPUT;
 
-    public static List<String> carregarAtributos() {
-        List<ConnectionType> lista = Arrays.asList(ConnectionType.values());
-        List<String> retorno = new ArrayList<String>();
-        for (int i = 0; i < lista.size(); i++) {
-            retorno.add(lista.get(i).name());
-        }
-        return retorno;
+    public static List<String> loadConnectionTypes() {
+
+        List<String> listReturn = new ArrayList<String>();
+        listReturn.add(ConnectionType.CONTROL_ACTION.name());
+        listReturn.add(ConnectionType.FEEDBACK.name());
+        listReturn.add(ConnectionType.COMMUNICATION_CHANNEL.name());
+
+        return listReturn;
     }
+
+    public static String getProcessInput(){
+        return ConnectionType.PROCESS_INPUT.name();
+    }
+
+    public static String getProcessOutput(){
+        return ConnectionType.PROCESS_OUTPUT.name();
+    }
+
 }

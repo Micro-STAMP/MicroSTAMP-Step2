@@ -37,11 +37,11 @@ public class PageController {
         model.addAttribute("connections", connectionRepository.findConnectionsByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
 
-        List<String> connectionType = ConnectionType.carregarAtributos();
-        model.addAttribute("connectionType", connectionType);
+        model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
+        model.addAttribute("process_input",ConnectionType.getProcessInput());
+        model.addAttribute("process_output",ConnectionType.getProcessOutput());
 
-        List<String> style = Style.carregarAtributos();
-        model.addAttribute("style", style);
+        model.addAttribute("style", Style.loadStyles());
 
         List<Component> componentsWithoutEnvironment = componentRepository.findComponentsByControlStructureId(controlStructureId);
         componentsWithoutEnvironment.remove(0);

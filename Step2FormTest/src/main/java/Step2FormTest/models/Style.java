@@ -10,12 +10,13 @@ public enum Style {
     SOLID,
     ETCHED;
 
-    public static List<String> carregarAtributos() {
-        List<Style> lista = Arrays.asList(Style.values());
-        List<String> retorno = new ArrayList<String>();
-        for (int i = 0; i < lista.size(); i++) {
-            retorno.add(lista.get(i).name());
-        }
-        return retorno;
+    public static List<String> loadStyles() {
+        List<Style> list = Arrays.asList(Style.values());
+        List<String> listReturn = new ArrayList<String>();
+
+        for(Style s : list)
+            listReturn.add(s.name());
+
+        return listReturn;
     }
 }

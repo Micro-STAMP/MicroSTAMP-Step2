@@ -21,6 +21,10 @@ public class ControlStructure{
     @JoinColumn(name = "controlStructure_id")
     private List<Connection> connections;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "controlStructure_id")
+    private List<Image> images;
+
     public ControlStructure() {
         components = new ArrayList<>();
         connections= new ArrayList<>();
@@ -76,5 +80,13 @@ public class ControlStructure{
 
     public void setConnections(List<Connection> connections) {
         this.connections = connections;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

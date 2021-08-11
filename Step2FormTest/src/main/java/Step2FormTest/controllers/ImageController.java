@@ -43,7 +43,7 @@ public class ImageController {
 
         controlStructureRepository.save(c1.get());
 
-        String uploadDir = "Step2FormTest/src/main/resources/cs-photos/" + id;
+        String uploadDir = "Step2FormTest/src/main/resources/cs-images/" + id;
 
         saveFile(uploadDir, fileName, multipartFile);
 

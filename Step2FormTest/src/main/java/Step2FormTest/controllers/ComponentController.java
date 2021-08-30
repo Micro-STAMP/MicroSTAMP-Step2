@@ -51,19 +51,16 @@ public class ComponentController {
 
     public void deleteComponentAndChildren(long id){
         List<Component> children = componentRepository.findComponentsChildren(id);
-        for(Component c : children)
-            deleteComponentAndChildren(c.getId());
+        children.forEach(c -> deleteComponentAndChildren(c.getId()));
 
         List<Connection> connections_source = connectionRepository.findConnectionsThatTheComponentIsSource(id);
         if(connections_source.size() != 0) {
-            for (Connection c : connections_source)
-                connectionRepository.deleteById(c.getId());
+            connections_source.forEach(c -> connectionRepository.deleteById(c.getId()));
         }
 
         List<Connection> connections_target = connectionRepository.findConnectionsThatTheComponentIsTarget(id);
         if(connections_target.size() != 0) {
-            for (Connection c : connections_target)
-                connectionRepository.deleteById(c.getId());
+            connections_target.forEach(c -> connectionRepository.deleteById(c.getId()));
         }
 
         componentRepository.deleteById(id);

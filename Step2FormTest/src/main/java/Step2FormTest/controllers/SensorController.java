@@ -70,23 +70,23 @@ public class SensorController {
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody SensorDomain sensorDomain) {
         if(sensorDomain.getFather_id() != null) {
-            return sensorRepository.findById(id)
+            return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(sensorDomain.getName());
                         record.setBorder(sensorDomain.getBorder());
                         record.setFather(componentRepository.findById(sensorDomain.getFather_id()).get());
                         record.setIsVisible(sensorDomain.getIsVisible());
-                        Sensor updated = sensorRepository.save(record);
+                        Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }else{
-            return sensorRepository.findById(id)
+            return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(sensorDomain.getName());
                         record.setBorder(sensorDomain.getBorder());
                         record.setFather(null);
                         record.setIsVisible(sensorDomain.getIsVisible());
-                        Sensor updated = sensorRepository.save(record);
+                        Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }

@@ -19,4 +19,7 @@ public interface ComponentRepository extends JpaRepository<Component, Long>{
     @Query(value = "SELECT * FROM component c WHERE c.father_id = ?1", nativeQuery = true)
     List<Component> findComponentsChildren(long id);
 
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE component SET dtype = ?2 WHERE id = ?1", nativeQuery = true)
+    void updateComponentType(long id, String type);
 }

@@ -70,23 +70,23 @@ public class ControllerController {
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControllerDomain controllerDomain) {
         if(controllerDomain.getFather_id() != null) {
-            return controllerRepository.findById(id)
+            return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controllerDomain.getName());
                         record.setBorder(controllerDomain.getBorder());
                         record.setFather(componentRepository.findById(controllerDomain.getFather_id()).get());
                         record.setIsVisible(controllerDomain.getIsVisible());
-                        Controller updated = controllerRepository.save(record);
+                        Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }else{
-            return controllerRepository.findById(id)
+            return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controllerDomain.getName());
                         record.setBorder(controllerDomain.getBorder());
                         record.setFather(null);
                         record.setIsVisible(controllerDomain.getIsVisible());
-                        Controller updated = controllerRepository.save(record);
+                        Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }

@@ -14,6 +14,8 @@ public class Label {
 
     private String label;
 
+    public Label(){}
+
     public Label(String label) {
         this.label = label;
     }
@@ -21,6 +23,14 @@ public class Label {
     @Override
     public String toString() {
         return label;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLabel() {

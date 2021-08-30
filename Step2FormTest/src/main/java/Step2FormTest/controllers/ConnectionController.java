@@ -4,9 +4,11 @@ import Step2FormTest.domain.ConnectionDomain;
 import Step2FormTest.models.Component;
 import Step2FormTest.models.Connection;
 import Step2FormTest.models.ControlStructure;
+import Step2FormTest.models.Label;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ConnectionRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
+import Step2FormTest.repositories.LabelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +27,16 @@ public class ConnectionController {
     private final ComponentRepository componentRepository;
 
     @Autowired
+    private final LabelRepository labelRepository;
+
+    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired
-    public ConnectionController(ConnectionRepository connectionRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
+    public ConnectionController(ConnectionRepository connectionRepository, ComponentRepository componentRepository, LabelRepository labelRepository, ControlStructureRepository controlStructureRepository) {
         this.connectionRepository = connectionRepository;
         this.componentRepository = componentRepository;
+        this.labelRepository = labelRepository;
         this.controlStructureRepository = controlStructureRepository;
     }
 
@@ -86,11 +92,20 @@ public class ConnectionController {
 
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity <?> delete(@PathVariable long id) {
+
+        List<Label> labels = labelRepository.findLabelsByConnectionId(id);
+        labels.forEach(label -> labelRepository.deleteById(label.getId()));
+
         return connectionRepository.findById(id)
                 .map(record -> {
                     connectionRepository.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(path = {"listLabelsToBeDeleted/{id}"})
+    public List getLabelsToBeDeleted(@PathVariable long id){
+        return labelRepository.findLabelsByConnectionId(id);
     }
 
 }

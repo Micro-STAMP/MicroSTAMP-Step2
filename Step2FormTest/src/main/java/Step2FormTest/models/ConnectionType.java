@@ -10,7 +10,8 @@ public enum ConnectionType {
     FEEDBACK,
     COMMUNICATION_CHANNEL,
     PROCESS_INPUT,
-    PROCESS_OUTPUT;
+    PROCESS_OUTPUT,
+    DISTURBANCE;
 
     public static List<String> loadConnectionTypes() {
 
@@ -22,8 +23,11 @@ public enum ConnectionType {
         return listReturn;
     }
 
-    public static String getProcessInput(){
-        return ConnectionType.PROCESS_INPUT.name();
+    public static List<String> getProcessInputDisturbance(){
+        List<String> listReturn = new ArrayList<String>();
+        listReturn.add(ConnectionType.PROCESS_INPUT.name());
+        listReturn.add(ConnectionType.DISTURBANCE.name());
+        return listReturn;
     }
 
     public static String getProcessOutput(){

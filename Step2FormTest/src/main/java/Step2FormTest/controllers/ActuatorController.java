@@ -68,24 +68,29 @@ public class ActuatorController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ActuatorDomain actuatorDomain) {
+        //componentRepository.updateComponentType(id,"Controller");
         if(actuatorDomain.getFather_id() != null) {
-            return actuatorRepository.findById(id)
+            if(actuatorDomain.getType() != "Actuator")
+                componentRepository.updateComponentType(id,actuatorDomain.getType());
+            return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(actuatorDomain.getName());
                         record.setBorder(actuatorDomain.getBorder());
                         record.setFather(componentRepository.findById(actuatorDomain.getFather_id()).get());
                         record.setIsVisible(actuatorDomain.getIsVisible());
-                        Actuator updated = actuatorRepository.save(record);
+                        Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }else{
-            return actuatorRepository.findById(id)
+            if(actuatorDomain.getType() != "Actuator")
+                componentRepository.updateComponentType(id,actuatorDomain.getType());
+            return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(actuatorDomain.getName());
                         record.setBorder(actuatorDomain.getBorder());
                         record.setFather(null);
                         record.setIsVisible(actuatorDomain.getIsVisible());
-                        Actuator updated = actuatorRepository.save(record);
+                        Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }

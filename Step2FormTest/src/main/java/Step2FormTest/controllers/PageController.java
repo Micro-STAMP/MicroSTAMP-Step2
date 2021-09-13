@@ -3,10 +3,7 @@ package Step2FormTest.controllers;
 import java.util.*;
 
 import Step2FormTest.models.*;
-import Step2FormTest.repositories.ComponentRepository;
-import Step2FormTest.repositories.ConnectionRepository;
-import Step2FormTest.repositories.ControlStructureRepository;
-import Step2FormTest.repositories.LabelRepository;
+import Step2FormTest.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -29,11 +26,15 @@ public class PageController {
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired
-    public PageController(ComponentRepository componentRepository, ConnectionRepository connectionRepository, ControlStructureRepository controlStructureRepository, LabelRepository labelRepository) {
+    private final ImageRepository imageRepository;
+
+    @Autowired
+    public PageController(ComponentRepository componentRepository, ConnectionRepository connectionRepository, ControlStructureRepository controlStructureRepository, LabelRepository labelRepository, ImageRepository imageRepository) {
         this.componentRepository = componentRepository;
         this.connectionRepository = connectionRepository;
         this.controlStructureRepository = controlStructureRepository;
         this.labelRepository = labelRepository;
+        this.imageRepository = imageRepository;
     }
 
     @GetMapping("/{controlStructureId}")
@@ -44,6 +45,8 @@ public class PageController {
         model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
         model.addAttribute("process_input",ConnectionType.getProcessInputDisturbance());
         model.addAttribute("process_output",ConnectionType.getProcessOutput());
+
+        model.addAttribute("images",imageRepository.findImagesByControlStructureId(controlStructureId));
 
         model.addAttribute("style", Style.loadStyles());
 

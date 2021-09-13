@@ -85,6 +85,12 @@
             <button type="button" class="btn btn-primary" onclick=uploadImage()>Upload Image</button>
 
             <input type="file" name="image" accept="image/png, image/jpeg" id="image"/>
+
+            <div th:each="image : ${images}">
+                <img th:src="@{/cs-images/{control_structure_id}/{imageName}(control_structure_id = ${control_structure_id}, imageName = ${image.name})}">
+            </div>
+
+            <!--<img src="/cs-images/1/TesteImagem.png"/>-->
         </div>
     </div>
 

@@ -70,6 +70,8 @@ public class ControlledProcessController {
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControlledProcessDomain controlledProcessDomain) {
         if(controlledProcessDomain.getFather_id() != null) {
+            if(controlledProcessDomain.getType() != "ControlledProcess")
+                componentRepository.updateComponentType(id,controlledProcessDomain.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controlledProcessDomain.getName());
@@ -80,6 +82,8 @@ public class ControlledProcessController {
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }else{
+            if(controlledProcessDomain.getType() != "ControlledProcess")
+                componentRepository.updateComponentType(id,controlledProcessDomain.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controlledProcessDomain.getName());

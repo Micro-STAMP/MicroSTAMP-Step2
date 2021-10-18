@@ -70,6 +70,8 @@ public class ControllerController {
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControllerDomain controllerDomain) {
         if(controllerDomain.getFather_id() != null) {
+            if(controllerDomain.getType() != "Controller")
+                componentRepository.updateComponentType(id,controllerDomain.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controllerDomain.getName());
@@ -80,6 +82,8 @@ public class ControllerController {
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }else{
+            if(controllerDomain.getType() != "Controller")
+                componentRepository.updateComponentType(id,controllerDomain.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controllerDomain.getName());

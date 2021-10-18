@@ -68,7 +68,6 @@ public class ActuatorController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ActuatorDomain actuatorDomain) {
-        //componentRepository.updateComponentType(id,"Controller");
         if(actuatorDomain.getFather_id() != null) {
             if(actuatorDomain.getType() != "Actuator")
                 componentRepository.updateComponentType(id,actuatorDomain.getType());

@@ -70,6 +70,8 @@ public class SensorController {
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody SensorDomain sensorDomain) {
         if(sensorDomain.getFather_id() != null) {
+            if(sensorDomain.getType() != "Sensor")
+                componentRepository.updateComponentType(id,sensorDomain.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(sensorDomain.getName());
@@ -80,6 +82,8 @@ public class SensorController {
                         return ResponseEntity.ok().body(updated);
                     }).orElse(ResponseEntity.notFound().build());
         }else{
+            if(sensorDomain.getType() != "Sensor")
+                componentRepository.updateComponentType(id,sensorDomain.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(sensorDomain.getName());

@@ -216,7 +216,7 @@
                     </div>
                     <div class="form-group">
                         <label for="component-edit-type" class="col-form-label">Type:</label>
-                        <select class="form-control" id="component-edit-type" disabled>
+                        <select class="form-control" id="component-edit-type">
                             <option value="controller">Controller</option>
                             <option value="controlledProcess">Controlled Process</option>
                             <option value="actuator">Actuator</option>
@@ -484,6 +484,7 @@
 <script type="text/javascript">
 
     var componentSelected;
+    var componentSelectedOriginalType;
     var componentToBeDeleted;
     var connectionSelected;
     var connectionToBeDeleted;
@@ -812,6 +813,8 @@
                     $("#editIsVisible").prop("checked", true);
                 else
                     $("#editIsNotVisible").prop("checked", true);
+
+                componentSelectedOriginalType = $("#component-edit-type").val();
             },
         });
     }
@@ -825,7 +828,6 @@
 
         var type = $("#component-edit-type").val();
         type = type.charAt(0).toUpperCase() + type.slice(1);
-        console.log(type);
 
         var component = {
             name: $("#component-edit-name").val(),
@@ -836,9 +838,9 @@
             type: type,
         }
 
-        if($("#component-edit-type").val() == "controlledProcess")
-            var componentType = $("#component-edit-type").val() + "es";
-        else var componentType = $("#component-edit-type").val() + "s";
+        if(componentSelectedOriginalType == "controlledProcess")
+            var componentType = componentSelectedOriginalType + "es";
+        else var componentType = componentSelectedOriginalType + "s";
 
         if($("#component-edit-name").val() == "Environment"){
             $("#editComponentModal").modal("hide");
@@ -849,6 +851,7 @@
             actual_modal = 1;
             $("#namelessRestrictionModal").modal("show");
         }else{
+            console.log(component);
             $.ajax({
                 url: '/'+ componentType + '/' + componentSelected,
                 type: 'put',

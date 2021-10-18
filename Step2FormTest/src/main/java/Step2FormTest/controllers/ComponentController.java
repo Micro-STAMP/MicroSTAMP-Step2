@@ -15,15 +15,15 @@ import java.util.List;
 @RequestMapping("/components")
 public class ComponentController {
 
+    private final ComponentRepository componentRepository;
+
+    private final ConnectionRepository connectionRepository;
+
     @Autowired
     public ComponentController(ComponentRepository componentRepository, ConnectionRepository connectionRepository) {
         this.componentRepository = componentRepository;
         this.connectionRepository = connectionRepository;
     }
-
-    private final ComponentRepository componentRepository;
-
-    private final ConnectionRepository connectionRepository;
 
     @GetMapping
     public List findAll(){

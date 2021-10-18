@@ -16,10 +16,8 @@ import java.util.List;
 @RequestMapping("/controlstructures")
 public class ControlStructureController {
 
-    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
-    @Autowired
     private final ComponentRepository componentRepository;
 
     @Autowired

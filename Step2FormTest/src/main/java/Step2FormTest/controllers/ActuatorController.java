@@ -18,13 +18,10 @@ import java.util.Optional;
 @RequestMapping("/actuators")
 public class ActuatorController {
 
-    @Autowired
     private final ActuatorRepository actuatorRepository;
 
-    @Autowired
     private final ComponentRepository componentRepository;
 
-    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired

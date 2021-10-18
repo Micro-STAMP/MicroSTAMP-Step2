@@ -13,19 +13,14 @@ import org.springframework.ui.Model;
 @Controller
 public class PageController {
 
-    @Autowired
     private final ComponentRepository componentRepository;
 
-    @Autowired
     private final ConnectionRepository connectionRepository;
 
-    @Autowired
     private final LabelRepository labelRepository;
 
-    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
-    @Autowired
     private final ImageRepository imageRepository;
 
     @Autowired

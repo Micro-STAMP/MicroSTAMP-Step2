@@ -20,13 +20,10 @@ import java.util.Optional;
 @RequestMapping("/controlledProcesses")
 public class ControlledProcessController {
 
-    @Autowired
     private final ControlledProcessRepository controlledProcessRepository;
 
-    @Autowired
     private final ComponentRepository componentRepository;
 
-    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired

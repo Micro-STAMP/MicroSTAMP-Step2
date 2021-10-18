@@ -20,13 +20,10 @@ import java.util.Optional;
 @RequestMapping("/sensors")
 public class SensorController {
 
-    @Autowired
     private final SensorRepository sensorRepository;
 
-    @Autowired
     private final ComponentRepository componentRepository;
 
-    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired

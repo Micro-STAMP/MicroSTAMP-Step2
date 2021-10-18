@@ -20,16 +20,12 @@ import java.util.Optional;
 @RequestMapping("/connections")
 public class ConnectionController {
 
-    @Autowired
     private final ConnectionRepository connectionRepository;
 
-    @Autowired
     private final ComponentRepository componentRepository;
 
-    @Autowired
     private final LabelRepository labelRepository;
 
-    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired

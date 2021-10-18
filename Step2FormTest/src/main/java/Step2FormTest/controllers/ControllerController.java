@@ -20,13 +20,10 @@ import java.util.Optional;
 @RequestMapping("/controllers")
 public class ControllerController {
 
-    @Autowired
     private final ControllerRepository controllerRepository;
 
-    @Autowired
     private final ComponentRepository componentRepository;
 
-    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired

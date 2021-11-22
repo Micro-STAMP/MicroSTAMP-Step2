@@ -4,26 +4,37 @@ import Step2FormTest.domain.ControlStructureDomain;
 import Step2FormTest.models.Component;
 import Step2FormTest.models.ControlStructure;
 import Step2FormTest.models.Environment;
+import Step2FormTest.models.Image;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
+import Step2FormTest.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.nio.file.Files;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
 @RequestMapping("/controlstructures")
 public class ControlStructureController {
 
+    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
+    @Autowired
     private final ComponentRepository componentRepository;
 
     @Autowired
-    public ControlStructureController(ControlStructureRepository controlStructureRepository, ComponentRepository componentRepository) {
+    private final ImageRepository imageRepository;
+
+    @Autowired
+    public ControlStructureController(ControlStructureRepository controlStructureRepository, ComponentRepository componentRepository, ImageRepository imageRepository) {
         this.controlStructureRepository = controlStructureRepository;
         this.componentRepository = componentRepository;
+        this.imageRepository = imageRepository;
     }
 
     @GetMapping
@@ -59,10 +70,27 @@ public class ControlStructureController {
 
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity <?> delete(@PathVariable long id) {
+        try{
+            deleteImages(id);
+        }catch (Exception ex){
+            System.out.println("\nException when deleting CS images: \n");
+            ex.printStackTrace();
+        }
         return controlStructureRepository.findById(id)
                 .map(record -> {
                     controlStructureRepository.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
+    }
+
+    public void deleteImages(long id) throws Exception{
+        String deleteDir = "Step2FormTest/src/main/resources/static/cs-images/" + id + "/";
+        Path uploadDeletePath;
+        for(Image i : imageRepository.findImagesByControlStructureId(id)) {
+            uploadDeletePath = Paths.get(deleteDir + i.getName());
+            Files.deleteIfExists(uploadDeletePath);
+        }
+        uploadDeletePath = Paths.get(deleteDir);
+        Files.deleteIfExists(uploadDeletePath);
     }
 }

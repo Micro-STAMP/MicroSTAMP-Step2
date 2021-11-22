@@ -475,6 +475,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="orphanRestrictionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Exception</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=returnOrphanRestriction()>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Exception: a Component can't be child of his child !
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=returnOrphanRestriction()>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 
@@ -492,13 +511,14 @@
     var labelToBeEdited;
     var labelToBeDeleted;
     var wrapped = false;
+    var orphan = false; // orphanRestriction
     var actual_modal; // 0 -> addComponent 1 -> editComponent //control the restrictions return
 
     $(window).ready(function () {
         var cs_id = $("#control_structure_id").val();
         $.ajax({
             "type": 'get',
-            "url": '/components/' + cs_id,
+            "url": '/components/cs/' + cs_id,
             "dataType": "json",
             "success": function (data) {
                 var backup = data;
@@ -518,7 +538,7 @@
         });
         $.ajax({
             "type": 'get',
-            "url": '/connections/' + cs_id,
+            "url": '/connections/cs/' + cs_id,
             "dataType": "json",
             "success": function (data) {
                 $.each(data, function (idx, obj) {
@@ -750,6 +770,14 @@
             $("#editComponentModal").modal("show");
     }
 
+    function returnOrphanRestriction(){
+        $("#orphanRestrictionModal").modal("hide");
+        if(actual_modal == 0)
+            $("#addComponentModal").modal("show");
+        else
+            $("#editComponentModal").modal("show");
+    }
+
     function addConnection() {
         var connType;
 
@@ -786,7 +814,7 @@
     function editComponent(id){
         componentSelected = id;
         $.ajax({
-            url: '/components/listComponents/'+ id,
+            url: '/components/'+ id,
             type: 'get',
             success: function (data) {
                 $("#component-edit-name").val(data.name);
@@ -842,34 +870,57 @@
             var componentType = componentSelectedOriginalType + "es";
         else var componentType = componentSelectedOriginalType + "s";
 
-        if($("#component-edit-name").val() == "Environment"){
-            $("#editComponentModal").modal("hide");
-            actual_modal = 1;
-            $("#environmentRestrictionModal").modal("show");
-        }else if($("#component-edit-name").val() == ""){
-            $("#editComponentModal").modal("hide");
-            actual_modal = 1;
-            $("#namelessRestrictionModal").modal("show");
-        }else{
-            console.log(component);
-            $.ajax({
-                url: '/'+ componentType + '/' + componentSelected,
-                type: 'put',
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (data) {
-                    location.reload();
-                },
-                data: JSON.stringify(component)
-            });
-        }
+        var father_id = $("#component-edit-father").val();
+
+        $.when(checkOrphanRestriction(componentSelected, father_id)).done(function(a1){
+            if($("#component-edit-name").val() == "Environment"){
+                $("#editComponentModal").modal("hide");
+                actual_modal = 1;
+                $("#environmentRestrictionModal").modal("show");
+            }else if($("#component-edit-name").val() == ""){
+                $("#editComponentModal").modal("hide");
+                actual_modal = 1;
+                $("#namelessRestrictionModal").modal("show");
+            }else if(orphan){
+                $("#editComponentModal").modal("hide");
+                actual_modal = 1;
+                $("#orphanRestrictionModal").modal("show");
+                orphan = false;
+            }else{
+                console.log(component);
+                $.ajax({
+                    url: '/'+ componentType + '/' + componentSelected,
+                    type: 'put',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        location.reload();
+                    },
+                    data: JSON.stringify(component)
+                });
+            }
+        });
+    }
+
+    function checkOrphanRestriction(componentId, fatherId){
+         return $.ajax({
+                    url: '/components/listComponentsChildren/'+ componentId,
+                    type: 'get',
+                    success: function (data) {
+                         $.each(data, function (idx, obj) {
+                            if(obj.id == fatherId){
+                                orphan = true;
+                            }
+                        });
+                    },
+                });
     }
 
     function editConnection(id){
         connectionSelected = id;
 
          $.ajax({
-            url: '/connections/listConnections/'+ id,
+            url: '/connections/'+ id,
             type: 'get',
             success: function (data) {
 
@@ -956,7 +1007,7 @@
         $("#connectionsToBeDeletedLi").css("display","");
 
         $.ajax({
-            url: '/components/listComponents/'+ id,
+            url: '/components/'+ id,
             type: 'get',
             success: function (data) {
                  $("#componentToBeDeletedName").text(data.name);
@@ -1008,7 +1059,7 @@
     function loadConnectionToBeDeleted(id){
         connectionToBeDeleted = id;
         $.ajax({
-            url: '/connections/listConnections/'+ id,
+            url: '/connections/'+ id,
             type: 'get',
             success: function (data) {
                  $("#connectionToBeDeletedType").text(data.connectionType);

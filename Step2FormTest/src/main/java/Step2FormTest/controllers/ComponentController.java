@@ -15,8 +15,10 @@ import java.util.List;
 @RequestMapping("/components")
 public class ComponentController {
 
+    @Autowired
     private final ComponentRepository componentRepository;
 
+    @Autowired
     private final ConnectionRepository connectionRepository;
 
     @Autowired
@@ -31,12 +33,12 @@ public class ComponentController {
     }
 
     //get Component by CS id
-    @GetMapping(path = {"/{id}"})
+    @GetMapping(path = {"cs/{id}"})
     public List findByControlStructureId(@PathVariable long id){
         return componentRepository.findComponentsByControlStructureId(id);
     }
 
-    @GetMapping(path = {"listComponents/{id}"})
+    @GetMapping(path = {"/{id}"})
     public ResponseEntity findComponentById(@PathVariable long id){
         return componentRepository.findById(id)
                 .map(record -> ResponseEntity.ok().body(record))
@@ -97,4 +99,23 @@ public class ComponentController {
         items.add(componentRepository.findById(id));
         return items;
     }
+
+    @GetMapping(path = {"listComponentsChildren/{id}"})
+    public List getComponentsChildren(@PathVariable long id){
+        List list = getComponentsRecursive(id);
+        list.remove(componentRepository.findById(id));
+
+        System.out.println(list);
+        return list;
+    }
+
+    public List getComponentsRecursive(long id){
+        List<Component> components = componentRepository.findComponentsChildren(id);
+        List items = new ArrayList();
+        for(Component c : components)
+            items.addAll(getComponentsAndConnectionsRecursive(c.getId()));
+
+        return items;
+    }
+
 }

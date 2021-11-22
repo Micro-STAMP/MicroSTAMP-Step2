@@ -15,8 +15,10 @@ import java.util.Optional;
 @RequestMapping("/labels")
 public class LabelController {
 
+    @Autowired
     private final LabelRepository labelRepository;
 
+    @Autowired
     private final ConnectionRepository connectionRepository;
 
     @Autowired

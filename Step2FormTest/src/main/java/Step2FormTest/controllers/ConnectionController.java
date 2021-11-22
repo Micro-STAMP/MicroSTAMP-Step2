@@ -20,12 +20,16 @@ import java.util.Optional;
 @RequestMapping("/connections")
 public class ConnectionController {
 
+    @Autowired
     private final ConnectionRepository connectionRepository;
 
+    @Autowired
     private final ComponentRepository componentRepository;
 
+    @Autowired
     private final LabelRepository labelRepository;
 
+    @Autowired
     private final ControlStructureRepository controlStructureRepository;
 
     @Autowired
@@ -42,12 +46,12 @@ public class ConnectionController {
     }
 
     //get Connection by CS id
-    @GetMapping(path = {"/{id}"})
+    @GetMapping(path = {"cs/{id}"})
     public List findByControlStructureId(@PathVariable long id){
         return connectionRepository.findConnectionsByControlStructureId(id);
     }
 
-    @GetMapping(path = {"listConnections/{id}"})
+    @GetMapping(path = {"/{id}"})
     public ResponseEntity findConnectionById(@PathVariable long id){
         return connectionRepository.findById(id)
                 .map(record -> ResponseEntity.ok().body(record))

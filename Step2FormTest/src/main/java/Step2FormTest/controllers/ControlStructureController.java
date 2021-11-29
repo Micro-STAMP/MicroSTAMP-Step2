@@ -1,21 +1,25 @@
 package Step2FormTest.controllers;
 
+import Step2FormTest.configuration.MyUserDetails;
 import Step2FormTest.domain.ControlStructureDomain;
-import Step2FormTest.models.Component;
-import Step2FormTest.models.ControlStructure;
-import Step2FormTest.models.Environment;
-import Step2FormTest.models.Image;
+import Step2FormTest.models.*;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
 import Step2FormTest.repositories.ImageRepository;
+import Step2FormTest.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.nio.file.Files;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/controlstructures")
@@ -31,15 +35,25 @@ public class ControlStructureController {
     private final ImageRepository imageRepository;
 
     @Autowired
-    public ControlStructureController(ControlStructureRepository controlStructureRepository, ComponentRepository componentRepository, ImageRepository imageRepository) {
+    private final UserRepository userRepository;
+
+    @Autowired
+    public ControlStructureController(ControlStructureRepository controlStructureRepository, ComponentRepository componentRepository, ImageRepository imageRepository, UserRepository userRepository) {
         this.controlStructureRepository = controlStructureRepository;
         this.componentRepository = componentRepository;
         this.imageRepository = imageRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
     public List findAll(){
         return controlStructureRepository.findAll();
+    }
+
+    //get cs by user id
+    @GetMapping(path = {"user/{id}"})
+    public List findByUserId(@PathVariable long id){
+        return controlStructureRepository.findControlStructuresByUserId(id);
     }
 
     @GetMapping(path = {"/{id}"})
@@ -54,7 +68,12 @@ public class ControlStructureController {
         ControlStructure controlStructure = new ControlStructure();
         controlStructure.setName(controlStructureDomain.getName());
         controlStructure.getComponents().add(new Environment());
-        controlStructureRepository.save(controlStructure);
+
+        Optional<User> user = userRepository.findById(controlStructureDomain.getUser_id());
+        user.get().getControlStructures().add(controlStructure);
+        userRepository.save(user.get());
+
+        //controlStructureRepository.save(controlStructure);
         return controlStructure;
     }
 

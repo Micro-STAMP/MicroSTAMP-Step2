@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="ISO-8859-1">
     <title>Home</title>
@@ -11,6 +12,16 @@
 <body>
     <div align="Left" style="margin-left: 2em;">
         <h1 style="margin-top: 0.5cm;">MicroSTAMP Step 2</h1>
+        <div sec:authorize="isAuthenticated()">
+            Welcome <span sec:authentication="name">Username</span>
+            <span sec:authentication="principal.authorities">Roles</span>
+            <span id="user_id" sec:authentication="principal.UserId" hidden></span>
+
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout" />
+            </form>
+
+        </div>
         <div align="Left">
             <div>
                 <h2>Control Structures</h2>
@@ -147,9 +158,10 @@
         var actual_modal; // 0 -> addControlStructure 1 -> editControlStructure //control the restrictions return
 
         $(window).ready(function () {
+            var user_id = document.getElementById("user_id").innerText;
             $.ajax({
                 "type": 'get',
-                "url": '/controlstructures/',
+                "url": '/controlstructures/user/' + user_id,
                 "dataType": "json",
                 "success": function (data) {
                     $.each(data, function (idx, obj) {
@@ -168,6 +180,7 @@
         function addControlStructure() {
             var control_structure = {
                 name: $("#control_structure-name").val(),
+                user_id: document.getElementById("user_id").innerText,
             }
 
             $('#target').html('sending..');

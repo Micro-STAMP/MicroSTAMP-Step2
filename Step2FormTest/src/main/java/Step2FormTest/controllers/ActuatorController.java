@@ -46,6 +46,10 @@ public class ActuatorController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping(path = {"cs/{id}"})
+    public List findByControlStructureId(@PathVariable long id){
+        return actuatorRepository.findActuatorsByControlStructureId(id);
+    }
 
     @PostMapping
     public Actuator create(@RequestBody ActuatorDomain actuatorDomain){

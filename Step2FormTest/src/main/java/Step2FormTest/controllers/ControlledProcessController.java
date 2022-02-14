@@ -48,6 +48,11 @@ public class ControlledProcessController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping(path = {"cs/{id}"})
+    public List findByControlStructureId(@PathVariable long id){
+        return controlledProcessRepository.findControlledProcessesByControlStructureId(id);
+    }
+
     @PostMapping
     public ControlledProcess create(@RequestBody ControlledProcessDomain controlledProcessDomain){
         ControlledProcess controlledProcess = new ControlledProcess();

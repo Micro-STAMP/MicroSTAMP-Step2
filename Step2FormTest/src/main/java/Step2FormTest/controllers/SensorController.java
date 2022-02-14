@@ -48,6 +48,11 @@ public class SensorController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping(path = {"cs/{id}"})
+    public List findByControlStructureId(@PathVariable long id){
+        return sensorRepository.findSensorsByControlStructureId(id);
+    }
+
     @PostMapping
     public Sensor create(@RequestBody SensorDomain sensorDomain){
         Sensor sensor = new Sensor();

@@ -48,6 +48,11 @@ public class ControllerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping(path = {"cs/{id}"})
+    public List findByControlStructureId(@PathVariable long id){
+        return controllerRepository.findControllersByControlStructureId(id);
+    }
+
     @PostMapping
     public Controller create(@RequestBody ControllerDomain controllerDomain){
         Controller controller = new Controller();

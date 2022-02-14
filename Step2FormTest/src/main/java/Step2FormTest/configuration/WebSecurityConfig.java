@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+       /* http.authorizeRequests()
                 //.antMatchers("/controlstructures/**").hasAuthority("ADMIN")
                 //.antMatchers("/components/**").hasAnyAuthority("USER","ADMIN")
                 .anyRequest().authenticated()
@@ -53,12 +53,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 ;
+        */
+        http.authorizeRequests().antMatchers("/").permitAll();
+
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/controlstructures/**", "/components/**", "/actuators/**", "/sensors/**", "/controllers/**","/controlledProcesses/**","/connections/**","/images/**","/labels/**")
+                .antMatchers("/controlstructures/**",
+                        "/components/**",
+                        "/actuators/**",
+                        "/sensors/**",
+                        "/controllers/**",
+                        "/controlledProcesses/**",
+                        "/connections/**",
+                        "/images/**",
+                        "/labels/**")
                 .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

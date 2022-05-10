@@ -69,7 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/controlledProcesses/**",
                         "/connections/**",
                         "/images/**",
-                        "/labels/**")
+                        "/labels/**",
+                        "/variables/**",
+                        "/states/**")
                 .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

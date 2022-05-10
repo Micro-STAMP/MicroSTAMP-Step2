@@ -1,6 +1,7 @@
 package Step2FormTest.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public abstract class Component {
@@ -18,6 +19,10 @@ public abstract class Component {
     @JoinColumn(name="father_id")
     private Component father;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "component_id")
+    private List<Variable> variables;
+
     public Component(){
         isControlStructure = false;
     }
@@ -28,6 +33,16 @@ public abstract class Component {
         this.isVisible = isVisible;
         this.father = father;
         this.border = border;
+    }
+
+    public Component(long id, String name, Boolean isVisible, Style border, Boolean isControlStructure, Component father, List<Variable> variables) {
+        this.id = id;
+        this.name = name;
+        this.isVisible = isVisible;
+        this.border = border;
+        this.isControlStructure = isControlStructure;
+        this.father = father;
+        this.variables = variables;
     }
 
     public void show(){
@@ -87,6 +102,14 @@ public abstract class Component {
 
     public void setControlStructure(Boolean controlStructure) {
         isControlStructure = controlStructure;
+    }
+
+    public List<Variable> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(List<Variable> variables) {
+        this.variables = variables;
     }
 
     public String getType(){

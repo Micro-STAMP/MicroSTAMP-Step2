@@ -1,10 +1,16 @@
 package Step2FormTest.controllers;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import Step2FormTest.models.*;
 import Step2FormTest.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +45,9 @@ public class PageController {
 
     @GetMapping("/{controlStructureId}")
     public String indexPage(@PathVariable Long controlStructureId, Model model) {
-        model.addAttribute("components", componentRepository.findComponentsByControlStructureId(controlStructureId));
+
+        List<Component> components = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        model.addAttribute("components", components);
         model.addAttribute("connections", connectionRepository.findConnectionsByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
         model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
@@ -51,8 +59,20 @@ public class PageController {
         model.addAttribute("style", Style.loadStyles());
 
         List<Component> componentsWithoutEnvironment = componentRepository.findComponentsByControlStructureId(controlStructureId);
-        componentsWithoutEnvironment.remove(0);
+        if(!componentsWithoutEnvironment.isEmpty())
+            componentsWithoutEnvironment.remove(0);
         model.addAttribute("componentsWithoutEnvironment",componentsWithoutEnvironment);
+
+        List<Component> controllersControlledProcess = new ArrayList<>();
+        for(Component c : components){
+            System.out.println(c.getName() + "\n\n");
+            System.out.println(c.getType() + "\n\n");
+            if (c.getType().equals("Controller")|| c.getType().equals("ControlledProcess")){
+                controllersControlledProcess.add(c);
+                System.out.println("Add " + c.getName() + "\n\n");
+            }
+        }
+        model.addAttribute("controllersControlledProcess", controllersControlledProcess);
 
         return "index";
     }
@@ -72,4 +92,5 @@ public class PageController {
     public String error403(){
         return "403";
     }
+
 }

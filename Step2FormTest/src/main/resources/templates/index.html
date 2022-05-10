@@ -64,6 +64,31 @@
                 </div>
             </div>
 
+            <div class="container" style="margin-left: 2%;">
+                <h2 style="display : inline-block;">Variables</h2>
+                <button id="collapseAllVariablesButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=collapseAllVariables()>Collapse All</button>
+                <div th:switch="${components.size}">
+                    <h5 th:case='0'>No variables yet!</h5>
+                    <div th:case="*">
+                        <div class="row">
+                            <div class="col mt-5">
+                                <table id="variableTable" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Component</th>
+                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <input type="hidden" id="control_structure_id" th:value="${control_structure_id}"/>
             <br/>
         </div>
@@ -75,6 +100,8 @@
 
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addConnectionModal" >Add Connection</button>
 
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addVariableModal" >Add Variable</button>
+
                 <a th:href="@{/home}" style="float: right;">
                     <input type="button" class="btn btn-secondary" value="Return"/>
                 </a>
@@ -82,9 +109,17 @@
 
             <br/>
 
-            <button type="button" class="btn btn-primary" onclick=uploadImage()>Upload Image</button>
+            <div align="Left">
 
-            <input type="file" name="image" accept="image/png, image/jpeg" id="image"/>
+                <button type="button" class="btn btn-primary" onclick=uploadImage()>Upload Image</button>
+
+                <input type="file" name="image" accept="image/png, image/jpeg" id="image"/>
+
+                <a style="float: right;">
+                    <input type="button" class="btn btn-secondary" value="Save" onclick="location.href='http://localhost:8000/insulin-pump-with-continuous-glucose-monitor-project/stepthree';"/>
+                </a>
+
+            </div>
 
             <div th:each="image : ${images}">
                 <img th:src="@{/cs-images/{control_structure_id}/{imageName}(control_structure_id = ${control_structure_id}, imageName = ${image.name})}">
@@ -437,6 +472,158 @@
     </div>
 </div>
 
+<div class="modal fade" id="addVariableModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Variable</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="variable-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="variable-name">
+                    </div>
+                    <div>
+                        <label for="variable-component" class="col-form-label">Component:</label>
+                        <select class="form-control" id="variable-component">
+                            <option th:each="p : ${controllersControlledProcess}" th:value="${p.id}" th:text="${p.name}"/>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick=addVariable()>Add Variable</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editVariableModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Variable</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="label-edit-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="variable-edit-name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick=sendEditedVariable()>Edit Variable</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmVariableDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Variable</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the following Variable ?
+                    <br/><br/>
+                    <span id="variable_delete_name"></span>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick = deleteVariable()>Delete Variable</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="addStateModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add State</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="label-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="state-name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick=addState()>Add State</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editStateModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit State</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="state-edit-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="state-edit-name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick=sendEditedState()>Edit State</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmStateDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete State</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the following State ?
+                    <br/><br/>
+                    <span id="state_delete_name"></span>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick = deleteState()>Delete State</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="modal fade" id="environmentRestrictionModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -510,6 +697,11 @@
     var connectionToBeLabeled;
     var labelToBeEdited;
     var labelToBeDeleted;
+    var variableToBeEdited;
+    var variableToBeDeleted;
+    var variableToBeStated;
+    var stateToBeEdited;
+    var stateToBeDeleted;
     var wrapped = false;
     var orphan = false; // orphanRestriction
     var actual_modal; // 0 -> addComponent 1 -> editComponent //control the restrictions return
@@ -548,6 +740,30 @@
                     });
                 });
                 $("#connectionTable").treetable({
+                    expandable: true,
+                    initialState: "expanded",
+                    clickableNodeNames: true,
+                    indent: 30
+                });
+            }
+        });
+        $.ajax({
+            "type": 'get',
+            "url": '/components/cs/' + cs_id,
+            "dataType": "json",
+            "success": function (data) {
+                $.each(data, function (idx, obj) {
+                    if(obj.type == "Controller" || obj.type == "ControlledProcess"){
+                        $.each(obj.variables, function (idx, variable) {
+                            var id = variable.id;
+                            $("#variableTable").append("<tr data-tt-id=\"" + variable.id + "\" data-tt-parent-id=\"" + " " + "\"><td>" + variable.name + "</td><td>" + obj.name + "</td><td>" + " " + "</td><td>" + " " + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editVariableModal' onclick = editVariable(id) type='button' id=\"" + variable.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmVariableDeleteModal' onclick = loadVariableToBeDeleted(id) type='button' id=\"" + variable.id + "\"><span class='fa fa-trash'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#addStateModal' onclick = loadVariableToBeStated(id) type='button' id=\"" + variable.id + "\"><span class='fa fa-plus'></span></button></td></tr>");
+                            $.each(variable.states, function (idx, state) {
+                                $("#variableTable").append("<tr data-tt-id=\"" + state.id + "\" data-tt-parent-id=\"" + variable.id + "\"><td>" + state.name + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editStateModal' onclick = loadStateToBeEdited(this.id) type='button' id=\"" + state.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmStateDeleteModal' onclick = loadStateToBeDeleted(this.id) type='button' id=\"" + state.id + "\"><span class='fa fa-trash'></span></button></td></tr>");
+                            });
+                        });
+                    }
+                });
+                $("#variableTable").treetable({
                     expandable: true,
                     initialState: "expanded",
                     clickableNodeNames: true,
@@ -1204,6 +1420,157 @@
         $("#collapseAllConnectionsButton").attr("onclick","collapseAllConnections()");
         $("#collapseAllConnectionsButton").text("Collapse All");
         $("#connectionTable").treetable("expandAll");
+    }
+
+    function collapseAllVariables(){
+        $("#collapseAllVariablesButton").attr("onclick","expandAllVariables()");
+        $("#collapseAllVariablesButton").text("Expand All");
+        $("#variableTable").treetable("collapseAll");
+    }
+
+    function expandAllVariables(){
+        $("#collapseAllVariablesButton").attr("onclick","collapseAllVariables()");
+        $("#collapseAllVariablesButton").text("Collapse All");
+        $("#variableTable").treetable("expandAll");
+    }
+
+    function addVariable(){
+        var variable = {
+            name: $("#variable-name").val(),
+            component_id: $("#variable-component").val(),
+        }
+
+        $.ajax({
+            url: '/variables',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                location.reload();
+            },
+            data: JSON.stringify(variable)
+        });
+    }
+
+    function editVariable(id){
+
+        variableToBeEdited = id;
+        $.ajax({
+            url: '/variables/'+ id,
+            type: 'get',
+            success: function (data) {
+                $("#variable-edit-name").val(data.name);
+            },
+        });
+    }
+
+    function sendEditedVariable() {
+        var variable = {
+            name: $("#variable-edit-name").val(),
+        }
+
+        $.ajax({
+            url: '/variables/' + variableToBeEdited,
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                location.reload();
+            },
+            data: JSON.stringify(variable)
+        });
+    }
+
+    function loadVariableToBeDeleted(id){
+        variableToBeDeleted = id;
+        $.ajax({
+                url: '/variables/'+ id,
+                type: 'get',
+                success: function (data) {
+                     $("#variable_delete_name").text(data.name);
+                },
+            });
+    }
+
+    function deleteVariable(){
+        $.ajax({
+            url: '/variables/'+ variableToBeDeleted,
+            type: 'delete',
+            success: function (data) {
+                location.reload();
+            },
+        });
+    }
+
+    function loadVariableToBeStated(id){
+        variableToBeStated = id;
+    }
+
+    function addState(){
+        var state = {
+            name: $("#state-name").val(),
+            variable_id: variableToBeStated,
+        }
+
+        $.ajax({
+            url: '/states',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                location.reload();
+            },
+            data: JSON.stringify(state)
+        });
+    }
+
+    function loadStateToBeEdited(id){
+        stateToBeEdited = id;
+        $.ajax({
+            url: '/states/'+ id,
+            type: 'get',
+            success: function (data) {
+                $("#state-edit-name").val(data.name);
+            },
+        });
+    }
+
+    function sendEditedState() {
+        var state = {
+            name: $("#state-edit-name").val(),
+        }
+
+        $.ajax({
+            url: '/states/' + stateToBeEdited,
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                location.reload();
+            },
+            data: JSON.stringify(state)
+        });
+    }
+
+    function loadStateToBeDeleted(id){
+        stateToBeDeleted = id;
+        $.ajax({
+                url: '/states/'+ id,
+                type: 'get',
+                success: function (data) {
+                     $("#state_delete_name").text(data.name);
+                },
+            });
+    }
+
+    function deleteState(){
+        $.ajax({
+            url: '/states/'+ stateToBeDeleted,
+            type: 'delete',
+            success: function (data) {
+                location.reload();
+            },
+        });
     }
 
 </script>

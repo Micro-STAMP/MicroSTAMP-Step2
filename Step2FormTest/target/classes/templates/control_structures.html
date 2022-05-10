@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="ISO-8859-1">
     <title>Home</title>
@@ -11,6 +12,16 @@
 <body>
     <div align="Left" style="margin-left: 2em;">
         <h1 style="margin-top: 0.5cm;">MicroSTAMP Step 2</h1>
+        <div sec:authorize="isAuthenticated()">
+            Welcome <span sec:authentication="name">Username</span>
+            <span sec:authentication="principal.authorities">Roles</span>
+            <span id="user_id" sec:authentication="principal.UserId" hidden></span>
+
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout" />
+            </form>
+
+        </div>
         <div align="Left">
             <div>
                 <h2>Control Structures</h2>
@@ -42,7 +53,7 @@
         </div>
     </div>
 
-<div class="modal fade" id="addControlStructureModal" tabindex="-1" role="dialog" aria-labelledby="addControlStructureModalLabel" aria-hidden="true">
+<div class="modal fade" id="addControlStructureModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -67,7 +78,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editControlStructureModal" tabindex="-1" role="dialog" aria-labelledby="editControlStructureModalLabel" aria-hidden="true">
+<div class="modal fade" id="editControlStructureModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,20 +125,43 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="namelessRestrictionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Exception</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=returnNamelessRestriction()>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Exception: can't create a Control Structure without a name !
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=returnNamelessRestriction()>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
     <script type="text/javascript">
 
         var controlStructureSelected;
         var controlStructureToBeDeleted;
 
+        var actual_modal; // 0 -> addControlStructure 1 -> editControlStructure //control the restrictions return
+
         $(window).ready(function () {
+            var user_id = document.getElementById("user_id").innerText;
             $.ajax({
                 "type": 'get',
-                "url": '/controlstructures/',
+                "url": '/controlstructures/user/' + user_id,
                 "dataType": "json",
                 "success": function (data) {
                     $.each(data, function (idx, obj) {
@@ -146,20 +180,27 @@
         function addControlStructure() {
             var control_structure = {
                 name: $("#control_structure-name").val(),
+                user_id: document.getElementById("user_id").innerText,
             }
 
             $('#target').html('sending..');
 
-            $.ajax({
-                url: '/controlstructures',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (data) {
-                    location.reload();
-                },
-                data: JSON.stringify(control_structure)
-            });
+            if($("#control_structure-name").val() == ""){
+                $("#addControlStructureModal").modal("hide");
+                actual_modal = 0;
+                $("#namelessRestrictionModal").modal("show");
+            }else{
+                $.ajax({
+                    url: '/controlstructures',
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        location.reload();
+                    },
+                    data: JSON.stringify(control_structure)
+                });
+            }
         }
 
         function loadEditControlStructure(id){
@@ -180,16 +221,22 @@
 
             $('#target').html('sending..');
 
-            $.ajax({
-                url: '/controlstructures/' + controlStructureSelected,
-                type: 'put',
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (data) {
-                    location.reload();
-                },
-                data: JSON.stringify(control_structure)
-            });
+            if($("#control_structure-edit-name").val() == ""){
+                $("#editControlStructureModal").modal("hide");
+                actual_modal = 1;
+                $("#namelessRestrictionModal").modal("show");
+            }else{
+                $.ajax({
+                    url: '/controlstructures/' + controlStructureSelected,
+                    type: 'put',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        location.reload();
+                    },
+                    data: JSON.stringify(control_structure)
+                });
+            }
         }
 
         function loadControlStructureToBeDeleted(id){
@@ -211,6 +258,14 @@
                     location.reload();
                 },
             });
+        }
+
+        function returnNamelessRestriction(){
+            $("#namelessRestrictionModal").modal("hide");
+            if(actual_modal == 0)
+                $("#addControlStructureModal").modal("show");
+            else
+                $("#editControlStructureModal").modal("show");
         }
 
     </script>

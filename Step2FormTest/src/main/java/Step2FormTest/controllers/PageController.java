@@ -1,16 +1,10 @@
 package Step2FormTest.controllers;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 
 import Step2FormTest.models.*;
 import Step2FormTest.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,12 +29,16 @@ public class PageController {
     private final ImageRepository imageRepository;
 
     @Autowired
-    public PageController(ComponentRepository componentRepository, ConnectionRepository connectionRepository, ControlStructureRepository controlStructureRepository, LabelRepository labelRepository, ImageRepository imageRepository) {
+    private final VariableRepository variableRepository;
+
+    @Autowired
+    public PageController(ComponentRepository componentRepository, ConnectionRepository connectionRepository, ControlStructureRepository controlStructureRepository, LabelRepository labelRepository, ImageRepository imageRepository, VariableRepository variableRepository) {
         this.componentRepository = componentRepository;
         this.connectionRepository = connectionRepository;
         this.controlStructureRepository = controlStructureRepository;
         this.labelRepository = labelRepository;
         this.imageRepository = imageRepository;
+        this.variableRepository = variableRepository;
     }
 
     @GetMapping("/{controlStructureId}")
@@ -53,6 +51,7 @@ public class PageController {
         model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
         model.addAttribute("process_input",ConnectionType.getProcessInputDisturbance());
         model.addAttribute("process_output",ConnectionType.getProcessOutput());
+        model.addAttribute("variables", variableRepository.findVariablesByControlStructureId(controlStructureId));
 
         model.addAttribute("images",imageRepository.findImagesByControlStructureId(controlStructureId));
 
@@ -91,6 +90,47 @@ public class PageController {
     @GetMapping("/403")
     public String error403(){
         return "403";
+    }
+
+    @GetMapping("/guests")
+    public String guests(Model model){
+        model.addAttribute("controlStructures", controlStructureRepository.findControlStructuresForGuests());
+        return "guests";
+    }
+
+    @GetMapping("/guests/{controlStructureId}")
+    public String indexPageGuest(@PathVariable Long controlStructureId, Model model) {
+
+        List<Component> components = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        model.addAttribute("components", components);
+        model.addAttribute("connections", connectionRepository.findConnectionsByControlStructureId(controlStructureId));
+        model.addAttribute("control_structure_id", controlStructureId);
+        model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
+        model.addAttribute("process_input",ConnectionType.getProcessInputDisturbance());
+        model.addAttribute("process_output",ConnectionType.getProcessOutput());
+        model.addAttribute("variables", variableRepository.findVariablesByControlStructureId(controlStructureId));
+
+        model.addAttribute("images",imageRepository.findImagesByControlStructureId(controlStructureId));
+
+        model.addAttribute("style", Style.loadStyles());
+
+        List<Component> componentsWithoutEnvironment = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        if(!componentsWithoutEnvironment.isEmpty())
+            componentsWithoutEnvironment.remove(0);
+        model.addAttribute("componentsWithoutEnvironment",componentsWithoutEnvironment);
+
+        List<Component> controllersControlledProcess = new ArrayList<>();
+        for(Component c : components){
+            System.out.println(c.getName() + "\n\n");
+            System.out.println(c.getType() + "\n\n");
+            if (c.getType().equals("Controller")|| c.getType().equals("ControlledProcess")){
+                controllersControlledProcess.add(c);
+                System.out.println("Add " + c.getName() + "\n\n");
+            }
+        }
+        model.addAttribute("controllersControlledProcess", controllersControlledProcess);
+
+        return "guestsIndex";
     }
 
 }

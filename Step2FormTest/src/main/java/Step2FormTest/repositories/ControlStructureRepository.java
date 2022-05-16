@@ -13,4 +13,7 @@ public interface ControlStructureRepository extends JpaRepository<ControlStructu
 
     @Query(value = "SELECT * FROM control_structure c WHERE c.user_id = ?1", nativeQuery = true)
     List<ControlStructure> findControlStructuresByUserId(long id);
+
+    @Query(value = "SELECT * FROM control_structure c WHERE c.user_id = 3", nativeQuery = true)
+    List<ControlStructure> findControlStructuresForGuests();
 }

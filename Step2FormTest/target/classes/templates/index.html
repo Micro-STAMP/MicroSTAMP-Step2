@@ -67,7 +67,7 @@
             <div class="container" style="margin-left: 2%;">
                 <h2 style="display : inline-block;">Variables</h2>
                 <button id="collapseAllVariablesButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=collapseAllVariables()>Collapse All</button>
-                <div th:switch="${components.size}">
+                <div th:switch="${variables.size}">
                     <h5 th:case='0'>No variables yet!</h5>
                     <div th:case="*">
                         <div class="row">
@@ -114,10 +114,6 @@
                 <button type="button" class="btn btn-primary" onclick=uploadImage()>Upload Image</button>
 
                 <input type="file" name="image" accept="image/png, image/jpeg" id="image"/>
-
-                <a style="float: right;">
-                    <input type="button" class="btn btn-secondary" value="Save" onclick="location.href='http://localhost:8000/insulin-pump-with-continuous-glucose-monitor-project/stepthree';"/>
-                </a>
 
             </div>
 

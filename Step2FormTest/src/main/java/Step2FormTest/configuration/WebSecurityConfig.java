@@ -42,9 +42,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       /* http.authorizeRequests()
-                //.antMatchers("/controlstructures/**").hasAuthority("ADMIN")
+        http.authorizeRequests()
+                //.antMatchers("/controlstructures/**").hasAnyAuthority("USER","ADMIN")
                 //.antMatchers("/components/**").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/guests/**").permitAll()
+                .antMatchers("/cs-images/**").permitAll()
+                .antMatchers("/guests-request/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
@@ -53,14 +56,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 ;
-        */
-        http.authorizeRequests().antMatchers("/").permitAll();
+
+        //http.authorizeRequests().antMatchers("/").permitAll();
 
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
+      /*  web.ignoring()
                 .antMatchers("/controlstructures/**",
                         "/components/**",
                         "/actuators/**",
@@ -71,7 +74,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/images/**",
                         "/labels/**",
                         "/variables/**",
-                        "/states/**")
-                .antMatchers(HttpMethod.OPTIONS, "/**");
+                        "/states/**",
+                        "/guests/**")*/
+            web.ignoring()
+                    .antMatchers("/guests/**","/static/**","/webjars/**","/assets/**", "/guests-request/**")
+                    .antMatchers("/controlstructures/**", "/components/**", "/actuators/**", "/sensors/**", "/controllers/**","/controlledProcesses/**","/connections/**","/images/**","/labels/**")
+                    .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

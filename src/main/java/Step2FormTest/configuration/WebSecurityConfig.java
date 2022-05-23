@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/guests/**")*/
             web.ignoring()
                     .antMatchers("/guests/**","/static/**","/webjars/**","/assets/**", "/guests-request/**")
-                    .antMatchers("/controlstructures/**", "/components/**", "/actuators/**", "/sensors/**", "/controllers/**","/controlledProcesses/**","/connections/**","/images/**","/labels/**", "/variables/**", "/states/**")
+                    .antMatchers("/controlstructures/**", "/components/**", "/actuators/**", "/sensors/**", "/controllers/**","/controlledProcesses/**","/connections/**","/images/**","/labels/**", "/variables/**", "/states/**", "/responsibilities/**")
                     .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

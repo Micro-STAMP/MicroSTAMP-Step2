@@ -1,11 +1,7 @@
 package Step2FormTest.controllers;
 
-
 import Step2FormTest.domain.ControllerDomain;
-import Step2FormTest.models.Actuator;
-import Step2FormTest.models.Component;
-import Step2FormTest.models.ControlStructure;
-import Step2FormTest.models.Controller;
+import Step2FormTest.models.*;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
 import Step2FormTest.repositories.ControllerRepository;

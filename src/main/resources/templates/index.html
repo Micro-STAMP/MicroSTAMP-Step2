@@ -111,9 +111,15 @@
 
             <div align="Left">
 
-                <button type="button" class="btn btn-primary" onclick=uploadImage()>Upload Image</button>
+                <label class="btn btn-primary">
+                    <button type="button" style="display:none;" onclick=uploadImage()></button>
+                    Upload Image
+                </label>
 
-                <input type="file" name="image" accept="image/png, image/jpeg" id="image"/>
+                <label class="btn btn-secondary">
+                    <input type="file" name="image" style="display:none;" accept="image/png, image/jpeg" id="image"/>
+                    Choose File
+                </label>
 
             </div>
 
@@ -618,7 +624,7 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
 
 <div class="modal fade" id="environmentRestrictionModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -677,6 +683,79 @@
     </div>
 </div>
 
+<div class="modal fade" id="addResponsibilityModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Responsibility</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="responsibility-name" class="col-form-label">Responsibility:</label>
+                        <input type="text" class="form-control" id="responsibility-name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick=addResponsibility()>Add Responsibility</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editResponsibilityModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Responsibility</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="responsibility-edit-name" class="col-form-label">Responsibility:</label>
+                        <input type="text" class="form-control" id="responsibility-edit-name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick=sendEditedResponsibility()>Edit Responsibility</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmResponsibilityDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Responsibility</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the following Responsibility ?
+                <br/><br/>
+                <span id="responsibility_delete_name"></span>
+                <br/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick = deleteResponsibility()>Delete Responsibility</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 
@@ -698,6 +777,9 @@
     var variableToBeStated;
     var stateToBeEdited;
     var stateToBeDeleted;
+    var componentToResponsibility;
+    var responsibilityToBeEdited;
+    var responsibilityToBeDeleted;
     var wrapped = false;
     var orphan = false; // orphanRestriction
     var actual_modal; // 0 -> addComponent 1 -> editComponent //control the restrictions return
@@ -712,8 +794,19 @@
                 var backup = data;
                 $.each(data, function (idx, obj) {
                     if(obj.father == null && obj.name != "Environment"){
-                        $("#treeTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father + "\"><td>" + obj.name + "</td><td>" + obj.border + "</td><td>" + obj.isVisible + "</td><td>" + obj.type + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editComponentModal' onclick = editComponent(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmComponentDeleteModal' onclick = loadComponentsAndConnectionsToBeDeleted(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-trash'></span></button></td></tr>");
-                        addChildren(obj.id,backup);
+                        if(obj.type == "Controller" || obj.type == "ControlledProcess"){
+                            $("#treeTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father + "\"><td>" + obj.name + "</td><td>" + obj.border + "</td><td>" + obj.isVisible + "</td><td>" + obj.type + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editComponentModal' onclick = editComponent(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmComponentDeleteModal' onclick = loadComponentsAndConnectionsToBeDeleted(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-trash'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#addResponsibilityModal' onclick = loadComponentToResponsibility(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-plus'></span></button></td></tr>");
+                            if(obj.responsibilities.length > 0){
+                                $("#treeTable").append("<tr data-tt-id=\"" + obj.id +"-r" + "\" data-tt-parent-id=\"" + obj.id + "\"><td>" + "Responsibilities" + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td></tr>");
+                                $.each(obj.responsibilities, function (idx, responsibility) {
+                                    $("#treeTable").append("<tr data-tt-id=\"" + responsibility.id + "\" data-tt-parent-id=\"" + obj.id + "-r" + "\"><td>" + responsibility.responsibility + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editResponsibilityModal' onclick = loadResponsibilityToBeEdited(this.id) type='button' id=\"" + responsibility.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmResponsibilityDeleteModal' onclick = loadResponsibilityToBeDeleted(this.id) type='button' id=\"" + responsibility.id + "\"><span class='fa fa-trash'></span></button></td></tr>");
+                                });
+                            }
+                            addChildren(obj.id,backup);
+                        }else{
+                            $("#treeTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father + "\"><td>" + obj.name + "</td><td>" + obj.border + "</td><td>" + obj.isVisible + "</td><td>" + obj.type + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editComponentModal' onclick = editComponent(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmComponentDeleteModal' onclick = loadComponentsAndConnectionsToBeDeleted(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-trash'></span></button></td></tr>");
+                            addChildren(obj.id,backup);
+                        }
                     }
                 });
                 $("#treeTable").treetable({
@@ -918,8 +1011,19 @@
        $.each(backup, function (idx, obj) {
             if(obj.father != null){
                 if(obj.father.id == id){
-                    $("#treeTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father.id + "\"><td>" + obj.name + "</td><td>" + obj.border + "</td><td>" + obj.isVisible + "</td><td>" + obj.type + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editComponentModal' onclick = editComponent(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmComponentDeleteModal' onclick = loadComponentsAndConnectionsToBeDeleted(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-trash'></span></button></td></tr>");
-                    addChildren(obj.id,backup);
+                    if(obj.type == "Controller" || obj.type == "ControlledProcess"){
+                        $("#treeTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father.id + "\"><td>" + obj.name + "</td><td>" + obj.border + "</td><td>" + obj.isVisible + "</td><td>" + obj.type + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editComponentModal' onclick = editComponent(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmComponentDeleteModal' onclick = loadComponentsAndConnectionsToBeDeleted(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-trash'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#addResponsibilityModal' onclick = loadComponentToResponsibility(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-plus'></span></button></td></tr>");
+                        if(obj.responsibilities.length > 0){
+                                $("#treeTable").append("<tr data-tt-id=\"" + obj.id +"-r" + "\" data-tt-parent-id=\"" + obj.id + "\"><td>" + "Responsibilities" + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td></tr>");
+                                $.each(obj.responsibilities, function (idx, responsibility) {
+                                    $("#treeTable").append("<tr data-tt-id=\"" + responsibility.id + "\" data-tt-parent-id=\"" + obj.id + "-r" + "\"><td>" + responsibility.responsibility + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editResponsibilityModal' onclick = loadResponsibilityToBeEdited(this.id) type='button' id=\"" + responsibility.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmResponsibilityDeleteModal' onclick = loadResponsibilityToBeDeleted(this.id) type='button' id=\"" + responsibility.id + "\"><span class='fa fa-trash'></span></button></td></tr>");
+                                });
+                            }
+                        addChildren(obj.id,backup);
+                    }else{
+                        $("#treeTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father.id + "\"><td>" + obj.name + "</td><td>" + obj.border + "</td><td>" + obj.isVisible + "</td><td>" + obj.type + "</td><td><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#editComponentModal' onclick = editComponent(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-pencil' aria-hidden='true'></span></button><button style='cursor: pointer; border-radius: 5px;' data-toggle='modal' data-target='#confirmComponentDeleteModal' onclick = loadComponentsAndConnectionsToBeDeleted(this.id) type='button' id=\"" + obj.id + "\"><span class='fa fa-trash'></span></button></td></tr>");
+                        addChildren(obj.id,backup);
+                    }
                 }
             }
        });
@@ -1562,6 +1666,77 @@
     function deleteState(){
         $.ajax({
             url: '/states/'+ stateToBeDeleted,
+            type: 'delete',
+            success: function (data) {
+                location.reload();
+            },
+        });
+    }
+
+    function loadComponentToResponsibility(id){
+        componentToResponsibility = id;
+    }
+
+    function addResponsibility(){
+        var responsibility = {
+            responsibility: $("#responsibility-name").val(),
+            component_id: componentToResponsibility,
+        }
+
+        $.ajax({
+            url: '/responsibilities',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                location.reload();
+            },
+            data: JSON.stringify(responsibility)
+        });
+    }
+
+    function loadResponsibilityToBeEdited(id){
+        responsibilityToBeEdited = id;
+        $.ajax({
+            url: '/responsibilities/'+ id,
+            type: 'get',
+            success: function (data) {
+                $("#responsibility-edit-name").val(data.responsibility);
+            },
+        });
+    }
+
+    function sendEditedResponsibility() {
+        var responsibility = {
+            responsibility: $("#responsibility-edit-name").val(),
+        }
+
+        $.ajax({
+            url: '/responsibilities/' + responsibilityToBeEdited,
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                location.reload();
+            },
+            data: JSON.stringify(responsibility)
+        });
+    }
+
+    function loadResponsibilityToBeDeleted(id){
+        responsibilityToBeDeleted = id;
+        $.ajax({
+                url: '/responsibilities/'+ id,
+                type: 'get',
+                success: function (data) {
+                     $("#responsibility_delete_name").text(data.responsibility);
+                },
+            });
+    }
+
+    function deleteResponsibility(){
+        $.ajax({
+            url: '/responsibilities/'+ responsibilityToBeDeleted,
             type: 'delete',
             success: function (data) {
                 location.reload();

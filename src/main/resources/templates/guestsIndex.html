@@ -16,7 +16,7 @@
         <div align="Left">
             <div class="container" style="margin-left: 2%;">
                 <h2 style="display : inline-block;">Components</h2>
-                <button id="collapseAllComponentsButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=collapseAllComponents()>Collapse All</button>
+                <button id="collapseAllComponentsButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=expandAllComponents()>Expand All</button>
                 <div th:switch="${components.size}">
                     <h5 th:case='1'>No components yet!</h5>
                     <div th:case="*">
@@ -40,7 +40,7 @@
             <br/>
             <div class="container" style="margin-left: 2%;">
                 <h2 style="display : inline-block;">Connections</h2>
-                <button id="collapseAllConnectionsButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=collapseAllConnections()>Collapse All</button>
+                <button id="collapseAllConnectionsButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=expandAllConnections()>Expand All</button>
                 <div th:switch="${connections.size}">
                     <h5 th:case='0'>No connections yet!</h5>
                     <div th:case="*">
@@ -64,7 +64,7 @@
 
             <div class="container" style="margin-left: 2%;">
                 <h2 style="display : inline-block;">Variables</h2>
-                <button id="collapseAllVariablesButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=collapseAllVariables()>Collapse All</button>
+                <button id="collapseAllVariablesButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=expandAllVariables()>Expand All</button>
                 <div th:switch="${variables.size}">
                     <h5 th:case='0'>No variables yet!</h5>
                     <div th:case="*">
@@ -131,7 +131,7 @@
                 });
                 $("#treeTable").treetable({
                     expandable: true,
-                    initialState: "expanded",
+                    initialState: "collapsed",
                     clickableNodeNames: true,
                     indent: 30
                 });
@@ -145,12 +145,12 @@
                 $.each(data, function (idx, obj) {
                     $("#connectionTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father + "\"><td>" + obj.sourceName + "</td><td>" + obj.targetName + "</td><td>" + obj.connectionType + "</td><td>" + obj.style + "</td></tr>");
                     $.each(obj.labels, function (idx, label) {
-                        $("#connectionTable").append("<tr data-tt-id=\"" + label.id + "\" data-tt-parent-id=\"" + obj.id + "\"><td>" + label.label + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + "LABEL" + "</td></tr>");
+                        $("#connectionTable").append("<tr data-tt-id=\"" + obj.id + "-l-" + label.id + "\" data-tt-parent-id=\"" + obj.id + "\"><td>" + label.label + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + "LABEL" + "</td></tr>");
                     });
                 });
                 $("#connectionTable").treetable({
                     expandable: true,
-                    initialState: "expanded",
+                    initialState: "collapsed",
                     clickableNodeNames: true,
                     indent: 30
                 });
@@ -167,14 +167,14 @@
                             var id = variable.id;
                             $("#variableTable").append("<tr data-tt-id=\"" + variable.id + "\" data-tt-parent-id=\"" + " " + "\"><td>" + variable.name + "</td><td>" + obj.name + "</td><td>" + " " + "</td><td>" + " " + "</td></tr>");
                             $.each(variable.states, function (idx, state) {
-                                $("#variableTable").append("<tr data-tt-id=\"" + state.id + "\" data-tt-parent-id=\"" + variable.id + "\"><td>" + state.name + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td></tr>");
+                                $("#variableTable").append("<tr data-tt-id=\"" + variable.id + "-s-" + state.id + "\" data-tt-parent-id=\"" + variable.id + "\"><td>" + state.name + "</td><td>" + " " + "</td><td>" + " " + "</td><td>" + " " + "</td></tr>");
                             });
                         });
                     }
                 });
                 $("#variableTable").treetable({
                     expandable: true,
-                    initialState: "expanded",
+                    initialState: "collapsed",
                     clickableNodeNames: true,
                     indent: 30
                 });

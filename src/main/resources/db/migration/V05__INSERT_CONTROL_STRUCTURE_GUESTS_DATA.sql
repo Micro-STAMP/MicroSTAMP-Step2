@@ -23,4 +23,7 @@ INSERT INTO control_structure (id, name, user_id)
 VALUES(8, "B.8: Control structure for example autonomous space vehicle operations", 3);
 
 INSERT INTO control_structure (id, name, user_id)
-VALUES(9, "G-2. New General Causal Control Model for STPA Causal Analysis Scenario Generation", 3);
+VALUES(9, "G.1: Previous General Model to Assist in Generating Causal Scenarios", 3);
+
+INSERT INTO control_structure (id, name, user_id)
+VALUES(10, "G.2: New General Causal Control Model for STPA Causal Analysis Scenario Generation", 3);

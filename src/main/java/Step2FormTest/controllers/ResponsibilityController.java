@@ -43,6 +43,7 @@ public class ResponsibilityController {
     public Responsibility create(@RequestBody ResponsibilityDomain responsibilityDomain){
         Responsibility responsibility = new Responsibility();
         responsibility.setResponsibility(responsibilityDomain.getResponsibility());
+        responsibility.setSystemSafetyConstraintAssociated(responsibilityDomain.getSystemSafetyConstraintAssociated());
 
         Optional<Component> c = componentRepository.findById(responsibilityDomain.getComponent_id());
 
@@ -62,6 +63,7 @@ public class ResponsibilityController {
         return responsibilitiesRepository.findById(id)
                 .map(record -> {
                     record.setResponsibility(responsibilityDomain.getResponsibility());
+                    record.setSystemSafetyConstraintAssociated(responsibilityDomain.getSystemSafetyConstraintAssociated());
                     Responsibility updated = responsibilitiesRepository.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());

@@ -14,11 +14,18 @@ public class Responsibility {
 
     private String responsibility;
 
+    private String systemSafetyConstraintAssociated;
+
     public Responsibility() {
     }
 
     public Responsibility(String responsibility) {
         this.responsibility = responsibility;
+    }
+
+    public Responsibility(String responsibility, String systemSafetyConstraintAssociated) {
+        this.responsibility = responsibility;
+        this.systemSafetyConstraintAssociated = systemSafetyConstraintAssociated;
     }
 
     public Long getId() {
@@ -35,5 +42,13 @@ public class Responsibility {
 
     public void setResponsibility(String responsibility) {
         this.responsibility = responsibility;
+    }
+
+    public String getSystemSafetyConstraintAssociated() {
+        return systemSafetyConstraintAssociated;
+    }
+
+    public void setSystemSafetyConstraintAssociated(String systemSafetyConstraintAssociated) {
+        this.systemSafetyConstraintAssociated = systemSafetyConstraintAssociated;
     }
 }

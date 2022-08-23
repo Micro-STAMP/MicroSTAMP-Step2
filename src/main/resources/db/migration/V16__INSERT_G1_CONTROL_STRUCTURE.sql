@@ -43,5 +43,5 @@ INSERT INTO `label` VALUES (281,"Received Control Action(Delayed, etc.)",176);
 INSERT INTO `label` VALUES (282,"Provided Feedback(Incorrect, no information provided, measurement inaccuracies, delays)",177);
 INSERT INTO `label` VALUES (283,"Conflicting control actions",178);
 INSERT INTO `label` VALUES (284,"Process input missing or wrong",179);
-INSERT INTO `label` VALUES (285,"Process output contributes to system hazards",181);
+INSERT INTO `label` VALUES (285,"Process output contributes to system hazard",181);
 INSERT INTO `label` VALUES (286,"Unidentified or out-of-range disturbance",180);

@@ -27,9 +27,10 @@ INSERT INTO `connection` VALUES (175,1,1,102,98,9);
 INSERT INTO `connection` VALUES (176,0,1,101,104,9);
 INSERT INTO `connection` VALUES (177,1,1,104,102,9);
 INSERT INTO `connection` VALUES (178,0,1,103,104,9);
+
 INSERT INTO `connection` VALUES (179,3,1,9,104,9);
-INSERT INTO `connection` VALUES (180,4,1,9,104,9);
-INSERT INTO `connection` VALUES (181,5,1,104,9,9);
+INSERT INTO `connection` VALUES (180,5,1,9,104,9);
+INSERT INTO `connection` VALUES (181,4,1,104,9,9);
 
 INSERT INTO `image` VALUES (9,'G1.png',9);
 
@@ -42,5 +43,5 @@ INSERT INTO `label` VALUES (281,"Received Control Action(Delayed, etc.)",176);
 INSERT INTO `label` VALUES (282,"Provided Feedback(Incorrect, no information provided, measurement inaccuracies, delays)",177);
 INSERT INTO `label` VALUES (283,"Conflicting control actions",178);
 INSERT INTO `label` VALUES (284,"Process input missing or wrong",179);
-INSERT INTO `label` VALUES (285,"Unidentified or out-of-range disturbance",180);
-INSERT INTO `label` VALUES (286,"Process output contributes to system hazards",181);
+INSERT INTO `label` VALUES (285,"Process output contributes to system hazards",181);
+INSERT INTO `label` VALUES (286,"Unidentified or out-of-range disturbance",180);

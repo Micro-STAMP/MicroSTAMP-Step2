@@ -133,9 +133,8 @@ INSERT INTO `connection` VALUES (165,0,1,86,85,5);
 INSERT INTO `connection` VALUES (166,2,0,85,86,5);
 INSERT INTO `connection` VALUES (167,0,1,80,83,5);
 INSERT INTO `connection` VALUES (168,2,0,83,80,5);
-
 INSERT INTO `connection` VALUES (169,1,1,81,82,5);
-INSERT INTO `connection` VALUES (170,3,2,82,81,5);
+INSERT INTO `connection` VALUES (170,2,0,82,81,5);
 
 INSERT INTO `image` VALUES (8,'B5.png',5);
 

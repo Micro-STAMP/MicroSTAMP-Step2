@@ -19,3 +19,5 @@ mvn spring-boot:run
 The application will start by default in localhost:8090.
 
 The project has swagger support, available at: localhost:8090/swagger-ui/index.html
+
+There is a route for guests without authentication with some models for visualization: localhost:8090/guests

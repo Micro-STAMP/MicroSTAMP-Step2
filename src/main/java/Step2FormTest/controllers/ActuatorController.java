@@ -6,6 +6,7 @@ import Step2FormTest.models.Component;
 import Step2FormTest.models.ControlStructure;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actuators")
+@Tag(name = "Actuator")
 public class ActuatorController {
 
     @Autowired

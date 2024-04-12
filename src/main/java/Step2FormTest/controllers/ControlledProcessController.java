@@ -9,6 +9,7 @@ import Step2FormTest.models.Controller;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
 import Step2FormTest.repositories.ControlledProcessRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/controlledProcesses")
+@Tag(name = "ControlledProcess")
 public class ControlledProcessController {
 
     @Autowired

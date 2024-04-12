@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <body>
-    <div class="container" align="Left" style="margin-left: 2em;">
+    <div class="container" align="Left" style="margin-left: 2em; color:black;">
         <h1 style="margin-top: 0.5cm;">MicroSTAMP Step 2</h1>
         <br/>
         <div align="Left">
@@ -20,7 +20,7 @@
                 <div th:switch="${components.size}">
                     <h5 th:case='1'>No components yet!</h5>
                     <div th:case="*">
-                        <div class="row">
+                        <div class="row" style="margin-top: -3%;">
                             <div class="col mt-5">
                                 <table id="treeTable" class="table">
                                     <thead>
@@ -44,7 +44,7 @@
                 <div th:switch="${connections.size}">
                     <h5 th:case='0'>No connections yet!</h5>
                     <div th:case="*">
-                        <div class="row">
+                        <div class="row" style="margin-top: -3%;">
                             <div class="col mt-5">
                                 <table id="connectionTable" class="table">
                                     <thead>
@@ -68,7 +68,7 @@
                 <div th:switch="${variables.size}">
                     <h5 th:case='0'>No variables yet!</h5>
                     <div th:case="*">
-                        <div class="row">
+                        <div class="row" style="margin-top: -3%;">
                             <div class="col mt-5">
                                 <table id="variableTable" class="table">
                                     <thead>

@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/guests/**").permitAll()
                 .antMatchers("/cs-images/**").permitAll()
                 .antMatchers("/guests-request/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <body>
-    <div align="Left" style="margin-left: 2em;">
+    <div align="Left" style="margin-left: 2em; color:black;">
         <h1 style="margin-top: 0.5cm;">MicroSTAMP Step 2</h1>
         <div sec:authorize="isAuthenticated()">
             Welcome <span sec:authentication="name">Username</span>
@@ -22,10 +22,10 @@
             </form>
 
         </div>
-        <div align="Left">
+        <div align="Left" style="margin-top:2%">
             <div>
                 <h2>Control Structures</h2>
-                <div class="container" style="margin-left: 2%;">
+                <div class="container" style="margin-left: 2%; margin-top: -3%;">
                     <div th:switch="${controlStructures.size}">
                         <h5 th:case='0'>No control structures yet!</h5>
                         <div th:case="*">
@@ -47,9 +47,10 @@
             </div>
             <div>
                 <br/>
-                <br/>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addControlStructureModal" >Add Control Structure</button>
+                <br/>
             </div>
+            <br/>
         </div>
     </div>
 

@@ -4,6 +4,7 @@ import Step2FormTest.domain.LabelDomain;
 import Step2FormTest.models.*;
 import Step2FormTest.repositories.ConnectionRepository;
 import Step2FormTest.repositories.LabelRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/labels")
+@Tag(name = "Label")
 public class LabelController {
 
     @Autowired

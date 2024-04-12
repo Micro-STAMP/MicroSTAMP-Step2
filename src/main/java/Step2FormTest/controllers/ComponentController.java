@@ -4,6 +4,7 @@ import Step2FormTest.models.Component;
 import Step2FormTest.models.Connection;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ConnectionRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/components")
+@Tag(name = "Component")
 public class ComponentController {
 
     @Autowired

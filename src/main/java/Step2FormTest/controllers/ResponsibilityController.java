@@ -4,6 +4,7 @@ import Step2FormTest.domain.ResponsibilityDomain;
 import Step2FormTest.models.*;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ResponsibilitiesRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/responsibilities")
+@Tag(name = "Responsibility")
 public class ResponsibilityController {
 
     @Autowired

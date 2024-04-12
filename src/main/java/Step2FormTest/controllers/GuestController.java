@@ -4,6 +4,7 @@ package Step2FormTest.controllers;
 import Step2FormTest.repositories.ComponentRepository;
 import Step2FormTest.repositories.ConnectionRepository;
 import Step2FormTest.repositories.ControlStructureRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/guests-request")
+@Tag(name = "Guest")
 public class GuestController {
 
     @Autowired

@@ -52,7 +52,6 @@ public class ControlStructureController {
         return controlStructureRepository.findAll();
     }
 
-    //get cs by user id
     @GetMapping(path = {"user/{id}"})
     public List findByUserId(@PathVariable long id){
         return controlStructureRepository.findControlStructuresByUserId(id);
@@ -75,7 +74,6 @@ public class ControlStructureController {
         user.get().getControlStructures().add(controlStructure);
         userRepository.save(user.get());
 
-        //controlStructureRepository.save(controlStructure);
         return controlStructure;
     }
 

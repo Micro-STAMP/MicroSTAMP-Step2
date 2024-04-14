@@ -47,7 +47,6 @@ public class ConnectionController {
         return connectionRepository.findAll();
     }
 
-    //get Connection by CS id
     @GetMapping(path = {"cs/{id}"})
     public List findByControlStructureId(@PathVariable long id){
         return connectionRepository.findConnectionsByControlStructureId(id);
@@ -71,7 +70,6 @@ public class ConnectionController {
         Optional<Component> target = componentRepository.findById(connectionDomain.getTarget_id());
         connection.setTarget(target.get());
 
-        //connection.setLabels();
         connection.setStyle(connectionDomain.getStyle());
         Optional<ControlStructure> c1 = controlStructureRepository.findById(connectionDomain.getControl_structure_id());
         c1.get().getConnections().add(connection);

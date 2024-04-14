@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repositories -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>Step2FormTest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Step2FormTest</name>
-	<description>teste formulario step 2</description>
+	<artifactId>MicroSTAMP-Step2</artifactId>
+	<version>1.0.0</version>
+	<name>MicroSTAMP-Step2</name>
+	<description>MicroSTAMP Step 2</description>
 	<properties>
 		<java.version>1.8</java.version>
 		<bootstrap.version>4.0.0-2</bootstrap.version>

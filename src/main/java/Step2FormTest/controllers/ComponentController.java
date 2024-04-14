@@ -34,7 +34,6 @@ public class ComponentController {
         return componentRepository.findAll();
     }
 
-    //get Component by CS id
     @GetMapping(path = {"cs/{id}"})
     public List findByControlStructureId(@PathVariable long id){
         return componentRepository.findComponentsByControlStructureId(id);

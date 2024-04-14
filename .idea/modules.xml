@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Microstamp.iml" filepath="$PROJECT_DIR$/.idea/Microstamp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Step2FormTest/Step2FormTest.iml" filepath="$PROJECT_DIR$/Step2FormTest/Step2FormTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MicroStamp.iml" filepath="$PROJECT_DIR$/.idea/MicroStamp.iml" />
     </modules>
   </component>
 </project>

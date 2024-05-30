@@ -1,7 +1,6 @@
 package microstamp.step2.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public enum ConnectionType {
@@ -23,14 +22,14 @@ public enum ConnectionType {
         return listReturn;
     }
 
-    public static List<String> getProcessInputDisturbance(){
+    public static List<String> getProcessInputDisturbance() {
         List<String> listReturn = new ArrayList<String>();
         listReturn.add(ConnectionType.PROCESS_INPUT.name());
         listReturn.add(ConnectionType.DISTURBANCE.name());
         return listReturn;
     }
 
-    public static String getProcessOutput(){
+    public static String getProcessOutput() {
         return ConnectionType.PROCESS_OUTPUT.name();
     }
 

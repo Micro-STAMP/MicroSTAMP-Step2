@@ -30,20 +30,20 @@ public class ConnectionService {
     @Autowired
     private ControlStructureRepository controlStructureRepository;
 
-    public List<Connection> findAll(){
+    public List<Connection> findAll() {
         return connectionRepository.findAll();
     }
 
-    public Connection findById(long id){
+    public Connection findById(long id) {
         return connectionRepository.findById(id)
                 .orElseThrow();
     }
 
-    public List<Connection> findByControlStructureId(long id){
+    public List<Connection> findByControlStructureId(long id) {
         return connectionRepository.findConnectionsByControlStructureId(id);
     }
 
-    public Connection create(ConnectionDto connectionDto){
+    public Connection create(ConnectionDto connectionDto) {
         Connection connection = new Connection();
         connection.setConnectionType(connectionDto.getConnectionType());
 
@@ -60,7 +60,7 @@ public class ConnectionService {
         return connection;
     }
 
-    public void update(long id, ConnectionDto connectionDto){
+    public void update(long id, ConnectionDto connectionDto) {
         connectionRepository.findById(id)
                 .map(record -> {
                     record.setConnectionType(connectionDto.getConnectionType());
@@ -72,7 +72,7 @@ public class ConnectionService {
                 }).orElseThrow();
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         List<Label> labels = labelRepository.findLabelsByConnectionId(id);
         labels.forEach(label -> labelRepository.deleteById(label.getId()));
 
@@ -83,7 +83,7 @@ public class ConnectionService {
                 }).orElseThrow();
     }
 
-    public List<Label> findLabelsByConnectionId(long id){
+    public List<Label> findLabelsByConnectionId(long id) {
         return labelRepository.findLabelsByConnectionId(id);
     }
 }

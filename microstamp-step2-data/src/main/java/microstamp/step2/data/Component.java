@@ -21,14 +21,14 @@ public abstract class Component {
     private Boolean isControlStructure;
 
     @ManyToOne
-    @JoinColumn(name="father_id")
+    @JoinColumn(name = "father_id")
     private Component father;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "component_id")
     private List<Variable> variables = new ArrayList<>();
 
-    public String getType(){
+    public String getType() {
         String s = this.getClass().getName();
         String[] split = s.split("models.");
         return split[split.length - 1];

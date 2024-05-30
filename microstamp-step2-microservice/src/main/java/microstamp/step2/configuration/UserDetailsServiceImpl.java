@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class UserDetailsServiceImpl implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(s);
 
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("Could not find user!");
         }
 

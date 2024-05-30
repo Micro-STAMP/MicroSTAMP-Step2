@@ -21,16 +21,16 @@ public class LabelService {
     @Autowired
     private ConnectionRepository connectionRepository;
 
-    public List<Label> findAll(){
+    public List<Label> findAll() {
         return labelRepository.findAll();
     }
 
-    public Label findById(long id){
+    public Label findById(long id) {
         return labelRepository.findById(id)
                 .orElseThrow();
     }
 
-    public Label create(LabelDto labelDto){
+    public Label create(LabelDto labelDto) {
         Label label = new Label();
         label.setLabel(labelDto.getLabel());
 
@@ -40,7 +40,7 @@ public class LabelService {
         return label;
     }
 
-    public void update(long id, LabelDto labelDto){
+    public void update(long id, LabelDto labelDto) {
         labelRepository.findById(id)
                 .map(record -> {
                     record.setLabel(labelDto.getLabel());
@@ -49,7 +49,7 @@ public class LabelService {
                 }).orElseThrow();
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         labelRepository.findById(id)
                 .map(record -> {
                     labelRepository.deleteById(id);

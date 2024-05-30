@@ -1,20 +1,15 @@
 package microstamp.step2.controller;
 
-import microstamp.step2.dto.ActuatorDto;
-import microstamp.step2.data.Actuator;
-import microstamp.step2.data.Component;
-import microstamp.step2.data.ControlStructure;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import microstamp.step2.data.Actuator;
+import microstamp.step2.dto.ActuatorDto;
 import microstamp.step2.service.ActuatorService;
-import microstamp.step2.service.ComponentService;
-import microstamp.step2.service.ControlStructureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/actuators")
@@ -25,33 +20,33 @@ public class ActuatorController {
     private ActuatorService actuatorService;
 
     @GetMapping
-    public List findAll(){
+    public List findAll() {
         return actuatorService.findAll();
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id){
+    public ResponseEntity findById(@PathVariable long id) {
         return new ResponseEntity<>(actuatorService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"cs/{id}"})
-    public List findByControlStructureId(@PathVariable long id){
+    public List findByControlStructureId(@PathVariable long id) {
         return actuatorService.findByControlStructureId(id);
     }
 
     @PostMapping
-    public Actuator create(@RequestBody ActuatorDto actuatorDto){
+    public Actuator create(@RequestBody ActuatorDto actuatorDto) {
         return actuatorService.create(actuatorDto);
     }
 
-    @PutMapping(value="/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ActuatorDto actuatorDto) {
         actuatorService.update(id, actuatorDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping(path ={"/{id}"})
-    public ResponseEntity <?> delete(@PathVariable long id) {
+    @DeleteMapping(path = {"/{id}"})
+    public ResponseEntity<?> delete(@PathVariable long id) {
         actuatorService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

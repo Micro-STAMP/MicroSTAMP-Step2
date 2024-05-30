@@ -4,108 +4,116 @@
     <meta charset="ISO-8859-1">
     <title>Home</title>
 
-    <link th:rel="stylesheet" href="/assets/jquery-treetable/jquery.treetable.css"/>
-    <link th:rel="stylesheet" href="/assets/jquery-treetable/jquery.treetable.theme.default.css"/>
-    <link th:rel="stylesheet" href="/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link href="/assets/jquery-treetable/jquery.treetable.css" th:rel="stylesheet"/>
+    <link href="/assets/jquery-treetable/jquery.treetable.theme.default.css" th:rel="stylesheet"/>
+    <link href="/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" th:rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="container" align="Left" style="margin-left: 2em; color:black;">
-        <h1 style="margin-top: 0.5cm;">MicroSTAMP Step 2</h1>
-        <br/>
-        <div align="Left">
-            <div class="container" style="margin-left: 2%;">
-                <h2 style="display : inline-block;">Components</h2>
-                <button id="collapseAllComponentsButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=expandAllComponents()>Expand All</button>
-                <div th:switch="${components.size}">
-                    <h5 th:case='1'>No components yet!</h5>
-                    <div th:case="*">
-                        <div class="row" style="margin-top: -3%;">
-                            <div class="col mt-5">
-                                <table id="treeTable" class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Border</th>
-                                        <th>is visible?</th>
-                                        <th>Type</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
+<div align="Left" class="container" style="margin-left: 2em; color:black;">
+    <h1 style="margin-top: 0.5cm;">MicroSTAMP Step 2</h1>
+    <br/>
+    <div align="Left">
+        <div class="container" style="margin-left: 2%;">
+            <h2 style="display : inline-block;">Components</h2>
+            <button class="btn btn-primary"
+                    id="collapseAllComponentsButton" onclick=expandAllComponents()
+                    style="display : inline-block; vertical-align : top; float : right;" type="button">Expand All
+            </button>
+            <div th:switch="${components.size}">
+                <h5 th:case='1'>No components yet!</h5>
+                <div th:case="*">
+                    <div class="row" style="margin-top: -3%;">
+                        <div class="col mt-5">
+                            <table class="table" id="treeTable">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Border</th>
+                                    <th>is visible?</th>
+                                    <th>Type</th>
+                                </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <br/>
-            <div class="container" style="margin-left: 2%;">
-                <h2 style="display : inline-block;">Connections</h2>
-                <button id="collapseAllConnectionsButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=expandAllConnections()>Expand All</button>
-                <div th:switch="${connections.size}">
-                    <h5 th:case='0'>No connections yet!</h5>
-                    <div th:case="*">
-                        <div class="row" style="margin-top: -3%;">
-                            <div class="col mt-5">
-                                <table id="connectionTable" class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Source</th>
-                                        <th>Target</th>
-                                        <th>Connection Type</th>
-                                        <th>Style</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container" style="margin-left: 2%;">
-                <h2 style="display : inline-block;">Variables</h2>
-                <button id="collapseAllVariablesButton" style="display : inline-block; vertical-align : top; float : right;" type="button" class="btn btn-primary" onclick=expandAllVariables()>Expand All</button>
-                <div th:switch="${variables.size}">
-                    <h5 th:case='0'>No variables yet!</h5>
-                    <div th:case="*">
-                        <div class="row" style="margin-top: -3%;">
-                            <div class="col mt-5">
-                                <table id="variableTable" class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Component</th>
-                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <input type="hidden" id="control_structure_id" th:value="${control_structure_id}"/>
-            <br/>
         </div>
         <br/>
-        <div>
-            <div align="Left">
-
-                <a th:href="@{/guests}" style="float: right;">
-                    <input type="button" class="btn btn-secondary" value="Return"/>
-                </a>
+        <div class="container" style="margin-left: 2%;">
+            <h2 style="display : inline-block;">Connections</h2>
+            <button class="btn btn-primary"
+                    id="collapseAllConnectionsButton" onclick=expandAllConnections()
+                    style="display : inline-block; vertical-align : top; float : right;" type="button">Expand All
+            </button>
+            <div th:switch="${connections.size}">
+                <h5 th:case='0'>No connections yet!</h5>
+                <div th:case="*">
+                    <div class="row" style="margin-top: -3%;">
+                        <div class="col mt-5">
+                            <table class="table" id="connectionTable">
+                                <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>Target</th>
+                                    <th>Connection Type</th>
+                                    <th>Style</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <br/>
-
-            <div th:each="image : ${images}">
-                <img th:src="@{/cs-images/{control_structure_id}/{imageName}(control_structure_id = ${control_structure_id}, imageName = ${image.name})}">
-            </div>
-
         </div>
+
+        <div class="container" style="margin-left: 2%;">
+            <h2 style="display : inline-block;">Variables</h2>
+            <button class="btn btn-primary" id="collapseAllVariablesButton"
+                    onclick=expandAllVariables() style="display : inline-block; vertical-align : top; float : right;" type="button">Expand All
+            </button>
+            <div th:switch="${variables.size}">
+                <h5 th:case='0'>No variables yet!</h5>
+                <div th:case="*">
+                    <div class="row" style="margin-top: -3%;">
+                        <div class="col mt-5">
+                            <table class="table" id="variableTable">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Component</th>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input id="control_structure_id" th:value="${control_structure_id}" type="hidden"/>
+        <br/>
     </div>
+    <br/>
+    <div>
+        <div align="Left">
+
+            <a style="float: right;" th:href="@{/guests}">
+                <input class="btn btn-secondary" type="button" value="Return"/>
+            </a>
+        </div>
+
+        <br/>
+
+        <div th:each="image : ${images}">
+            <img th:src="@{/cs-images/{control_structure_id}/{imageName}(control_structure_id = ${control_structure_id}, imageName = ${image.name})}">
+        </div>
+
+    </div>
+</div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>

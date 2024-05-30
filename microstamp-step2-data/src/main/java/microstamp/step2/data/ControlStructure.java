@@ -2,7 +2,6 @@ package microstamp.step2.data;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 @Entity(name = "ControlStructure")
 @Table(name = "control_structures")
 @Data
-public class ControlStructure{
+public class ControlStructure {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +29,11 @@ public class ControlStructure{
     @JoinColumn(name = "controlStructure_id")
     private List<Image> images = new ArrayList<>();
 
-    public void addComponent(Component component){
+    public void addComponent(Component component) {
         this.components.add(component);
     }
 
-    public void addConnection(Connection connection){
+    public void addConnection(Connection connection) {
         this.connections.add(connection);
     }
 

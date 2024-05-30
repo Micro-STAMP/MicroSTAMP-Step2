@@ -21,20 +21,20 @@ public class VariableService {
     @Autowired
     private ComponentRepository componentRepository;
 
-    public List<Variable> findAll(){
+    public List<Variable> findAll() {
         return variableRepository.findAll();
     }
 
-    public Variable findById(long id){
+    public Variable findById(long id) {
         return variableRepository.findById(id)
                 .orElseThrow();
     }
 
-    public List<Variable> findByControlStructureId(long id){
+    public List<Variable> findByControlStructureId(long id) {
         List<microstamp.step2.data.Component> components = componentRepository.findComponentsByControlStructureId(id);
         List<Variable> variables = new ArrayList<>();
-        for(microstamp.step2.data.Component c : components){
-            if(!c.getVariables().isEmpty()){
+        for (microstamp.step2.data.Component c : components) {
+            if (!c.getVariables().isEmpty()) {
                 variables.addAll(variableRepository.findVariablesByComponentId(c.getId()));
             }
         }
@@ -51,7 +51,7 @@ public class VariableService {
         return variable;
     }
 
-    public void update(long id, VariableDto variableDto){
+    public void update(long id, VariableDto variableDto) {
         variableRepository.findById(id)
                 .map(record -> {
                     record.setName(variableDto.getName());
@@ -60,7 +60,7 @@ public class VariableService {
                 }).orElseThrow();
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         variableRepository.findById(id)
                 .map(record -> {
                     variableRepository.deleteById(id);

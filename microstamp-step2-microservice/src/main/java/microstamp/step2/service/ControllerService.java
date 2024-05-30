@@ -29,23 +29,23 @@ public class ControllerService {
         return controllerRepository.findAll();
     }
 
-    public Controller findById(Long id){
+    public Controller findById(Long id) {
         return controllerRepository.findById(id)
                 .orElseThrow();
     }
 
-    public List<Controller> findByControlStructureId(long id){
+    public List<Controller> findByControlStructureId(long id) {
         return controllerRepository.findControllersByControlStructureId(id);
     }
 
-    public Controller create(ControllerDto controllerDto){
+    public Controller create(ControllerDto controllerDto) {
         Controller controller = new Controller();
         controller.setName(controllerDto.getName());
         try {
             Optional<microstamp.step2.data.Component> father = componentRepository.findById(controllerDto.getFatherId());
             controller.setFather(father.get());
             father.get().setIsControlStructure(true);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             controller.setFather(null);
         }
         controller.setBorder(controllerDto.getBorder());
@@ -56,35 +56,35 @@ public class ControllerService {
         return controller;
     }
 
-    public void update(long id, ControllerDto controllerDto){
-        if(controllerDto.getFatherId() != null) {
-            if(controllerDto.getType() != "Controller")
-                componentRepository.updateComponentType(id,controllerDto.getType());
+    public void update(long id, ControllerDto controllerDto) {
+        if (controllerDto.getFatherId() != null) {
+            if (controllerDto.getType() != "Controller")
+                componentRepository.updateComponentType(id, controllerDto.getType());
             componentRepository.findById(id)
-                .map(record -> {
-                    record.setName(controllerDto.getName());
-                    record.setBorder(controllerDto.getBorder());
-                    record.setFather(componentRepository.findById(controllerDto.getFatherId()).get());
-                    record.setIsVisible(controllerDto.getIsVisible());
-                    microstamp.step2.data.Component updated = componentRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElseThrow();
-        }else{
-            if(controllerDto.getType() != "Controller")
-                componentRepository.updateComponentType(id,controllerDto.getType());
+                    .map(record -> {
+                        record.setName(controllerDto.getName());
+                        record.setBorder(controllerDto.getBorder());
+                        record.setFather(componentRepository.findById(controllerDto.getFatherId()).get());
+                        record.setIsVisible(controllerDto.getIsVisible());
+                        microstamp.step2.data.Component updated = componentRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElseThrow();
+        } else {
+            if (controllerDto.getType() != "Controller")
+                componentRepository.updateComponentType(id, controllerDto.getType());
             componentRepository.findById(id)
-                .map(record -> {
-                    record.setName(controllerDto.getName());
-                    record.setBorder(controllerDto.getBorder());
-                    record.setFather(null);
-                    record.setIsVisible(controllerDto.getIsVisible());
-                    microstamp.step2.data.Component updated = componentRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElseThrow();
+                    .map(record -> {
+                        record.setName(controllerDto.getName());
+                        record.setBorder(controllerDto.getBorder());
+                        record.setFather(null);
+                        record.setIsVisible(controllerDto.getIsVisible());
+                        microstamp.step2.data.Component updated = componentRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElseThrow();
         }
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         controllerRepository.findById(id)
                 .map(record -> {
                     controllerRepository.deleteById(id);

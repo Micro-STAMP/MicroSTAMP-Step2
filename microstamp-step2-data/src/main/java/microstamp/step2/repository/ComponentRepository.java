@@ -11,7 +11,7 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface ComponentRepository extends JpaRepository<Component, Long>{
+public interface ComponentRepository extends JpaRepository<Component, Long> {
 
     @Query(value = "SELECT * FROM components c WHERE c.control_structure_id = ?1", nativeQuery = true)
     List<Component> findComponentsByControlStructureId(long id);

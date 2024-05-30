@@ -18,11 +18,11 @@ public class Connection {
     private ConnectionType connectionType;
 
     @ManyToOne
-    @JoinColumn(name="source_id")
+    @JoinColumn(name = "source_id")
     private Component source;
 
     @ManyToOne
-    @JoinColumn(name="target_id")
+    @JoinColumn(name = "target_id")
     private Component target;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -31,7 +31,7 @@ public class Connection {
 
     private Style style;
 
-    public void addLabel(Label label){
+    public void addLabel(Label label) {
         labels.add(label);
     }
 }

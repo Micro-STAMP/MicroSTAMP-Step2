@@ -21,16 +21,16 @@ public class StateService {
     @Autowired
     private VariableRepository variableRepository;
 
-    public List<State> findAll(){
+    public List<State> findAll() {
         return stateRepository.findAll();
     }
 
-    public State findById(long id){
+    public State findById(long id) {
         return stateRepository.findById(id)
                 .orElseThrow();
     }
 
-    public State create(StateDto stateDto){
+    public State create(StateDto stateDto) {
         State state = new State();
         state.setName(stateDto.getName());
 
@@ -40,7 +40,7 @@ public class StateService {
         return state;
     }
 
-    public void update(long id, StateDto stateDto){
+    public void update(long id, StateDto stateDto) {
         stateRepository.findById(id)
                 .map(record -> {
                     record.setName(stateDto.getName());
@@ -49,7 +49,7 @@ public class StateService {
                 }).orElseThrow();
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         stateRepository.findById(id)
                 .map(record -> {
                     stateRepository.deleteById(id);

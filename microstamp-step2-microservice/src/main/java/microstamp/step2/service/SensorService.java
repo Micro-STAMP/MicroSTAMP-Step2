@@ -25,27 +25,27 @@ public class SensorService {
     @Autowired
     private ControlStructureRepository controlStructureRepository;
 
-    public List<Sensor> findAll(){
+    public List<Sensor> findAll() {
         return sensorRepository.findAll();
     }
 
-    public Sensor findById(long id){
+    public Sensor findById(long id) {
         return sensorRepository.findById(id)
                 .orElseThrow();
     }
 
-    public List<Sensor> findByControlStructureId(long id){
+    public List<Sensor> findByControlStructureId(long id) {
         return sensorRepository.findSensorsByControlStructureId(id);
     }
 
-    public Sensor create(SensorDto sensorDto){
+    public Sensor create(SensorDto sensorDto) {
         Sensor sensor = new Sensor();
         sensor.setName(sensorDto.getName());
-        try{
+        try {
             Optional<microstamp.step2.data.Component> father = componentRepository.findById(sensorDto.getFatherId());
             sensor.setFather(father.get());
             father.get().setIsControlStructure(true);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             sensor.setFather(null);
         }
         sensor.setBorder(sensorDto.getBorder());
@@ -56,35 +56,35 @@ public class SensorService {
         return sensor;
     }
 
-    public void update(long id, SensorDto sensorDto){
-        if(sensorDto.getFatherId() != null) {
-            if(sensorDto.getType() != "Sensor")
-                componentRepository.updateComponentType(id,sensorDto.getType());
+    public void update(long id, SensorDto sensorDto) {
+        if (sensorDto.getFatherId() != null) {
+            if (sensorDto.getType() != "Sensor")
+                componentRepository.updateComponentType(id, sensorDto.getType());
             componentRepository.findById(id)
-                .map(record -> {
-                    record.setName(sensorDto.getName());
-                    record.setBorder(sensorDto.getBorder());
-                    record.setFather(componentRepository.findById(sensorDto.getFatherId()).get());
-                    record.setIsVisible(sensorDto.getIsVisible());
-                    microstamp.step2.data.Component updated = componentRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElseThrow();
-        }else{
-            if(sensorDto.getType() != "Sensor")
-                componentRepository.updateComponentType(id,sensorDto.getType());
+                    .map(record -> {
+                        record.setName(sensorDto.getName());
+                        record.setBorder(sensorDto.getBorder());
+                        record.setFather(componentRepository.findById(sensorDto.getFatherId()).get());
+                        record.setIsVisible(sensorDto.getIsVisible());
+                        microstamp.step2.data.Component updated = componentRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElseThrow();
+        } else {
+            if (sensorDto.getType() != "Sensor")
+                componentRepository.updateComponentType(id, sensorDto.getType());
             componentRepository.findById(id)
-                .map(record -> {
-                    record.setName(sensorDto.getName());
-                    record.setBorder(sensorDto.getBorder());
-                    record.setFather(null);
-                    record.setIsVisible(sensorDto.getIsVisible());
-                    microstamp.step2.data.Component updated = componentRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElseThrow();
+                    .map(record -> {
+                        record.setName(sensorDto.getName());
+                        record.setBorder(sensorDto.getBorder());
+                        record.setFather(null);
+                        record.setIsVisible(sensorDto.getIsVisible());
+                        microstamp.step2.data.Component updated = componentRepository.save(record);
+                        return ResponseEntity.ok().body(updated);
+                    }).orElseThrow();
         }
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         sensorRepository.findById(id)
                 .map(record -> {
                     sensorRepository.deleteById(id);

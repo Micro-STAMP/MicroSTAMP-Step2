@@ -28,11 +28,11 @@ public class ImageService {
     @Autowired
     private ControlStructureRepository controlStructureRepository;
 
-    public List<Image> findByControlStructureId(long id){
+    public List<Image> findByControlStructureId(long id) {
         return imageRepository.findImagesByControlStructureId(id);
     }
 
-    public Image create(long controlStructureId, MultipartFile multipartFile) throws IOException{
+    public Image create(long controlStructureId, MultipartFile multipartFile) throws IOException {
         Image image = new Image();
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -50,25 +50,25 @@ public class ImageService {
         return image;
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         Image img = imageRepository.findById(id).get();
         List<ControlStructure> list = controlStructureRepository.findAll();
-        for(ControlStructure cs : list){
-            if(cs.getImages().contains(img)){
+        for (ControlStructure cs : list) {
+            if (cs.getImages().contains(img)) {
                 String deleteDir = "MicroSTAMP-Step2/microstamp-step2-microservice/src/main/resources/static/cs-images/" + cs.getId() + "/";
                 //String deleteDir = "microstamp-step2-microservice/src/main/resources/static/cs-images/" + cs.getId() + "/";
                 try {
                     Files.deleteIfExists(Paths.get(deleteDir + img.getName()));
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         }
         imageRepository.findById(id)
-            .map(record -> {
-                imageRepository.deleteById(id);
-                return ResponseEntity.ok().build();
-            }).orElseThrow();
+                .map(record -> {
+                    imageRepository.deleteById(id);
+                    return ResponseEntity.ok().build();
+                }).orElseThrow();
     }
 
     private void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {

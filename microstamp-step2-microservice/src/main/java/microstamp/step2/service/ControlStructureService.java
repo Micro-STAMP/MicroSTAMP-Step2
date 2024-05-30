@@ -5,7 +5,6 @@ import microstamp.step2.data.Environment;
 import microstamp.step2.data.Image;
 import microstamp.step2.data.User;
 import microstamp.step2.dto.ControlStructureDto;
-import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ControlStructureRepository;
 import microstamp.step2.repository.ImageRepository;
 import microstamp.step2.repository.UserRepository;
@@ -31,24 +30,24 @@ public class ControlStructureService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<ControlStructure> findAll(){
+    public List<ControlStructure> findAll() {
         return controlStructureRepository.findAll();
     }
 
-    public ControlStructure findById(long id){
+    public ControlStructure findById(long id) {
         return controlStructureRepository.findById(id)
                 .orElseThrow();
     }
 
-    public List<ControlStructure> findByUserId(long id){
+    public List<ControlStructure> findByUserId(long id) {
         return controlStructureRepository.findControlStructuresByUserId(id);
     }
 
-    public List<ControlStructure> findControlStructuresForGuests(){
+    public List<ControlStructure> findControlStructuresForGuests() {
         return controlStructureRepository.findControlStructuresForGuests();
     }
 
-    public ControlStructure create(ControlStructureDto controlStructureDto){
+    public ControlStructure create(ControlStructureDto controlStructureDto) {
         ControlStructure controlStructure = new ControlStructure();
         controlStructure.setName(controlStructureDto.getName());
         controlStructure.getComponents().add(new Environment());
@@ -60,7 +59,7 @@ public class ControlStructureService {
         return controlStructure;
     }
 
-    public void update(long id, ControlStructureDto controlStructureDto){
+    public void update(long id, ControlStructureDto controlStructureDto) {
         controlStructureRepository.findById(id)
                 .map(record -> {
                     record.setName(controlStructureDto.getName());
@@ -69,10 +68,10 @@ public class ControlStructureService {
                 }).orElseThrow();
     }
 
-    public void delete(long id){
-        try{
+    public void delete(long id) {
+        try {
             deleteImages(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("\nException when deleting CS images: \n");
             ex.printStackTrace();
         }
@@ -83,10 +82,10 @@ public class ControlStructureService {
                 }).orElseThrow();
     }
 
-    private void deleteImages(long id) throws Exception{
+    private void deleteImages(long id) throws Exception {
         String deleteDir = "MicroSTAMP-Step2/microstamp-step2-microservice/src/main/resources/static/cs-images/" + id + "/";
         Path uploadDeletePath;
-        for(Image i : imageRepository.findImagesByControlStructureId(id)) {
+        for (Image i : imageRepository.findImagesByControlStructureId(id)) {
             uploadDeletePath = Paths.get(deleteDir + i.getName());
             Files.deleteIfExists(uploadDeletePath);
         }

@@ -14,7 +14,7 @@ public enum Style {
         List<Style> list = Arrays.asList(Style.values());
         List<String> listReturn = new ArrayList<String>();
 
-        for(Style s : list)
+        for (Style s : list)
             listReturn.add(s.name());
 
         return listReturn;

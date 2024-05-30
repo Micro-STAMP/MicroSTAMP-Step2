@@ -3,10 +3,10 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Home</title>
-    <link th:rel="stylesheet" th:href="@{assets/jquery-treetable/jquery.treetable.css}"/>
-    <link th:rel="stylesheet" th:href="@{assets/jquery-treetable/jquery.treetable.theme.default.css}"/>
-    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link th:href="@{assets/jquery-treetable/jquery.treetable.css}" th:rel="stylesheet"/>
+    <link th:href="@{assets/jquery-treetable/jquery.treetable.theme.default.css}" th:rel="stylesheet"/>
+    <link th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} " th:rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div align="Left" style="margin-left: 2em; color:black;">
@@ -20,7 +20,7 @@
                     <div th:case="*">
                         <div class="row">
                             <div class="col mt-5">
-                                <table id="csTable" class="table">
+                                <table class="table" id="csTable">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
@@ -47,24 +47,24 @@
 
 <script type="text/javascript">
 
-        $(window).ready(function () {
-            $.ajax({
-                "type": 'get',
-                "url": 'guests-request/controlstructures',
-                "dataType": "json",
-                "success": function (data) {
-                    $.each(data, function (idx, obj) {
-                        $("#csTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father + "\"><td>" + obj.name + "</td><td><button style='cursor: pointer; border-radius: 5px;' type='button' id=\"" + obj.id + "\" onclick=location.href=\"" + "/guests/" + obj.id + "\"><span class='fa fa-search' aria-hidden='true'></span></button></td></tr>");
-                    });
-                    $("#csTable").treetable({
-                        expandable: true,
-                        initialState: "expanded",
-                        clickableNodeNames: true,
-                        indent: 30
-                    });
-                }
-            });
+    $(window).ready(function () {
+        $.ajax({
+            "type": 'get',
+            "url": 'guests-request/controlstructures',
+            "dataType": "json",
+            "success": function (data) {
+                $.each(data, function (idx, obj) {
+                    $("#csTable").append("<tr data-tt-id=\"" + obj.id + "\" data-tt-parent-id=\"" + obj.father + "\"><td>" + obj.name + "</td><td><button style='cursor: pointer; border-radius: 5px;' type='button' id=\"" + obj.id + "\" onclick=location.href=\"" + "/guests/" + obj.id + "\"><span class='fa fa-search' aria-hidden='true'></span></button></td></tr>");
+                });
+                $("#csTable").treetable({
+                    expandable: true,
+                    initialState: "expanded",
+                    clickableNodeNames: true,
+                    indent: 30
+                });
+            }
         });
+    });
 
 </script>
 

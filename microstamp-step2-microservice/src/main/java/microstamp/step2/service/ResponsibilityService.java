@@ -22,26 +22,26 @@ public class ResponsibilityService {
     @Autowired
     private ComponentRepository componentRepository;
 
-    public List<Responsibility> findAll(){
+    public List<Responsibility> findAll() {
         return responsibilityRepository.findAll();
     }
 
-    public Responsibility findById(long id){
+    public Responsibility findById(long id) {
         return responsibilityRepository.findById(id)
                 .orElseThrow();
     }
 
-    public Responsibility create(ResponsibilityDto responsibilityDto){
+    public Responsibility create(ResponsibilityDto responsibilityDto) {
         Responsibility responsibility = new Responsibility();
         responsibility.setResponsibility(responsibilityDto.getResponsibility());
         responsibility.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
 
         Optional<microstamp.step2.data.Component> c = componentRepository.findById(responsibilityDto.getComponentId());
 
-        if(c.get().getType().equals("Controller")) {
+        if (c.get().getType().equals("Controller")) {
             Controller controller = (Controller) c.get();
             controller.getResponsibilities().add(responsibility);
-        }else if(c.get().getType().equals("ControlledProcess")){
+        } else if (c.get().getType().equals("ControlledProcess")) {
             ControlledProcess controlledProcess = (ControlledProcess) c.get();
             controlledProcess.getResponsibilities().add(responsibility);
         }
@@ -49,7 +49,7 @@ public class ResponsibilityService {
         return responsibility;
     }
 
-    public void update(long id, ResponsibilityDto responsibilityDto){
+    public void update(long id, ResponsibilityDto responsibilityDto) {
         responsibilityRepository.findById(id)
                 .map(record -> {
                     record.setResponsibility(responsibilityDto.getResponsibility());
@@ -59,7 +59,7 @@ public class ResponsibilityService {
                 }).orElseThrow();
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         responsibilityRepository.findById(id)
                 .map(record -> {
                     responsibilityRepository.deleteById(id);

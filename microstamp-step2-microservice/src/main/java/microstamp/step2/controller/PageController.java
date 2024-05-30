@@ -1,13 +1,17 @@
 package microstamp.step2.controller;
 
-import java.util.*;
-
-import microstamp.step2.data.*;
+import microstamp.step2.data.Component;
+import microstamp.step2.data.ConnectionType;
+import microstamp.step2.data.Style;
 import microstamp.step2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -36,8 +40,8 @@ public class PageController {
         model.addAttribute("connections", connectionService.findByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
         model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
-        model.addAttribute("process_input",ConnectionType.getProcessInputDisturbance());
-        model.addAttribute("process_output",ConnectionType.getProcessOutput());
+        model.addAttribute("process_input", ConnectionType.getProcessInputDisturbance());
+        model.addAttribute("process_output", ConnectionType.getProcessOutput());
         model.addAttribute("variables", variableService.findByControlStructureId(controlStructureId));
 
         model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
@@ -45,15 +49,15 @@ public class PageController {
         model.addAttribute("style", Style.loadStyles());
 
         List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
-        if(!componentsWithoutEnvironment.isEmpty())
+        if (!componentsWithoutEnvironment.isEmpty())
             componentsWithoutEnvironment.remove(0);
-        model.addAttribute("componentsWithoutEnvironment",componentsWithoutEnvironment);
+        model.addAttribute("componentsWithoutEnvironment", componentsWithoutEnvironment);
 
         List<Component> controllersControlledProcess = new ArrayList<>();
-        for(Component c : components){
+        for (Component c : components) {
             System.out.println(c.getName() + "\n\n");
             System.out.println(c.getType() + "\n\n");
-            if (c.getType().equals("Controller")|| c.getType().equals("ControlledProcess")){
+            if (c.getType().equals("Controller") || c.getType().equals("ControlledProcess")) {
                 controllersControlledProcess.add(c);
                 System.out.println("Add " + c.getName() + "\n\n");
             }
@@ -64,23 +68,23 @@ public class PageController {
     }
 
     @GetMapping("/home")
-    public String controlStructures(Model model){
+    public String controlStructures(Model model) {
         model.addAttribute("controlStructures", controlStructureService.findAll());
         return "control_structures";
     }
 
     @GetMapping("/")
-    public String redirectHome(Model model){
+    public String redirectHome(Model model) {
         return controlStructures(model);
     }
 
     @GetMapping("/403")
-    public String error403(){
+    public String error403() {
         return "403";
     }
 
     @GetMapping("/guests")
-    public String guests(Model model){
+    public String guests(Model model) {
         model.addAttribute("controlStructures", controlStructureService.findControlStructuresForGuests());
         return "guests";
     }
@@ -93,8 +97,8 @@ public class PageController {
         model.addAttribute("connections", connectionService.findByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
         model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
-        model.addAttribute("process_input",ConnectionType.getProcessInputDisturbance());
-        model.addAttribute("process_output",ConnectionType.getProcessOutput());
+        model.addAttribute("process_input", ConnectionType.getProcessInputDisturbance());
+        model.addAttribute("process_output", ConnectionType.getProcessOutput());
         model.addAttribute("variables", variableService.findByControlStructureId(controlStructureId));
 
         model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
@@ -102,15 +106,15 @@ public class PageController {
         model.addAttribute("style", Style.loadStyles());
 
         List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
-        if(!componentsWithoutEnvironment.isEmpty())
+        if (!componentsWithoutEnvironment.isEmpty())
             componentsWithoutEnvironment.remove(0);
-        model.addAttribute("componentsWithoutEnvironment",componentsWithoutEnvironment);
+        model.addAttribute("componentsWithoutEnvironment", componentsWithoutEnvironment);
 
         List<Component> controllersControlledProcess = new ArrayList<>();
-        for(Component c : components){
+        for (Component c : components) {
             System.out.println(c.getName() + "\n\n");
             System.out.println(c.getType() + "\n\n");
-            if (c.getType().equals("Controller")|| c.getType().equals("ControlledProcess")){
+            if (c.getType().equals("Controller") || c.getType().equals("ControlledProcess")) {
                 controllersControlledProcess.add(c);
                 System.out.println("Add " + c.getName() + "\n\n");
             }

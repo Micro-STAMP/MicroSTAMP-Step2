@@ -2,10 +2,11 @@ package microstamp.step2.controller;
 
 import microstamp.step2.data.Component;
 import microstamp.step2.data.Connection;
-import microstamp.step2.repository.ComponentRepository;
-import microstamp.step2.repository.ConnectionRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import microstamp.step2.service.ComponentService;
+import microstamp.step2.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,99 +19,42 @@ import java.util.List;
 public class ComponentController {
 
     @Autowired
-    private ComponentRepository componentRepository;
-
-    @Autowired
-    private ConnectionRepository connectionRepository;
+    private ComponentService componentService;
 
     @GetMapping
     public List findAll(){
-        return componentRepository.findAll();
+        return componentService.findAll();
+    }
+
+    @GetMapping(path = {"/{id}"})
+    public ResponseEntity findById(@PathVariable long id){
+        return new ResponseEntity(componentService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"cs/{id}"})
     public List findByControlStructureId(@PathVariable long id){
-        return componentRepository.findComponentsByControlStructureId(id);
-    }
-
-    @GetMapping(path = {"/{id}"})
-    public ResponseEntity findComponentById(@PathVariable long id){
-        return componentRepository.findById(id)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
+        return componentService.findByControlStructureId(id);
     }
 
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity <?> delete(@PathVariable long id) {
-        deleteComponentAndChildren(id);
-        return ResponseEntity.ok().build();
-    }
-
-    public void deleteComponentAndChildren(long id){
-        List<Component> children = componentRepository.findComponentsChildren(id);
-        children.forEach(c -> deleteComponentAndChildren(c.getId()));
-
-        List<Connection> connections_source = connectionRepository.findConnectionsThatTheComponentIsSource(id);
-        if(connections_source.size() != 0) {
-            connections_source.forEach(c -> connectionRepository.deleteById(c.getId()));
-        }
-
-        List<Connection> connections_target = connectionRepository.findConnectionsThatTheComponentIsTarget(id);
-        if(connections_target.size() != 0) {
-            connections_target.forEach(c -> connectionRepository.deleteById(c.getId()));
-        }
-
-        componentRepository.deleteById(id);
+        componentService.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(path = {"listComponentsAndConnectionsToBeDeleted/{id}"})
     public List getComponentsAndConnections(@PathVariable long id){
-        List list = getComponentsAndConnectionsRecursive(id);
-        list.remove(componentRepository.findById(id));
+        List list = componentService.getComponentsAndConnectionsRecursive(id);
+        list.remove(componentService.findById(id));
         return list;
-    }
-
-    public List getComponentsAndConnectionsRecursive(long id){
-        List<Component> components = componentRepository.findComponentsChildren(id);
-        List items = new ArrayList();
-        for(Component c : components)
-            items.addAll(getComponentsAndConnectionsRecursive(c.getId()));
-
-        List<Connection> connections_source = connectionRepository.findConnectionsThatTheComponentIsSource(id);
-        if(connections_source.size() != 0) {
-            for (Connection c : connections_source) {
-                if(!items.contains(c))
-                    items.add(c);
-            }
-        }
-
-        List<Connection> connections_target = connectionRepository.findConnectionsThatTheComponentIsTarget(id);
-        if(connections_target.size() != 0) {
-            for (Connection c : connections_target) {
-                if(!items.contains(c))
-                    items.add(c);
-            }
-        }
-        items.add(componentRepository.findById(id));
-        return items;
     }
 
     @GetMapping(path = {"listComponentsChildren/{id}"})
     public List getComponentsChildren(@PathVariable long id){
-        List list = getComponentsRecursive(id);
-        list.remove(componentRepository.findById(id));
+        List list = componentService.getComponentsRecursive(id);
+        list.remove(componentService.findById(id));
 
         System.out.println(list);
         return list;
     }
-
-    public List getComponentsRecursive(long id){
-        List<Component> components = componentRepository.findComponentsChildren(id);
-        List items = new ArrayList();
-        for(Component c : components)
-            items.addAll(getComponentsAndConnectionsRecursive(c.getId()));
-
-        return items;
-    }
-
 }

@@ -3,7 +3,7 @@ package microstamp.step2.controller;
 import java.util.*;
 
 import microstamp.step2.data.*;
-import microstamp.step2.repository.*;
+import microstamp.step2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -14,40 +14,37 @@ import org.springframework.ui.Model;
 public class PageController {
 
     @Autowired
-    private ComponentRepository componentRepository;
+    private ComponentService componentService;
 
     @Autowired
-    private ConnectionRepository connectionRepository;
+    private ConnectionService connectionService;
 
     @Autowired
-    private LabelRepository labelRepository;
+    private ControlStructureService controlStructureService;
 
     @Autowired
-    private ControlStructureRepository controlStructureRepository;
+    private ImageService imageService;
 
     @Autowired
-    private ImageRepository imageRepository;
-
-    @Autowired
-    private VariableRepository variableRepository;
+    private VariableService variableService;
 
     @GetMapping("/{controlStructureId:\\d+}")
     public String indexPage(@PathVariable Long controlStructureId, Model model) {
 
-        List<Component> components = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        List<Component> components = componentService.findByControlStructureId(controlStructureId);
         model.addAttribute("components", components);
-        model.addAttribute("connections", connectionRepository.findConnectionsByControlStructureId(controlStructureId));
+        model.addAttribute("connections", connectionService.findByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
         model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
         model.addAttribute("process_input",ConnectionType.getProcessInputDisturbance());
         model.addAttribute("process_output",ConnectionType.getProcessOutput());
-        model.addAttribute("variables", variableRepository.findVariablesByControlStructureId(controlStructureId));
+        model.addAttribute("variables", variableService.findByControlStructureId(controlStructureId));
 
-        model.addAttribute("images",imageRepository.findImagesByControlStructureId(controlStructureId));
+        model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
 
         model.addAttribute("style", Style.loadStyles());
 
-        List<Component> componentsWithoutEnvironment = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
         if(!componentsWithoutEnvironment.isEmpty())
             componentsWithoutEnvironment.remove(0);
         model.addAttribute("componentsWithoutEnvironment",componentsWithoutEnvironment);
@@ -68,7 +65,7 @@ public class PageController {
 
     @GetMapping("/home")
     public String controlStructures(Model model){
-        model.addAttribute("controlStructures", controlStructureRepository.findAll());
+        model.addAttribute("controlStructures", controlStructureService.findAll());
         return "control_structures";
     }
 
@@ -84,27 +81,27 @@ public class PageController {
 
     @GetMapping("/guests")
     public String guests(Model model){
-        model.addAttribute("controlStructures", controlStructureRepository.findControlStructuresForGuests());
+        model.addAttribute("controlStructures", controlStructureService.findControlStructuresForGuests());
         return "guests";
     }
 
     @GetMapping("/guests/{controlStructureId}")
     public String indexPageGuest(@PathVariable Long controlStructureId, Model model) {
 
-        List<Component> components = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        List<Component> components = componentService.findByControlStructureId(controlStructureId);
         model.addAttribute("components", components);
-        model.addAttribute("connections", connectionRepository.findConnectionsByControlStructureId(controlStructureId));
+        model.addAttribute("connections", connectionService.findByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
         model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
         model.addAttribute("process_input",ConnectionType.getProcessInputDisturbance());
         model.addAttribute("process_output",ConnectionType.getProcessOutput());
-        model.addAttribute("variables", variableRepository.findVariablesByControlStructureId(controlStructureId));
+        model.addAttribute("variables", variableService.findByControlStructureId(controlStructureId));
 
-        model.addAttribute("images",imageRepository.findImagesByControlStructureId(controlStructureId));
+        model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
 
         model.addAttribute("style", Style.loadStyles());
 
-        List<Component> componentsWithoutEnvironment = componentRepository.findComponentsByControlStructureId(controlStructureId);
+        List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
         if(!componentsWithoutEnvironment.isEmpty())
             componentsWithoutEnvironment.remove(0);
         model.addAttribute("componentsWithoutEnvironment",componentsWithoutEnvironment);

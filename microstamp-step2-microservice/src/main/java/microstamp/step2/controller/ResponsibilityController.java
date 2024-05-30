@@ -2,10 +2,11 @@ package microstamp.step2.controller;
 
 import microstamp.step2.dto.ResponsibilityDto;
 import microstamp.step2.data.*;
-import microstamp.step2.repository.ComponentRepository;
-import microstamp.step2.repository.ResponsibilitiesRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import microstamp.step2.service.ComponentService;
+import microstamp.step2.service.ResponsibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,60 +19,33 @@ import java.util.Optional;
 public class ResponsibilityController {
 
     @Autowired
-    private ResponsibilitiesRepository responsibilitiesRepository;
-
-    @Autowired
-    private ComponentRepository componentRepository;
+    private ResponsibilityService responsibilityService;
 
     @GetMapping
     public List findAll(){
-        return responsibilitiesRepository.findAll();
+        return responsibilityService.findAll();
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findResponsibilitiesById(@PathVariable long id){
-        return responsibilitiesRepository.findById(id)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity findById(@PathVariable long id){
+        return new ResponseEntity<>(responsibilityService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping
     public Responsibility create(@RequestBody ResponsibilityDto responsibilityDto){
-        Responsibility responsibility = new Responsibility();
-        responsibility.setResponsibility(responsibilityDto.getResponsibility());
-        responsibility.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
-
-        Optional<Component> c = componentRepository.findById(responsibilityDto.getComponentId());
-
-        if(c.get().getType().equals("Controller")) {
-            Controller controller = (Controller) c.get();
-            controller.getResponsibilities().add(responsibility);
-        }else if(c.get().getType().equals("ControlledProcess")){
-            ControlledProcess controlledProcess = (ControlledProcess) c.get();
-            controlledProcess.getResponsibilities().add(responsibility);
-        }
-        componentRepository.save(c.get());
-        return responsibility;
+        return responsibilityService.create(responsibilityDto);
     }
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ResponsibilityDto responsibilityDto) {
-        return responsibilitiesRepository.findById(id)
-                .map(record -> {
-                    record.setResponsibility(responsibilityDto.getResponsibility());
-                    record.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
-                    Responsibility updated = responsibilitiesRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElse(ResponseEntity.notFound().build());
+        responsibilityService.update(id, responsibilityDto);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity <?> delete(@PathVariable long id) {
-        return responsibilitiesRepository.findById(id)
-                .map(record -> {
-                    responsibilitiesRepository.deleteById(id);
-                    return ResponseEntity.ok().build();
-                }).orElse(ResponseEntity.notFound().build());
+        responsibilityService.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

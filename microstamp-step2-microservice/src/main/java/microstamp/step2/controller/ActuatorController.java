@@ -4,13 +4,14 @@ import microstamp.step2.dto.ActuatorDto;
 import microstamp.step2.data.Actuator;
 import microstamp.step2.data.Component;
 import microstamp.step2.data.ControlStructure;
-import microstamp.step2.repository.ComponentRepository;
-import microstamp.step2.repository.ControlStructureRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import microstamp.step2.service.ActuatorService;
+import microstamp.step2.service.ComponentService;
+import microstamp.step2.service.ControlStructureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import microstamp.step2.repository.ActuatorRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,86 +22,37 @@ import java.util.Optional;
 public class ActuatorController {
 
     @Autowired
-    private ActuatorRepository actuatorRepository;
-
-    @Autowired
-    private ComponentRepository componentRepository;
-
-    @Autowired
-    private ControlStructureRepository controlStructureRepository;
+    private ActuatorService actuatorService;
 
     @GetMapping
     public List findAll(){
-        return actuatorRepository.findAll();
+        return actuatorService.findAll();
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity findById(@PathVariable long id){
-        return actuatorRepository.findById(id)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
+        return new ResponseEntity<>(actuatorService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"cs/{id}"})
     public List findByControlStructureId(@PathVariable long id){
-        return actuatorRepository.findActuatorsByControlStructureId(id);
+        return actuatorService.findByControlStructureId(id);
     }
 
     @PostMapping
     public Actuator create(@RequestBody ActuatorDto actuatorDto){
-        Actuator actuator = new Actuator();
-        actuator.setName(actuatorDto.getName());
-        try {
-            Optional<Component> father = componentRepository.findById(actuatorDto.getFatherId());
-            actuator.setFather(father.get());
-            father.get().setIsControlStructure(true);
-        }catch (Exception ex){
-            actuator.setFather(null);
-        }
-        actuator.setBorder(actuatorDto.getBorder());
-        actuator.setIsVisible(actuatorDto.getIsVisible());
-        Optional<ControlStructure> c1 = controlStructureRepository.findById(actuatorDto.getControlStructureId());
-        c1.get().getComponents().add(actuator);
-        controlStructureRepository.save(c1.get());
-        return actuator;
+        return actuatorService.create(actuatorDto);
     }
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ActuatorDto actuatorDto) {
-        if(actuatorDto.getFatherId() != null) {
-            if(actuatorDto.getType() != "Actuator")
-                componentRepository.updateComponentType(id,actuatorDto.getType());
-            return componentRepository.findById(id)
-                    .map(record -> {
-                        record.setName(actuatorDto.getName());
-                        record.setBorder(actuatorDto.getBorder());
-                        record.setFather(componentRepository.findById(actuatorDto.getFatherId()).get());
-                        record.setIsVisible(actuatorDto.getIsVisible());
-                        Component updated = componentRepository.save(record);
-                        return ResponseEntity.ok().body(updated);
-                    }).orElse(ResponseEntity.notFound().build());
-        }else{
-            if(actuatorDto.getType() != "Actuator")
-                componentRepository.updateComponentType(id,actuatorDto.getType());
-            return componentRepository.findById(id)
-                    .map(record -> {
-                        record.setName(actuatorDto.getName());
-                        record.setBorder(actuatorDto.getBorder());
-                        record.setFather(null);
-                        record.setIsVisible(actuatorDto.getIsVisible());
-                        Component updated = componentRepository.save(record);
-                        return ResponseEntity.ok().body(updated);
-                    }).orElse(ResponseEntity.notFound().build());
-        }
+        actuatorService.update(id, actuatorDto);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity <?> delete(@PathVariable long id) {
-        return actuatorRepository.findById(id)
-                .map(record -> {
-                    actuatorRepository.deleteById(id);
-                    return ResponseEntity.ok().build();
-                }).orElse(ResponseEntity.notFound().build());
+        actuatorService.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
-
 }

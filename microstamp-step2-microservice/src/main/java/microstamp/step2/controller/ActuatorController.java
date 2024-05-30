@@ -60,7 +60,7 @@ public class ActuatorController {
         try {
             Optional<Component> father = componentRepository.findById(actuatorDto.getFather_id());
             actuator.setFather(father.get());
-            father.get().setControlStructure(true);
+            father.get().setIsControlStructure(true);
         }catch (Exception ex){
             actuator.setFather(null);
         }

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor, Long> {
 
-    @Query(value = "SELECT * FROM component c WHERE c.control_structure_id = ?1 AND dtype = 'Sensor'", nativeQuery = true)
+    @Query(value = "SELECT * FROM components c WHERE c.control_structure_id = ?1 AND dtype = 'Sensor'", nativeQuery = true)
     List<Sensor> findSensorsByControlStructureId(long id);
 
 }

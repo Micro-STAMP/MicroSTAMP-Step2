@@ -1,11 +1,11 @@
 package microstamp.step2.data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 
-@Entity
+@Entity(name = "Label")
+@Table(name = "labels")
+@Data
 public class Label {
 
     @Id
@@ -14,30 +14,4 @@ public class Label {
 
     private String label;
 
-    public Label(){}
-
-    public Label(String label) {
-        this.label = label;
-    }
-
-    @Override
-    public String toString() {
-        return label;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
 }

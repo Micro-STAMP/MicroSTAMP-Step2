@@ -1,9 +1,14 @@
 package microstamp.step2.data;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "Variable")
+@Table(name = "variables")
+@Data
 public class Variable {
 
     @Id
@@ -14,38 +19,6 @@ public class Variable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "variable_id")
-    private List<State> states;
+    private List<State> states = new ArrayList<>();
 
-    public Variable() {
-    }
-
-    public Variable(long id, String name, List<State> states) {
-        this.id = id;
-        this.name = name;
-        this.states = states;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<State> getStates() {
-        return states;
-    }
-
-    public void setStates(List<State> states) {
-        this.states = states;
-    }
 }

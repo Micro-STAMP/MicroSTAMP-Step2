@@ -62,7 +62,7 @@ public class SensorController {
         try{
             Optional<Component> father = componentRepository.findById(sensorDto.getFather_id());
             sensor.setFather(father.get());
-            father.get().setControlStructure(true);
+            father.get().setIsControlStructure(true);
         }catch (Exception ex){
             sensor.setFather(null);
         }

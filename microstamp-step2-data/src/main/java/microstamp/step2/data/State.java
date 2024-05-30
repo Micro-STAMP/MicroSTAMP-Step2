@@ -1,11 +1,11 @@
 package microstamp.step2.data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 
-@Entity
+@Entity(name = "State")
+@Table(name = "states")
+@Data
 public class State {
 
     @Id
@@ -14,27 +14,4 @@ public class State {
 
     private String name;
 
-    public State() {
-    }
-
-    public State(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

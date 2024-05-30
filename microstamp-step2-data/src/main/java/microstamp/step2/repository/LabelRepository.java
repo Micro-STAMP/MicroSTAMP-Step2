@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface LabelRepository extends JpaRepository<Label, Long> {
 
-    @Query(value = "SELECT * FROM label l WHERE l.connection_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM labels l WHERE l.connection_id = ?1", nativeQuery = true)
     List<Label> findLabelsByConnectionId(long id);
 
 }

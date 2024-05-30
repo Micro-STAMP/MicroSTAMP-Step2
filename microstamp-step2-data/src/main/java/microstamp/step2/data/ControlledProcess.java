@@ -1,35 +1,21 @@
 package microstamp.step2.data;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "ControlledProcess")
+@Getter
+@Setter
 public class ControlledProcess extends Component{
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "component_id")
-    private List<Responsibility> responsibilities;
-
-    public ControlledProcess(){super();}
-
-    public ControlledProcess(long id, String name, boolean isVisible, Component father, Style border) {
-        super(id, name, isVisible, father,border);
-    }
-
-    public List<Responsibility> getResponsibilities() {
-        return responsibilities;
-    }
-
-    public void setResponsibilities(List<Responsibility> responsibilities) {
-        this.responsibilities = responsibilities;
-    }
-
-    @Override
-    public void verify() {
-        System.out.println("This is a ControlledProcess");
-    }
+    private List<Responsibility> responsibilities = new ArrayList<>();
 
 }

@@ -2,18 +2,7 @@ package microstamp.step2.data;
 
 import jakarta.persistence.Entity;
 
-@Entity
+@Entity(name = "Sensor")
 public class Sensor extends Component{
-
-    public Sensor(){super();}
-
-    public Sensor(long id, String name, boolean isVisible, Component father, Style border) {
-        super(id, name, isVisible, father,border);
-    }
-
-    @Override
-    public void verify() {
-        System.out.println("This is a Sensor");
-    }
 
 }

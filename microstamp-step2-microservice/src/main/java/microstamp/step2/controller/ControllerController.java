@@ -58,7 +58,7 @@ public class ControllerController {
         try {
             Optional<Component> father = componentRepository.findById(controllerDto.getFather_id());
             controller.setFather(father.get());
-            father.get().setControlStructure(true);
+            father.get().setIsControlStructure(true);
         }catch (Exception ex){
             controller.setFather(null);
         }

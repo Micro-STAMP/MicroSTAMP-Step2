@@ -1,10 +1,15 @@
 package microstamp.step2.data;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "ControlStructure")
+@Table(name = "control_structures")
+@Data
 public class ControlStructure{
 
     @Id
@@ -15,20 +20,15 @@ public class ControlStructure{
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "controlStructure_id")
-    private List<Component> components;
+    private List<Component> components = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "controlStructure_id")
-    private List<Connection> connections;
+    private List<Connection> connections = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "controlStructure_id")
-    private List<Image> images;
-
-    public ControlStructure() {
-        components = new ArrayList<>();
-        connections= new ArrayList<>();
-    }
+    private List<Image> images = new ArrayList<>();
 
     public void addComponent(Component component){
         this.components.add(component);
@@ -38,55 +38,4 @@ public class ControlStructure{
         this.connections.add(connection);
     }
 
-    public void show(){
-        for(int i = 0;i<components.size();i++){
-            components.get(i).show();
-            System.out.println();
-        }
-
-        for(int i = 0;i<connections.size();i++){
-            System.out.println(connections.get(i));
-            System.out.println();
-        }
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Component> getComponents() {
-        return components;
-    }
-
-    public void setComponents(List<Component> components) {
-        this.components = components;
-    }
-
-    public List<Connection> getConnections() {
-        return connections;
-    }
-
-    public void setConnections(List<Connection> connections) {
-        this.connections = connections;
-    }
-
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
-    }
 }

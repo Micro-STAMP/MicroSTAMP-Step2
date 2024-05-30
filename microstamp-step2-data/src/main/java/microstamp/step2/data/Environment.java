@@ -12,7 +12,4 @@ public class Environment extends Component{
         this.setBorder(Style.SOLID);
         this.setFather(null);
     }
-
-    @Override
-    public void verify(){ System.out.println("This is a special Component called Environment"); }
 }

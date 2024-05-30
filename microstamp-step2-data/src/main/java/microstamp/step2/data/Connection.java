@@ -1,10 +1,14 @@
 package microstamp.step2.data;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "Connection")
+@Table(name = "connections")
+@Data
 public class Connection {
 
     @Id
@@ -23,98 +27,11 @@ public class Connection {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_id")
-    private List<Label> labels;
+    private List<Label> labels = new ArrayList<>();
 
     private Style style;
 
-    public Connection(){}
-
-    public Connection(long id, ConnectionType connectionType, Component source, Component target, Style style) {
-        this.id = id;
-        this.connectionType = connectionType;
-        this.source = source;
-        this.target = target;
-        this.labels = new ArrayList<>();
-        this.style = style;
-    }
-
     public void addLabel(Label label){
         labels.add(label);
-    }
-
-    public String printLabel(){
-        String print = "";
-        for(int i=0; i<this.labels.size();i++)
-            if(labels.get(i)!=null)
-                print = print + labels.get(i).toString()+", ";
-            else print = print + "null";
-        return print;
-    }
-
-    @Override
-    public String toString() {
-        String print = "";
-        if(this.source == null)
-            return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source= null" +", Target=" + target.getName() + '}';
-        if(this.target==null)
-            return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source=" + source.getName() +", Target= null"+ '}';
-        return "Connection{" + "Id=" + id + ", ConnectionType=" + connectionType +", Labels="+ printLabel() + " Source=" + source.getName() +", Target=" + target.getName() + '}';
-
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public ConnectionType getConnectionType() {
-        return connectionType;
-    }
-
-    public void setConnectionType(ConnectionType connectionType) {
-        this.connectionType = connectionType;
-    }
-
-    public Component getSource() {
-        return source;
-    }
-
-    public void setSource(Component source) {
-        this.source = source;
-    }
-
-    public Component getTarget() {
-        return target;
-    }
-
-    public void setTarget(Component target) {
-        this.target = target;
-    }
-
-    public List<Label> getLabels() {
-        return labels;
-    }
-
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
-    }
-
-    public Style getStyle() {
-        return style;
-    }
-
-    public void setStyle(Style style) {
-        this.style = style;
-    }
-
-    public String getSourceName(){
-        return source.getName();
-    }
-
-    public String getTargetName(){
-        return target.getName();
     }
 }

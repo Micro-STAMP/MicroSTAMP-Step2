@@ -62,7 +62,7 @@ public class ControlledProcessController {
         try {
             Optional<Component> father = componentRepository.findById(controlledProcessDto.getFather_id());
             controlledProcess.setFather(father.get());
-            father.get().setControlStructure(true);
+            father.get().setIsControlStructure(true);
         }catch (Exception ex){
             controlledProcess.setFather(null);
         }

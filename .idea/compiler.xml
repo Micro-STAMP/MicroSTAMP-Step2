@@ -6,7 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="MicroStamp" />
+        <module name="microstamp-step2-data" />
+        <module name="microstamp-step2-microservice" />
+        <module name="microstamp-step2-dto" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -15,7 +17,11 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="MicroSTAMP-Step2" options="" />
       <module name="MicroStamp" options="-parameters" />
+      <module name="microstamp-step2-data" options="-parameters" />
+      <module name="microstamp-step2-dto" options="-parameters" />
+      <module name="microstamp-step2-microservice" options="-parameters" />
     </option>
   </component>
 </project>

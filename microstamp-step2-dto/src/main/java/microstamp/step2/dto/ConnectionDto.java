@@ -11,10 +11,10 @@ public class ConnectionDto {
 
     private Long id;
     private ConnectionType connectionType;
-    private Long source_id;
-    private Long target_id;
+    private Long sourceId;
+    private Long targetId;
     private Style style;
-    private Long control_structure_id;
-    private List<String> labels_ids;
+    private Long controlStructureId;
+    private List<String> labelsIds;
 
 }

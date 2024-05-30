@@ -3,7 +3,6 @@ package microstamp.step2.controller;
 import microstamp.step2.dto.SensorDto;
 import microstamp.step2.data.Component;
 import microstamp.step2.data.ControlStructure;
-import microstamp.step2.data.ControlledProcess;
 import microstamp.step2.data.Sensor;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ControlStructureRepository;
@@ -23,20 +22,13 @@ import java.util.Optional;
 public class SensorController {
 
     @Autowired
-    private final SensorRepository sensorRepository;
+    private SensorRepository sensorRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
-
-    @Autowired
-    public SensorController(SensorRepository sensorRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
-        this.sensorRepository = sensorRepository;
-        this.componentRepository = componentRepository;
-        this.controlStructureRepository = controlStructureRepository;
-    }
+    private ControlStructureRepository controlStructureRepository;
 
     @GetMapping
     public List findAll(){
@@ -60,7 +52,7 @@ public class SensorController {
         Sensor sensor = new Sensor();
         sensor.setName(sensorDto.getName());
         try{
-            Optional<Component> father = componentRepository.findById(sensorDto.getFather_id());
+            Optional<Component> father = componentRepository.findById(sensorDto.getFatherId());
             sensor.setFather(father.get());
             father.get().setIsControlStructure(true);
         }catch (Exception ex){
@@ -68,7 +60,7 @@ public class SensorController {
         }
         sensor.setBorder(sensorDto.getBorder());
         sensor.setIsVisible(sensorDto.getIsVisible());
-        Optional<ControlStructure> c1 = controlStructureRepository.findById(sensorDto.getControl_structure_id());
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(sensorDto.getControlStructureId());
         c1.get().getComponents().add(sensor);
         controlStructureRepository.save(c1.get());
         return sensor;
@@ -76,14 +68,14 @@ public class SensorController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody SensorDto sensorDto) {
-        if(sensorDto.getFather_id() != null) {
+        if(sensorDto.getFatherId() != null) {
             if(sensorDto.getType() != "Sensor")
                 componentRepository.updateComponentType(id,sensorDto.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(sensorDto.getName());
                         record.setBorder(sensorDto.getBorder());
-                        record.setFather(componentRepository.findById(sensorDto.getFather_id()).get());
+                        record.setFather(componentRepository.findById(sensorDto.getFatherId()).get());
                         record.setIsVisible(sensorDto.getIsVisible());
                         Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);

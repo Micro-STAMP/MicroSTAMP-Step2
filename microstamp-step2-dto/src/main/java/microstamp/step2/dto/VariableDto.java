@@ -9,6 +9,6 @@ public class VariableDto {
 
     private String name;
 
-    private Long component_id;
+    private Long componentId;
 
 }

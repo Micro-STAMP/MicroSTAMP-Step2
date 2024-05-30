@@ -19,20 +19,13 @@ import java.util.Optional;
 public class ControllerController {
 
     @Autowired
-    private final ControllerRepository controllerRepository;
+    private ControllerRepository controllerRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
-
-    @Autowired
-    public ControllerController(ControllerRepository controllerRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
-        this.controllerRepository = controllerRepository;
-        this.componentRepository = componentRepository;
-        this.controlStructureRepository = controlStructureRepository;
-    }
+    private ControlStructureRepository controlStructureRepository;
 
     @GetMapping
     public List findAll(){
@@ -56,7 +49,7 @@ public class ControllerController {
         Controller controller = new Controller();
         controller.setName(controllerDto.getName());
         try {
-            Optional<Component> father = componentRepository.findById(controllerDto.getFather_id());
+            Optional<Component> father = componentRepository.findById(controllerDto.getFatherId());
             controller.setFather(father.get());
             father.get().setIsControlStructure(true);
         }catch (Exception ex){
@@ -64,7 +57,7 @@ public class ControllerController {
         }
         controller.setBorder(controllerDto.getBorder());
         controller.setIsVisible(controllerDto.getIsVisible());
-        Optional<ControlStructure> c1 = controlStructureRepository.findById(controllerDto.getControl_structure_id());
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(controllerDto.getControlStructureId());
         c1.get().getComponents().add(controller);
         controlStructureRepository.save(c1.get());
         return controller;
@@ -72,14 +65,14 @@ public class ControllerController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControllerDto controllerDto) {
-        if(controllerDto.getFather_id() != null) {
+        if(controllerDto.getFatherId() != null) {
             if(controllerDto.getType() != "Controller")
                 componentRepository.updateComponentType(id,controllerDto.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controllerDto.getName());
                         record.setBorder(controllerDto.getBorder());
-                        record.setFather(componentRepository.findById(controllerDto.getFather_id()).get());
+                        record.setFather(componentRepository.findById(controllerDto.getFatherId()).get());
                         record.setIsVisible(controllerDto.getIsVisible());
                         Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);

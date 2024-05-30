@@ -18,16 +18,10 @@ import java.util.Optional;
 public class StateController {
 
     @Autowired
-    private final StateRepository stateRepository;
+    private StateRepository stateRepository;
 
     @Autowired
-    private final VariableRepository variableRepository;
-
-    @Autowired
-    public StateController(StateRepository stateRepository, VariableRepository variableRepository) {
-        this.stateRepository = stateRepository;
-        this.variableRepository = variableRepository;
-    }
+    private VariableRepository variableRepository;
 
     @GetMapping
     public List findAll(){
@@ -46,7 +40,7 @@ public class StateController {
         State state = new State();
         state.setName(stateDto.getName());
 
-        Optional<Variable> v = variableRepository.findById(stateDto.getVariable_id());
+        Optional<Variable> v = variableRepository.findById(stateDto.getVariableId());
         v.get().getStates().add(state);
         variableRepository.save(v.get());
         return state;

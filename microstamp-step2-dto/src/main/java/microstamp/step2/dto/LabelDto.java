@@ -7,6 +7,6 @@ public class LabelDto {
 
     private Long id;
     private String label;
-    private Long connection_id;
+    private Long connectionId;
 
 }

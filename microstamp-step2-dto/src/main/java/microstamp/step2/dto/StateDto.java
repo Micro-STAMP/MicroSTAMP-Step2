@@ -9,6 +9,6 @@ public class StateDto {
 
     private String name;
 
-    private Long variable_id;
+    private Long variableId;
 
 }

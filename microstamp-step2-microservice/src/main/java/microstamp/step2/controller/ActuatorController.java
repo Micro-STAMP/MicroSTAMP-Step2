@@ -21,20 +21,13 @@ import java.util.Optional;
 public class ActuatorController {
 
     @Autowired
-    private final ActuatorRepository actuatorRepository;
+    private ActuatorRepository actuatorRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
-
-    @Autowired
-    public ActuatorController(ActuatorRepository actuatorRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
-        this.actuatorRepository = actuatorRepository;
-        this.componentRepository = componentRepository;
-        this.controlStructureRepository = controlStructureRepository;
-    }
+    private ControlStructureRepository controlStructureRepository;
 
     @GetMapping
     public List findAll(){
@@ -58,7 +51,7 @@ public class ActuatorController {
         Actuator actuator = new Actuator();
         actuator.setName(actuatorDto.getName());
         try {
-            Optional<Component> father = componentRepository.findById(actuatorDto.getFather_id());
+            Optional<Component> father = componentRepository.findById(actuatorDto.getFatherId());
             actuator.setFather(father.get());
             father.get().setIsControlStructure(true);
         }catch (Exception ex){
@@ -66,7 +59,7 @@ public class ActuatorController {
         }
         actuator.setBorder(actuatorDto.getBorder());
         actuator.setIsVisible(actuatorDto.getIsVisible());
-        Optional<ControlStructure> c1 = controlStructureRepository.findById(actuatorDto.getControl_structure_id());
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(actuatorDto.getControlStructureId());
         c1.get().getComponents().add(actuator);
         controlStructureRepository.save(c1.get());
         return actuator;
@@ -74,14 +67,14 @@ public class ActuatorController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ActuatorDto actuatorDto) {
-        if(actuatorDto.getFather_id() != null) {
+        if(actuatorDto.getFatherId() != null) {
             if(actuatorDto.getType() != "Actuator")
                 componentRepository.updateComponentType(id,actuatorDto.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(actuatorDto.getName());
                         record.setBorder(actuatorDto.getBorder());
-                        record.setFather(componentRepository.findById(actuatorDto.getFather_id()).get());
+                        record.setFather(componentRepository.findById(actuatorDto.getFatherId()).get());
                         record.setIsVisible(actuatorDto.getIsVisible());
                         Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);

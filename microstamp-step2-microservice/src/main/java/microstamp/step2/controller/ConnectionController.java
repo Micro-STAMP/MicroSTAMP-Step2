@@ -23,24 +23,16 @@ import java.util.Optional;
 public class ConnectionController {
 
     @Autowired
-    private final ConnectionRepository connectionRepository;
+    private ConnectionRepository connectionRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final LabelRepository labelRepository;
+    private LabelRepository labelRepository;
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
-
-    @Autowired
-    public ConnectionController(ConnectionRepository connectionRepository, ComponentRepository componentRepository, LabelRepository labelRepository, ControlStructureRepository controlStructureRepository) {
-        this.connectionRepository = connectionRepository;
-        this.componentRepository = componentRepository;
-        this.labelRepository = labelRepository;
-        this.controlStructureRepository = controlStructureRepository;
-    }
+    private ControlStructureRepository controlStructureRepository;
 
     @GetMapping
     public List findAll(){
@@ -64,14 +56,14 @@ public class ConnectionController {
         Connection connection = new Connection();
         connection.setConnectionType(connectionDto.getConnectionType());
 
-        Optional<Component> source = componentRepository.findById(connectionDto.getSource_id());
+        Optional<Component> source = componentRepository.findById(connectionDto.getSourceId());
         connection.setSource(source.get());
 
-        Optional<Component> target = componentRepository.findById(connectionDto.getTarget_id());
+        Optional<Component> target = componentRepository.findById(connectionDto.getTargetId());
         connection.setTarget(target.get());
 
         connection.setStyle(connectionDto.getStyle());
-        Optional<ControlStructure> c1 = controlStructureRepository.findById(connectionDto.getControl_structure_id());
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(connectionDto.getControlStructureId());
         c1.get().getConnections().add(connection);
         controlStructureRepository.save(c1.get());
         return connection;
@@ -83,8 +75,8 @@ public class ConnectionController {
                 .map(record -> {
                     record.setConnectionType(connectionDto.getConnectionType());
                     record.setStyle(connectionDto.getStyle());
-                    record.setTarget(componentRepository.findById(connectionDto.getTarget_id()).get());
-                    record.setSource(componentRepository.findById(connectionDto.getSource_id()).get());
+                    record.setTarget(componentRepository.findById(connectionDto.getTargetId()).get());
+                    record.setSource(componentRepository.findById(connectionDto.getSourceId()).get());
                     Connection updated = connectionRepository.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());

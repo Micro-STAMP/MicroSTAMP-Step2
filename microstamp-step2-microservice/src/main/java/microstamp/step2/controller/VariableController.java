@@ -19,16 +19,10 @@ import java.util.Optional;
 public class VariableController {
 
     @Autowired
-    private final VariableRepository variableRepository;
+    private VariableRepository variableRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
-
-    @Autowired
-    public VariableController(VariableRepository variableRepository, ComponentRepository componentRepository) {
-        this.variableRepository = variableRepository;
-        this.componentRepository = componentRepository;
-    }
+    private ComponentRepository componentRepository;
 
     @GetMapping
     public List findAll(){
@@ -59,7 +53,7 @@ public class VariableController {
         Variable variable = new Variable();
         variable.setName(variableDto.getName());
 
-        Optional<Component> c = componentRepository.findById(variableDto.getComponent_id());
+        Optional<Component> c = componentRepository.findById(variableDto.getComponentId());
         c.get().getVariables().add(variable);
         componentRepository.save(c.get());
         return variable;

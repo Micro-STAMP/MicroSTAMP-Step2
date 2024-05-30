@@ -9,12 +9,12 @@ import java.util.List;
 @Data
 public class ControlStructureDto {
 
-    private List<Component> components_ids;
+    private List<Component> componentsIds;
 
-    private List<Connection> connections_ids;
+    private List<Connection> connectionsIds;
 
     private String name;
 
-    private Long user_id;
+    private Long userId;
 
 }

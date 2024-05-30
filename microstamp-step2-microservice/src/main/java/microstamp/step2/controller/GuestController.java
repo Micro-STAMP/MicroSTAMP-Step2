@@ -19,19 +19,13 @@ import java.util.List;
 public class GuestController {
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
+    private ControlStructureRepository controlStructureRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ConnectionRepository connectionRepository;
-
-    public GuestController(ControlStructureRepository controlStructureRepository, ComponentRepository componentRepository, ConnectionRepository connectionRepository) {
-        this.controlStructureRepository = controlStructureRepository;
-        this.componentRepository = componentRepository;
-        this.connectionRepository = connectionRepository;
-    }
+    private ConnectionRepository connectionRepository;
 
     @GetMapping(path = {"controlstructures"})
     public List findControlStructures(){

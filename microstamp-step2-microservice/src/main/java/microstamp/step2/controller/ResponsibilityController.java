@@ -18,16 +18,10 @@ import java.util.Optional;
 public class ResponsibilityController {
 
     @Autowired
-    private final ResponsibilitiesRepository responsibilitiesRepository;
+    private ResponsibilitiesRepository responsibilitiesRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
-
-    @Autowired
-    public ResponsibilityController(ResponsibilitiesRepository responsibilitiesRepository, ComponentRepository componentRepository) {
-        this.responsibilitiesRepository = responsibilitiesRepository;
-        this.componentRepository = componentRepository;
-    }
+    private ComponentRepository componentRepository;
 
     @GetMapping
     public List findAll(){
@@ -47,7 +41,7 @@ public class ResponsibilityController {
         responsibility.setResponsibility(responsibilityDto.getResponsibility());
         responsibility.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
 
-        Optional<Component> c = componentRepository.findById(responsibilityDto.getComponent_id());
+        Optional<Component> c = componentRepository.findById(responsibilityDto.getComponentId());
 
         if(c.get().getType().equals("Controller")) {
             Controller controller = (Controller) c.get();

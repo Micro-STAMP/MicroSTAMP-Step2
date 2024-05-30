@@ -26,16 +26,10 @@ import java.util.Optional;
 public class ImageController {
 
     @Autowired
-    private final ImageRepository imageRepository;
+    private ImageRepository imageRepository;
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
-
-    @Autowired
-    public ImageController(ImageRepository imageRepository, ControlStructureRepository controlStructureRepository){
-        this.imageRepository = imageRepository;
-        this.controlStructureRepository = controlStructureRepository;
-    }
+    private ControlStructureRepository controlStructureRepository;
 
     @PostMapping(value="/{id}")
     public Image create(@PathVariable("id") long id, @RequestParam("image") MultipartFile multipartFile) throws IOException {

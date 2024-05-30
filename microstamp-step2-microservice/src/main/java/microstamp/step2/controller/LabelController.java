@@ -18,16 +18,10 @@ import java.util.Optional;
 public class LabelController {
 
     @Autowired
-    private final LabelRepository labelRepository;
+    private LabelRepository labelRepository;
 
     @Autowired
-    private final ConnectionRepository connectionRepository;
-
-    @Autowired
-    public LabelController(LabelRepository labelRepository, ConnectionRepository connectionRepository) {
-        this.labelRepository = labelRepository;
-        this.connectionRepository = connectionRepository;
-    }
+    private ConnectionRepository connectionRepository;
 
     @GetMapping
     public List findAll(){
@@ -46,7 +40,7 @@ public class LabelController {
         Label label = new Label();
         label.setLabel(labelDto.getLabel());
 
-        Optional<Connection> c = connectionRepository.findById(labelDto.getConnection_id());
+        Optional<Connection> c = connectionRepository.findById(labelDto.getConnectionId());
         c.get().getLabels().add(label);
         connectionRepository.save(c.get());
         return label;

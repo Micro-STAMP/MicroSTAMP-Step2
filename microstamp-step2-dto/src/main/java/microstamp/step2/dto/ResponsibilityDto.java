@@ -9,7 +9,7 @@ public class ResponsibilityDto {
 
     private String responsibility;
 
-    private Long component_id;
+    private Long componentId;
 
     private String systemSafetyConstraintAssociated;
 

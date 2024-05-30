@@ -18,16 +18,10 @@ import java.util.List;
 public class ComponentController {
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ConnectionRepository connectionRepository;
-
-    @Autowired
-    public ComponentController(ComponentRepository componentRepository, ConnectionRepository connectionRepository) {
-        this.componentRepository = componentRepository;
-        this.connectionRepository = connectionRepository;
-    }
+    private ConnectionRepository connectionRepository;
 
     @GetMapping
     public List findAll(){

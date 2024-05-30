@@ -14,32 +14,22 @@ import org.springframework.ui.Model;
 public class PageController {
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ConnectionRepository connectionRepository;
+    private ConnectionRepository connectionRepository;
 
     @Autowired
-    private final LabelRepository labelRepository;
+    private LabelRepository labelRepository;
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
+    private ControlStructureRepository controlStructureRepository;
 
     @Autowired
-    private final ImageRepository imageRepository;
+    private ImageRepository imageRepository;
 
     @Autowired
-    private final VariableRepository variableRepository;
-
-    @Autowired
-    public PageController(ComponentRepository componentRepository, ConnectionRepository connectionRepository, ControlStructureRepository controlStructureRepository, LabelRepository labelRepository, ImageRepository imageRepository, VariableRepository variableRepository) {
-        this.componentRepository = componentRepository;
-        this.connectionRepository = connectionRepository;
-        this.controlStructureRepository = controlStructureRepository;
-        this.labelRepository = labelRepository;
-        this.imageRepository = imageRepository;
-        this.variableRepository = variableRepository;
-    }
+    private VariableRepository variableRepository;
 
     @GetMapping("/{controlStructureId:\\d+}")
     public String indexPage(@PathVariable Long controlStructureId, Model model) {

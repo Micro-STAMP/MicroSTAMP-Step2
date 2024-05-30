@@ -5,7 +5,6 @@ import microstamp.step2.dto.ControlledProcessDto;
 import microstamp.step2.data.Component;
 import microstamp.step2.data.ControlStructure;
 import microstamp.step2.data.ControlledProcess;
-import microstamp.step2.data.Controller;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ControlStructureRepository;
 import microstamp.step2.repository.ControlledProcessRepository;
@@ -23,20 +22,13 @@ import java.util.Optional;
 public class ControlledProcessController {
 
     @Autowired
-    private final ControlledProcessRepository controlledProcessRepository;
+    private ControlledProcessRepository controlledProcessRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
-
-    @Autowired
-    public ControlledProcessController(ControlledProcessRepository controlledProcessRepository, ComponentRepository componentRepository, ControlStructureRepository controlStructureRepository) {
-        this.controlledProcessRepository = controlledProcessRepository;
-        this.componentRepository = componentRepository;
-        this.controlStructureRepository = controlStructureRepository;
-    }
+    private ControlStructureRepository controlStructureRepository;
 
     @GetMapping
     public List findAll(){
@@ -60,7 +52,7 @@ public class ControlledProcessController {
         ControlledProcess controlledProcess = new ControlledProcess();
         controlledProcess.setName(controlledProcessDto.getName());
         try {
-            Optional<Component> father = componentRepository.findById(controlledProcessDto.getFather_id());
+            Optional<Component> father = componentRepository.findById(controlledProcessDto.getFatherId());
             controlledProcess.setFather(father.get());
             father.get().setIsControlStructure(true);
         }catch (Exception ex){
@@ -68,7 +60,7 @@ public class ControlledProcessController {
         }
         controlledProcess.setBorder(controlledProcessDto.getBorder());
         controlledProcess.setIsVisible(controlledProcessDto.getIsVisible());
-        Optional<ControlStructure> c1 = controlStructureRepository.findById(controlledProcessDto.getControl_structure_id());
+        Optional<ControlStructure> c1 = controlStructureRepository.findById(controlledProcessDto.getControlStructureId());
         c1.get().getComponents().add(controlledProcess);
         controlStructureRepository.save(c1.get());
         return controlledProcess;
@@ -76,14 +68,14 @@ public class ControlledProcessController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControlledProcessDto controlledProcessDto) {
-        if(controlledProcessDto.getFather_id() != null) {
+        if(controlledProcessDto.getFatherId() != null) {
             if(controlledProcessDto.getType() != "ControlledProcess")
                 componentRepository.updateComponentType(id,controlledProcessDto.getType());
             return componentRepository.findById(id)
                     .map(record -> {
                         record.setName(controlledProcessDto.getName());
                         record.setBorder(controlledProcessDto.getBorder());
-                        record.setFather(componentRepository.findById(controlledProcessDto.getFather_id()).get());
+                        record.setFather(componentRepository.findById(controlledProcessDto.getFatherId()).get());
                         record.setIsVisible(controlledProcessDto.getIsVisible());
                         Component updated = componentRepository.save(record);
                         return ResponseEntity.ok().body(updated);

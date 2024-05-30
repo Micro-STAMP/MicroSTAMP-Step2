@@ -1,6 +1,5 @@
 package microstamp.step2.controller;
 
-import microstamp.step2.configuration.MyUserDetails;
 import microstamp.step2.dto.ControlStructureDto;
 import microstamp.step2.data.*;
 import microstamp.step2.repository.ComponentRepository;
@@ -10,10 +9,6 @@ import microstamp.step2.repository.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.nio.file.Files;
 
@@ -28,24 +23,16 @@ import java.util.Optional;
 public class ControlStructureController {
 
     @Autowired
-    private final ControlStructureRepository controlStructureRepository;
+    private ControlStructureRepository controlStructureRepository;
 
     @Autowired
-    private final ComponentRepository componentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
-    private final ImageRepository imageRepository;
+    private ImageRepository imageRepository;
 
     @Autowired
-    private final UserRepository userRepository;
-
-    @Autowired
-    public ControlStructureController(ControlStructureRepository controlStructureRepository, ComponentRepository componentRepository, ImageRepository imageRepository, UserRepository userRepository) {
-        this.controlStructureRepository = controlStructureRepository;
-        this.componentRepository = componentRepository;
-        this.imageRepository = imageRepository;
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @GetMapping
     public List findAll(){
@@ -70,7 +57,7 @@ public class ControlStructureController {
         controlStructure.setName(controlStructureDto.getName());
         controlStructure.getComponents().add(new Environment());
 
-        Optional<User> user = userRepository.findById(controlStructureDto.getUser_id());
+        Optional<User> user = userRepository.findById(controlStructureDto.getUserId());
         user.get().getControlStructures().add(controlStructure);
         userRepository.save(user.get());
 

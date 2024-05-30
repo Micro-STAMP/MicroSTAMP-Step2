@@ -9,8 +9,8 @@ public abstract class ComponentDto {
     private Long id;
     private String name;
     private Boolean isVisible;
-    private Long father_id;
-    private Long control_structure_id;
+    private Long fatherId;
+    private Long controlStructureId;
     private Style border;
     private String type;
 

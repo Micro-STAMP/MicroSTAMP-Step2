@@ -20,30 +20,29 @@ public class ResponsibilityController {
     private ResponsibilityService responsibilityService;
 
     @GetMapping
-    public List findAll() {
-        return responsibilityService.findAll();
+    public ResponseEntity<List<Responsibility>> findAll() {
+        return new ResponseEntity<>(responsibilityService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id) {
+    public ResponseEntity<Responsibility> findById(@PathVariable long id) {
         return new ResponseEntity<>(responsibilityService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public Responsibility create(@RequestBody ResponsibilityDto responsibilityDto) {
-        return responsibilityService.create(responsibilityDto);
+    public ResponseEntity<Responsibility> create(@RequestBody ResponsibilityDto responsibilityDto) {
+        return new ResponseEntity<>(responsibilityService.create(responsibilityDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ResponsibilityDto responsibilityDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ResponsibilityDto responsibilityDto) {
         responsibilityService.update(id, responsibilityDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         responsibilityService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

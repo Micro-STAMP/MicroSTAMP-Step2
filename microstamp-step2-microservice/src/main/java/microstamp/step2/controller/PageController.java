@@ -50,16 +50,13 @@ public class PageController {
 
         List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
         if (!componentsWithoutEnvironment.isEmpty())
-            componentsWithoutEnvironment.remove(0);
+            componentsWithoutEnvironment.removeFirst();
         model.addAttribute("componentsWithoutEnvironment", componentsWithoutEnvironment);
 
         List<Component> controllersControlledProcess = new ArrayList<>();
         for (Component c : components) {
-            System.out.println(c.getName() + "\n\n");
-            System.out.println(c.getType() + "\n\n");
             if (c.getType().equals("Controller") || c.getType().equals("ControlledProcess")) {
                 controllersControlledProcess.add(c);
-                System.out.println("Add " + c.getName() + "\n\n");
             }
         }
         model.addAttribute("controllersControlledProcess", controllersControlledProcess);
@@ -107,16 +104,13 @@ public class PageController {
 
         List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
         if (!componentsWithoutEnvironment.isEmpty())
-            componentsWithoutEnvironment.remove(0);
+            componentsWithoutEnvironment.removeFirst();
         model.addAttribute("componentsWithoutEnvironment", componentsWithoutEnvironment);
 
         List<Component> controllersControlledProcess = new ArrayList<>();
         for (Component c : components) {
-            System.out.println(c.getName() + "\n\n");
-            System.out.println(c.getType() + "\n\n");
             if (c.getType().equals("Controller") || c.getType().equals("ControlledProcess")) {
                 controllersControlledProcess.add(c);
-                System.out.println("Add " + c.getName() + "\n\n");
             }
         }
         model.addAttribute("controllersControlledProcess", controllersControlledProcess);

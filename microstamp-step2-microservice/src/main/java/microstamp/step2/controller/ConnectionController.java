@@ -20,35 +20,34 @@ public class ConnectionController {
     private ConnectionService connectionService;
 
     @GetMapping
-    public List findAll() {
-        return connectionService.findAll();
+    public ResponseEntity<List<Connection>> findAll() {
+        return new ResponseEntity<>(connectionService.findAll(), HttpStatus.OK);
     }
 
-
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id) {
+    public ResponseEntity<Connection> findById(@PathVariable long id) {
         return new ResponseEntity<>(connectionService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"controlstructure/{id}"})
-    public List findByControlStructureId(@PathVariable long id) {
-        return connectionService.findByControlStructureId(id);
+    public ResponseEntity<List<Connection>> findByControlStructureId(@PathVariable long id) {
+        return new ResponseEntity<>(connectionService.findByControlStructureId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public Connection create(@RequestBody ConnectionDto connectionDto) {
-        return connectionService.create(connectionDto);
+    public ResponseEntity<Connection> create(@RequestBody ConnectionDto connectionDto) {
+        return new ResponseEntity<>(connectionService.create(connectionDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ConnectionDto connectionDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ConnectionDto connectionDto) {
         connectionService.update(id, connectionDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         connectionService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

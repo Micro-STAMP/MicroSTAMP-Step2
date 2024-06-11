@@ -20,35 +20,34 @@ public class ControllerController {
     private ControllerService controllerService;
 
     @GetMapping
-    public List findAll() {
-        return controllerService.findAll();
+    public ResponseEntity<List<Controller>> findAll() {
+        return new ResponseEntity<>(controllerService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id) {
+    public ResponseEntity<Controller> findById(@PathVariable long id) {
         return new ResponseEntity<>(controllerService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"controlstructure/{id}"})
-    public List findByControlStructureId(@PathVariable long id) {
-        return controllerService.findByControlStructureId(id);
+    public ResponseEntity<List<Controller>> findByControlStructureId(@PathVariable long id) {
+        return new ResponseEntity<>(controllerService.findByControlStructureId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public Controller create(@RequestBody ControllerDto controllerDto) {
-        return controllerService.create(controllerDto);
+    public ResponseEntity<Controller> create(@RequestBody ControllerDto controllerDto) {
+        return new ResponseEntity<>(controllerService.create(controllerDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControllerDto controllerDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ControllerDto controllerDto) {
         controllerService.update(id, controllerDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         controllerService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

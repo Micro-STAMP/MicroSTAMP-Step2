@@ -20,34 +20,34 @@ public class LabelController {
     private LabelService labelService;
 
     @GetMapping
-    public List findAll() {
-        return labelService.findAll();
+    public ResponseEntity<List<Label>> findAll() {
+        return new ResponseEntity<>(labelService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findLabelById(@PathVariable long id) {
+    public ResponseEntity<Label> findById(@PathVariable long id) {
         return new ResponseEntity<>(labelService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public Label create(@RequestBody LabelDto labelDto) {
-        return labelService.create(labelDto);
+    public ResponseEntity<Label> create(@RequestBody LabelDto labelDto) {
+        return new ResponseEntity<>(labelService.create(labelDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody LabelDto labelDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody LabelDto labelDto) {
         labelService.update(id, labelDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         labelService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(path = {"connection/{id}"})
-    public List findByConnectionId(@PathVariable long id) {
-        return labelService.findByConnectionId(id);
+    public ResponseEntity<List<Label>> findByConnectionId(@PathVariable long id) {
+        return new ResponseEntity<>(labelService.findByConnectionId(id), HttpStatus.OK);
     }
 }

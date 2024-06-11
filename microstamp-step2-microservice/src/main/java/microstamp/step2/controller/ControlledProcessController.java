@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/controlledProcesses")
+@RequestMapping("/controlledprocesses")
 @Tag(name = "ControlledProcess")
 public class ControlledProcessController {
 
@@ -21,35 +21,35 @@ public class ControlledProcessController {
     private ControlledProcessService controlledProcessService;
 
     @GetMapping
-    public List findAll() {
-        return controlledProcessService.findAll();
+    public ResponseEntity<List<ControlledProcess>> findAll() {
+        return new ResponseEntity<>(controlledProcessService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id) {
+    public ResponseEntity<ControlledProcess> findById(@PathVariable long id) {
         return new ResponseEntity<>(controlledProcessService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"controlstructure/{id}"})
-    public List findByControlStructureId(@PathVariable long id) {
-        return controlledProcessService.findByControlStructureId(id);
+    public ResponseEntity<List<ControlledProcess>> findByControlStructureId(@PathVariable long id) {
+        return new ResponseEntity<>(controlledProcessService.findByControlStructureId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ControlledProcess create(@RequestBody ControlledProcessDto controlledProcessDto) {
-        return controlledProcessService.create(controlledProcessDto);
+    public ResponseEntity<ControlledProcess> create(@RequestBody ControlledProcessDto controlledProcessDto) {
+        return new ResponseEntity<>(controlledProcessService.create(controlledProcessDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControlledProcessDto controlledProcessDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ControlledProcessDto controlledProcessDto) {
         controlledProcessService.update(id, controlledProcessDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         controlledProcessService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

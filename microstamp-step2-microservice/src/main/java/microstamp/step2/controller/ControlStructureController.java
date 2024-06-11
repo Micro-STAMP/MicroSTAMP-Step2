@@ -20,34 +20,34 @@ public class ControlStructureController {
     private ControlStructureService controlStructureService;
 
     @GetMapping
-    public List findAll() {
-        return controlStructureService.findAll();
+    public ResponseEntity<List<ControlStructure>> findAll() {
+        return new ResponseEntity<>(controlStructureService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id) {
+    public ResponseEntity<ControlStructure> findById(@PathVariable long id) {
         return new ResponseEntity<>(controlStructureService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"user/{id}"})
-    public List findByUserId(@PathVariable long id) {
-        return controlStructureService.findByUserId(id);
+    public ResponseEntity<List<ControlStructure>> findByUserId(@PathVariable long id) {
+        return new ResponseEntity<>(controlStructureService.findByUserId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ControlStructure create(@RequestBody ControlStructureDto controlStructureDto) {
-        return controlStructureService.create(controlStructureDto);
+    public ResponseEntity<ControlStructure> create(@RequestBody ControlStructureDto controlStructureDto) {
+        return new ResponseEntity<>(controlStructureService.create(controlStructureDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody ControlStructureDto controlStructureDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ControlStructureDto controlStructureDto) {
         controlStructureService.update(id, controlStructureDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         controlStructureService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -72,7 +72,6 @@ public class ControlStructureService {
         try {
             deleteImages(id);
         } catch (Exception ex) {
-            System.out.println("\nException when deleting CS images: \n");
             ex.printStackTrace();
         }
         controlStructureRepository.findById(id)

@@ -20,13 +20,13 @@ public class ImageController {
     private ImageService imageService;
 
     @PostMapping(value = "/{id}")
-    public Image create(@PathVariable("id") long controlStructureId, @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        return imageService.create(controlStructureId, multipartFile);
+    public ResponseEntity<Image> create(@PathVariable("id") long controlStructureId, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+        return new ResponseEntity<>(imageService.create(controlStructureId, multipartFile), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         imageService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

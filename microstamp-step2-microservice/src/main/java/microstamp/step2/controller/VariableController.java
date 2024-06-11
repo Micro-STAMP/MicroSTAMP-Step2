@@ -20,35 +20,35 @@ public class VariableController {
     private VariableService variableService;
 
     @GetMapping
-    public List findAll() {
-        return variableService.findAll();
+    public ResponseEntity<List<Variable>> findAll() {
+        return new ResponseEntity<>(variableService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id) {
-        return new ResponseEntity(variableService.findById(id), HttpStatus.OK);
+    public ResponseEntity<Variable> findById(@PathVariable long id) {
+        return new ResponseEntity<>(variableService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"controlstructure/{id}"})
-    public List findByControlStructureId(@PathVariable long id) {
-        return variableService.findByControlStructureId(id);
+    public ResponseEntity<List<Variable>> findByControlStructureId(@PathVariable long id) {
+        return new ResponseEntity<>(variableService.findByControlStructureId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public Variable create(@RequestBody VariableDto variableDto) {
-        return variableService.create(variableDto);
+    public ResponseEntity<Variable> create(@RequestBody VariableDto variableDto) {
+        return new ResponseEntity<>(variableService.create(variableDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") long id, @RequestBody VariableDto variableDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody VariableDto variableDto) {
         variableService.update(id, variableDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         variableService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

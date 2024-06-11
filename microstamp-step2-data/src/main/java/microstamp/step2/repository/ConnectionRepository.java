@@ -11,7 +11,7 @@ import java.util.List;
 public interface ConnectionRepository extends JpaRepository<Connection, Long> {
 
     @Query(value = "SELECT * FROM connections c WHERE c.control_structure_id = ?1", nativeQuery = true)
-    List<Connection> findConnectionsByControlStructureId(long id);
+    List<Connection> findByControlStructureId(long id);
 
     @Query(value = "SELECT * from connections c WHERE c.source_id = ?1", nativeQuery = true)
     List<Connection> findConnectionsThatTheComponentIsSource(long id);

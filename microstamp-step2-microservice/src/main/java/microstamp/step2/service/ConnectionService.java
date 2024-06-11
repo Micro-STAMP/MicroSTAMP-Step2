@@ -40,7 +40,7 @@ public class ConnectionService {
     }
 
     public List<Connection> findByControlStructureId(long id) {
-        return connectionRepository.findConnectionsByControlStructureId(id);
+        return connectionRepository.findByControlStructureId(id);
     }
 
     public Connection create(ConnectionDto connectionDto) {
@@ -73,7 +73,7 @@ public class ConnectionService {
     }
 
     public void delete(long id) {
-        List<Label> labels = labelRepository.findLabelsByConnectionId(id);
+        List<Label> labels = labelRepository.findByConnectionId(id);
         labels.forEach(label -> labelRepository.deleteById(label.getId()));
 
         connectionRepository.findById(id)

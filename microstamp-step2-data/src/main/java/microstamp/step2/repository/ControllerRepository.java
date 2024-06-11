@@ -11,6 +11,6 @@ import java.util.List;
 public interface ControllerRepository extends JpaRepository<microstamp.step2.data.Controller, Long> {
 
     @Query(value = "SELECT * FROM components c WHERE c.control_structure_id = ?1 AND dtype = 'Controller'", nativeQuery = true)
-    List<Controller> findControllersByControlStructureId(long id);
+    List<Controller> findByControlStructureId(long id);
 
 }

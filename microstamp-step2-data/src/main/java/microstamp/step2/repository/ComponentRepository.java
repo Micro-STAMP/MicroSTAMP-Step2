@@ -14,10 +14,10 @@ import java.util.List;
 public interface ComponentRepository extends JpaRepository<Component, Long> {
 
     @Query(value = "SELECT * FROM components c WHERE c.control_structure_id = ?1", nativeQuery = true)
-    List<Component> findComponentsByControlStructureId(long id);
+    List<Component> findByControlStructureId(long id);
 
     @Query(value = "SELECT * FROM components c WHERE c.father_id = ?1", nativeQuery = true)
-    List<Component> findComponentsChildren(long id);
+    List<Component> findChildrenByComponentId(long id);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE components SET dtype = ?2 WHERE id = ?1", nativeQuery = true)

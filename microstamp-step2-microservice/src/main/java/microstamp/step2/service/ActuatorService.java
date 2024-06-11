@@ -35,7 +35,7 @@ public class ActuatorService {
     }
 
     public List<Actuator> findByControlStructureId(long id) {
-        return actuatorRepository.findActuatorsByControlStructureId(id);
+        return actuatorRepository.findByControlStructureId(id);
     }
 
     public Actuator create(ActuatorDto actuatorDto) {

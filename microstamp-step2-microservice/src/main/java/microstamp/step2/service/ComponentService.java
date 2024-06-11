@@ -29,11 +29,11 @@ public class ComponentService {
     }
 
     public List<microstamp.step2.data.Component> findByControlStructureId(long id) {
-        return componentRepository.findComponentsByControlStructureId(id);
+        return componentRepository.findByControlStructureId(id);
     }
 
     public void delete(long id) {
-        List<microstamp.step2.data.Component> children = componentRepository.findComponentsChildren(id);
+        List<microstamp.step2.data.Component> children = componentRepository.findChildrenByComponentId(id);
         children.forEach(c -> delete(c.getId()));
 
         List<Connection> connections_source = connectionRepository.findConnectionsThatTheComponentIsSource(id);
@@ -50,7 +50,7 @@ public class ComponentService {
     }
 
     public List getComponentsAndConnectionsRecursive(long id) {
-        List<microstamp.step2.data.Component> components = componentRepository.findComponentsChildren(id);
+        List<microstamp.step2.data.Component> components = componentRepository.findChildrenByComponentId(id);
         List items = new ArrayList();
         for (microstamp.step2.data.Component c : components)
             items.addAll(getComponentsAndConnectionsRecursive(c.getId()));
@@ -75,7 +75,7 @@ public class ComponentService {
     }
 
     public List getComponentsRecursive(long id) {
-        List<microstamp.step2.data.Component> components = componentRepository.findComponentsChildren(id);
+        List<microstamp.step2.data.Component> components = componentRepository.findChildrenByComponentId(id);
         List items = new ArrayList();
         for (microstamp.step2.data.Component c : components)
             items.addAll(getComponentsAndConnectionsRecursive(c.getId()));

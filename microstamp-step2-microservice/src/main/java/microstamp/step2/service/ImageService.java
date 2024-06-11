@@ -29,7 +29,7 @@ public class ImageService {
     private ControlStructureRepository controlStructureRepository;
 
     public List<Image> findByControlStructureId(long id) {
-        return imageRepository.findImagesByControlStructureId(id);
+        return imageRepository.findByControlStructureId(id);
     }
 
     public Image create(long controlStructureId, MultipartFile multipartFile) throws IOException {

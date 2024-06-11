@@ -35,7 +35,7 @@ public class ControlledProcessService {
     }
 
     public List<ControlledProcess> findByControlStructureId(long id) {
-        return controlledProcessRepository.findControlledProcessesByControlStructureId(id);
+        return controlledProcessRepository.findByControlStructureId(id);
     }
 
     public ControlledProcess create(ControlledProcessDto controlledProcessDto) {

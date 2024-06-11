@@ -11,6 +11,6 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
     @Query(value = "SELECT * FROM images i WHERE i.control_structure_id = ?1", nativeQuery = true)
-    List<Image> findImagesByControlStructureId(long id);
+    List<Image> findByControlStructureId(long id);
 
 }

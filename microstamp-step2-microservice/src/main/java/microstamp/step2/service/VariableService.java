@@ -31,11 +31,11 @@ public class VariableService {
     }
 
     public List<Variable> findByControlStructureId(long id) {
-        List<microstamp.step2.data.Component> components = componentRepository.findComponentsByControlStructureId(id);
+        List<microstamp.step2.data.Component> components = componentRepository.findByControlStructureId(id);
         List<Variable> variables = new ArrayList<>();
         for (microstamp.step2.data.Component c : components) {
             if (!c.getVariables().isEmpty()) {
-                variables.addAll(variableRepository.findVariablesByComponentId(c.getId()));
+                variables.addAll(variableRepository.findByComponentId(c.getId()));
             }
         }
         return variables;

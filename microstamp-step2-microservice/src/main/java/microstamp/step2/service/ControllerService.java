@@ -35,7 +35,7 @@ public class ControllerService {
     }
 
     public List<Controller> findByControlStructureId(long id) {
-        return controllerRepository.findControllersByControlStructureId(id);
+        return controllerRepository.findByControlStructureId(id);
     }
 
     public Controller create(ControllerDto controllerDto) {

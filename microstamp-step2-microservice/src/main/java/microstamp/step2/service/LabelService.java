@@ -58,6 +58,6 @@ public class LabelService {
     }
 
     public List<Label> findByConnectionId(long id) {
-        return labelRepository.findLabelsByConnectionId(id);
+        return labelRepository.findByConnectionId(id);
     }
 }

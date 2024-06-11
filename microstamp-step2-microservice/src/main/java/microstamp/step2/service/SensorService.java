@@ -35,7 +35,7 @@ public class SensorService {
     }
 
     public List<Sensor> findByControlStructureId(long id) {
-        return sensorRepository.findSensorsByControlStructureId(id);
+        return sensorRepository.findByControlStructureId(id);
     }
 
     public Sensor create(SensorDto sensorDto) {

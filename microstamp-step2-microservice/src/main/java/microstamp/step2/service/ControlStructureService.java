@@ -40,7 +40,7 @@ public class ControlStructureService {
     }
 
     public List<ControlStructure> findByUserId(long id) {
-        return controlStructureRepository.findControlStructuresByUserId(id);
+        return controlStructureRepository.findByUserId(id);
     }
 
     public List<ControlStructure> findControlStructuresForGuests() {
@@ -84,7 +84,7 @@ public class ControlStructureService {
     private void deleteImages(long id) throws Exception {
         String deleteDir = "MicroSTAMP-Step2/microstamp-step2-microservice/src/main/resources/static/cs-images/" + id + "/";
         Path uploadDeletePath;
-        for (Image i : imageRepository.findImagesByControlStructureId(id)) {
+        for (Image i : imageRepository.findByControlStructureId(id)) {
             uploadDeletePath = Paths.get(deleteDir + i.getName());
             Files.deleteIfExists(uploadDeletePath);
         }

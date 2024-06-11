@@ -45,4 +45,9 @@ public class LabelController {
         labelService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @GetMapping(path = {"connection/{id}"})
+    public List findByConnectionId(@PathVariable long id) {
+        return labelService.findByConnectionId(id);
+    }
 }

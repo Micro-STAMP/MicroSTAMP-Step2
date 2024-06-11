@@ -29,7 +29,7 @@ public class ActuatorController {
         return new ResponseEntity<>(actuatorService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"cs/{id}"})
+    @GetMapping(path = {"controlstructure/{id}"})
     public List findByControlStructureId(@PathVariable long id) {
         return actuatorService.findByControlStructureId(id);
     }

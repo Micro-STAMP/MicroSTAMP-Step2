@@ -30,7 +30,7 @@ public class ConnectionController {
         return new ResponseEntity<>(connectionService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"cs/{id}"})
+    @GetMapping(path = {"controlstructure/{id}"})
     public List findByControlStructureId(@PathVariable long id) {
         return connectionService.findByControlStructureId(id);
     }
@@ -51,10 +51,4 @@ public class ConnectionController {
         connectionService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @GetMapping(path = {"listLabelsToBeDeleted/{id}"})
-    public List getLabelsToBeDeleted(@PathVariable long id) {
-        return connectionService.findLabelsByConnectionId(id);
-    }
-
 }

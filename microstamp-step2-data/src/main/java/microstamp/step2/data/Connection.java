@@ -34,4 +34,12 @@ public class Connection {
     public void addLabel(Label label) {
         labels.add(label);
     }
+
+    public String getSourceName(){
+        return source.getName();
+    }
+
+    public String getTargetName(){
+        return target.getName();
+    }
 }

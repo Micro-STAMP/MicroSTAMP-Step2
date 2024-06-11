@@ -826,7 +826,7 @@
         var cs_id = $("#control_structure_id").val();
         $.ajax({
             "type": 'get',
-            "url": '/components/cs/' + cs_id,
+            "url": '/components/controlstructure/' + cs_id,
             "dataType": "json",
             "success": function (data) {
                 var backup = data;
@@ -857,7 +857,7 @@
         });
         $.ajax({
             "type": 'get',
-            "url": '/connections/cs/' + cs_id,
+            "url": '/connections/controlstructure/' + cs_id,
             "dataType": "json",
             "success": function (data) {
                 $.each(data, function (idx, obj) {
@@ -876,7 +876,7 @@
         });
         $.ajax({
             "type": 'get',
-            "url": '/components/cs/' + cs_id,
+            "url": '/components/controlstructure/' + cs_id,
             "dataType": "json",
             "success": function (data) {
                 $.each(data, function (idx, obj) {
@@ -1423,7 +1423,7 @@
         });
         $("#labelsToBeDeleted").empty();
         $.ajax({
-            url: '/connections/listLabelsToBeDeleted/'+ id,
+            url: '/labels/connection/'+ id,
             type: 'get',
             success: function (data) {
                  $.each(data, function (idx, obj) {

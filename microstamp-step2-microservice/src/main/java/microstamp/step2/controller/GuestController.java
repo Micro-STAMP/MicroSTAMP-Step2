@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/guests-request")
+@RequestMapping("/guests")
 @Tag(name = "Guest")
 public class GuestController {
 
@@ -32,12 +32,12 @@ public class GuestController {
         return controlStructureService.findByUserId(3);
     }
 
-    @GetMapping(path = {"components/{id}"})
+    @GetMapping(path = {"components/controlstructure/{id}"})
     public List findComponentsByControlStructureId(@PathVariable long id) {
         return componentService.findByControlStructureId(id);
     }
 
-    @GetMapping(path = {"connections/{id}"})
+    @GetMapping(path = {"connections/controlstructure/{id}"})
     public List findConnectionsByControlStructureId(@PathVariable long id) {
         return connectionService.findByControlStructureId(id);
     }

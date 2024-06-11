@@ -56,4 +56,8 @@ public class LabelService {
                     return ResponseEntity.ok().build();
                 }).orElseThrow();
     }
+
+    public List<Label> findByConnectionId(long id) {
+        return labelRepository.findLabelsByConnectionId(id);
+    }
 }

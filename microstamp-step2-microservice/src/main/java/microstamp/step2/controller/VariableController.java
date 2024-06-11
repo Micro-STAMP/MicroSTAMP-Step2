@@ -29,7 +29,7 @@ public class VariableController {
         return new ResponseEntity(variableService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"cs/{id}"})
+    @GetMapping(path = {"controlstructure/{id}"})
     public List findByControlStructureId(@PathVariable long id) {
         return variableService.findByControlStructureId(id);
     }

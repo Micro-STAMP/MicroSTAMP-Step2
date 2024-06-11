@@ -30,7 +30,7 @@ public abstract class Component {
 
     public String getType() {
         String s = this.getClass().getName();
-        String[] split = s.split("models.");
+        String[] split = s.split("microstamp.step2.data.");
         return split[split.length - 1];
     }
 }

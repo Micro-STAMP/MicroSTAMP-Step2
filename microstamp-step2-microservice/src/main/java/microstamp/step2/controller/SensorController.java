@@ -21,12 +21,9 @@ public class SensorController {
     @Autowired
     private SensorService sensorService;
 
-    @Autowired
-    private ComponentService componentService;
-
     @GetMapping
     public List findAll() {
-        return componentService.findAll();
+        return sensorService.findAll();
     }
 
     @GetMapping(path = {"/{id}"})
@@ -34,7 +31,7 @@ public class SensorController {
         return new ResponseEntity<>(sensorService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"cs/{id}"})
+    @GetMapping(path = {"controlstructure/{id}"})
     public List findByControlStructureId(@PathVariable long id) {
         return sensorService.findByControlStructureId(id);
     }

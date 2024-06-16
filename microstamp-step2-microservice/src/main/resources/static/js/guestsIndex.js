@@ -1,4 +1,3 @@
-
 $(window).ready(function () {
     var cs_id = $("#control_structure_id").val();
     $.ajax({

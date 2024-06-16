@@ -5,7 +5,7 @@ function loadVariableToBeStated(id){
 function addState(){
     var state = {
         name: $("#state-name").val(),
-        variable_id: variableToBeStated,
+        variableId: variableToBeStated,
     }
 
     $.ajax({

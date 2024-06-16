@@ -1,7 +1,7 @@
 function addVariable(){
     var variable = {
         name: $("#variable-name").val(),
-        component_id: $("#variable-component").val(),
+        componentId: $("#variable-component").val(),
     }
 
     $.ajax({

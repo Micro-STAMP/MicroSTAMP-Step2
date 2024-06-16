@@ -5,7 +5,7 @@ function loadConnectionToBeLabeled(id){
 function addLabel(){
     var label = {
         label: $("#label-name").val(),
-        connection_id: connectionToBeLabeled,
+        connectionId: connectionToBeLabeled,
     }
 
     $.ajax({

@@ -10,11 +10,11 @@ function addConnection() {
     }
 
     var connection = {
-        source_id: $("#connection-source").val(),
-        target_id: $("#connection-target").val(),
+        sourceId: $("#connection-source").val(),
+        targetId: $("#connection-target").val(),
         connectionType: connType,
         style: $("#connection-style").val(),
-        control_structure_id: $("#control_structure_id").val(),
+        controlStructureId: $("#control_structure_id").val(),
     }
 
     $('#target').html('sending..');
@@ -85,11 +85,11 @@ function sendEditedConnection(){
     }
 
     var connection = {
-        source_id: $("#connection-edit-source").val(),
-        target_id: $("#connection-edit-target").val(),
+        sourceId: $("#connection-edit-source").val(),
+        targetId: $("#connection-edit-target").val(),
         connectionType: connType,
         style: $("#connection-edit-style").val(),
-        control_structure_id: $("#control_structure_id").val(),
+        controlStructureId: $("#control_structure_id").val(),
     }
 
     $.ajax({

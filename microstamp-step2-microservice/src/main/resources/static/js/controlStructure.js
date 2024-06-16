@@ -26,7 +26,7 @@ $(window).ready(function () {
 function addControlStructure() {
     var control_structure = {
         name: $("#control_structure-name").val(),
-        user_id: document.getElementById("user_id").innerText,
+        userId: document.getElementById("user_id").innerText,
     }
 
     $('#target').html('sending..');

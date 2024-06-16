@@ -6,7 +6,7 @@ function addResponsibility(){
     var responsibility = {
         responsibility: $("#responsibility-name").val(),
         systemSafetyConstraintAssociated: $("#responsibility-ssc").val(),
-        component_id: componentToResponsibility,
+        componentId: componentToResponsibility,
     }
 
     $.ajax({

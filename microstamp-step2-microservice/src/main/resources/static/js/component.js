@@ -7,10 +7,10 @@ function addComponent(){
 
     var component = {
         name: $("#component-name").val(),
-        father_id: $("#component-father").val(),
+        fatherId: $("#component-father").val(),
         border: $("#component-border").val(),
         isVisible: checkedValue,
-        control_structure_id: $("#control_structure_id").val(),
+        controlStructureId: $("#control_structure_id").val(),
     }
 
     if($("#component-type").val() == "controlledProcess")
@@ -87,10 +87,10 @@ function sendEditedComponent(){
 
     var component = {
         name: $("#component-edit-name").val(),
-        father_id: $("#component-edit-father").val(),
+        fatherId: $("#component-edit-father").val(),
         border: $("#component-edit-border").val(),
         isVisible: checkedValue,
-        control_structure_id: $("#control_structure_id").val(),
+        controlStructureId: $("#control_structure_id").val(),
         type: type,
     }
 

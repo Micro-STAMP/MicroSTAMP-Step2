@@ -4,14 +4,13 @@ import microstamp.step2.data.ControlledProcess;
 import microstamp.step2.data.Controller;
 import microstamp.step2.data.Responsibility;
 import microstamp.step2.dto.ResponsibilityDto;
+import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ResponsibilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ResponsibilityService {
@@ -26,44 +25,47 @@ public class ResponsibilityService {
         return responsibilityRepository.findAll();
     }
 
-    public Responsibility findById(long id) {
+    public Responsibility findById(long id) throws Step2NotFoundException {
         return responsibilityRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new Step2NotFoundException("Responsibility not found with id: " + id));
     }
 
-    public Responsibility create(ResponsibilityDto responsibilityDto) {
+    public Responsibility insert(ResponsibilityDto responsibilityDto) throws Exception {
+        microstamp.step2.data.Component component = componentRepository.findById(responsibilityDto.getComponentId())
+                .orElseThrow(() -> new Step2NotFoundException("Component not found with id: " + responsibilityDto.getComponentId()));
+
         Responsibility responsibility = new Responsibility();
         responsibility.setResponsibility(responsibilityDto.getResponsibility());
         responsibility.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
 
-        Optional<microstamp.step2.data.Component> c = componentRepository.findById(responsibilityDto.getComponentId());
-
-        if (c.get().getType().equals("Controller")) {
-            Controller controller = (Controller) c.get();
+        if (component.getType().equals("Controller")) {
+            Controller controller = (Controller) component;
             controller.getResponsibilities().add(responsibility);
-        } else if (c.get().getType().equals("ControlledProcess")) {
-            ControlledProcess controlledProcess = (ControlledProcess) c.get();
+        } else if (component.getType().equals("ControlledProcess")) {
+            ControlledProcess controlledProcess = (ControlledProcess) component;
             controlledProcess.getResponsibilities().add(responsibility);
+        } else {
+            throw new Exception("Responsibilities can only be assigned to a Controller or ControlledProcess");
         }
-        componentRepository.save(c.get());
+
+        componentRepository.save(component);
+
         return responsibility;
     }
 
-    public void update(long id, ResponsibilityDto responsibilityDto) {
-        responsibilityRepository.findById(id)
-                .map(record -> {
-                    record.setResponsibility(responsibilityDto.getResponsibility());
-                    record.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
-                    Responsibility updated = responsibilityRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElseThrow();
+    public void update(long id, ResponsibilityDto responsibilityDto) throws Step2NotFoundException {
+        Responsibility responsibility = responsibilityRepository.findById(id)
+                .orElseThrow(() -> new Step2NotFoundException("Responsibility not found with id: " + id));
+
+        responsibility.setResponsibility(responsibilityDto.getResponsibility());
+        responsibility.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
+
+        responsibilityRepository.save(responsibility);
     }
 
-    public void delete(long id) {
-        responsibilityRepository.findById(id)
-                .map(record -> {
-                    responsibilityRepository.deleteById(id);
-                    return ResponseEntity.ok().build();
-                }).orElseThrow();
+    public void delete(long id) throws Step2NotFoundException {
+        Responsibility responsibility = responsibilityRepository.findById(id)
+                .orElseThrow(() -> new Step2NotFoundException("Responsibility not found with id: " + id));
+        responsibilityRepository.deleteById(responsibility.getId());
     }
 }

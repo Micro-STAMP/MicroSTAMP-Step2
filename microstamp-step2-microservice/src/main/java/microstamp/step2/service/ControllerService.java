@@ -3,15 +3,14 @@ package microstamp.step2.service;
 import microstamp.step2.data.ControlStructure;
 import microstamp.step2.data.Controller;
 import microstamp.step2.dto.ControllerDto;
+import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ControlStructureRepository;
 import microstamp.step2.repository.ControllerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ControllerService {
@@ -29,66 +28,64 @@ public class ControllerService {
         return controllerRepository.findAll();
     }
 
-    public Controller findById(Long id) {
+    public Controller findById(Long id) throws Step2NotFoundException {
         return controllerRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new Step2NotFoundException("Controller not found with id: " + id));
     }
 
     public List<Controller> findByControlStructureId(long id) {
         return controllerRepository.findByControlStructureId(id);
     }
 
-    public Controller create(ControllerDto controllerDto) {
+    public Controller insert(ControllerDto controllerDto) throws Step2NotFoundException {
+        ControlStructure controlStructure = controlStructureRepository.findById(controllerDto.getControlStructureId())
+                .orElseThrow(() -> new Step2NotFoundException("ControlStructure not found with id: " + controllerDto.getControlStructureId()));
+
         Controller controller = new Controller();
         controller.setName(controllerDto.getName());
-        try {
-            Optional<microstamp.step2.data.Component> father = componentRepository.findById(controllerDto.getFatherId());
-            controller.setFather(father.get());
-            father.get().setIsControlStructure(true);
-        } catch (Exception ex) {
-            controller.setFather(null);
-        }
         controller.setBorder(controllerDto.getBorder());
         controller.setIsVisible(controllerDto.getIsVisible());
-        Optional<ControlStructure> c1 = controlStructureRepository.findById(controllerDto.getControlStructureId());
-        c1.get().getComponents().add(controller);
-        controlStructureRepository.save(c1.get());
+
+        if (controllerDto.getFatherId() != null) {
+            microstamp.step2.data.Component father = componentRepository.findById(controllerDto.getFatherId())
+                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + controllerDto.getFatherId()));
+            controller.setFather(father);
+            father.setIsControlStructure(true);
+        } else {
+            controller.setFather(null);
+        }
+
+        controlStructure.getComponents().add(controller);
+        controlStructureRepository.save(controlStructure);
+
         return controller;
     }
 
-    public void update(long id, ControllerDto controllerDto) {
+    public void update(long id, ControllerDto controllerDto) throws Step2NotFoundException {
+        microstamp.step2.data.Component controller = componentRepository.findById(id)
+                .orElseThrow(() -> new Step2NotFoundException("Controller not found with id: " + id));
+
+        controller.setName(controllerDto.getName());
+        controller.setBorder(controllerDto.getBorder());
+        controller.setIsVisible(controllerDto.getIsVisible());
+
         if (controllerDto.getFatherId() != null) {
-            if (controllerDto.getType() != "Controller")
-                componentRepository.updateComponentType(id, controllerDto.getType());
-            componentRepository.findById(id)
-                    .map(record -> {
-                        record.setName(controllerDto.getName());
-                        record.setBorder(controllerDto.getBorder());
-                        record.setFather(componentRepository.findById(controllerDto.getFatherId()).get());
-                        record.setIsVisible(controllerDto.getIsVisible());
-                        microstamp.step2.data.Component updated = componentRepository.save(record);
-                        return ResponseEntity.ok().body(updated);
-                    }).orElseThrow();
+            microstamp.step2.data.Component father = componentRepository.findById(controllerDto.getFatherId())
+                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + controllerDto.getFatherId()));
+            controller.setFather(father);
         } else {
-            if (controllerDto.getType() != "Controller")
-                componentRepository.updateComponentType(id, controllerDto.getType());
-            componentRepository.findById(id)
-                    .map(record -> {
-                        record.setName(controllerDto.getName());
-                        record.setBorder(controllerDto.getBorder());
-                        record.setFather(null);
-                        record.setIsVisible(controllerDto.getIsVisible());
-                        microstamp.step2.data.Component updated = componentRepository.save(record);
-                        return ResponseEntity.ok().body(updated);
-                    }).orElseThrow();
+            controller.setFather(null);
         }
+
+        if (!controllerDto.getType().equals("Controller"))
+            componentRepository.updateComponentType(id, controllerDto.getType());
+
+        componentRepository.save(controller);
     }
 
-    public void delete(long id) {
-        controllerRepository.findById(id)
-                .map(record -> {
-                    controllerRepository.deleteById(id);
-                    return ResponseEntity.ok().build();
-                }).orElseThrow();
+    public void delete(long id) throws Step2NotFoundException {
+        Controller controller = controllerRepository.findById(id)
+                .orElseThrow(() -> new Step2NotFoundException("Controller not found with id: " + id));
+        controllerRepository.deleteById(controller.getId());
     }
 }

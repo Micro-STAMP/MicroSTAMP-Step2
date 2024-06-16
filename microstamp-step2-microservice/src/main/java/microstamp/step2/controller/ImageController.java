@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/images")
 @Tag(name = "Image")
@@ -20,12 +18,12 @@ public class ImageController {
     private ImageService imageService;
 
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Image> create(@PathVariable("id") long controlStructureId, @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        return new ResponseEntity<>(imageService.create(controlStructureId, multipartFile), HttpStatus.CREATED);
+    public ResponseEntity<Image> insert(@PathVariable("id") long controlStructureId, @RequestParam("image") MultipartFile multipartFile) throws Exception {
+        return new ResponseEntity<>(imageService.insert(controlStructureId, multipartFile), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) throws Exception {
         imageService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

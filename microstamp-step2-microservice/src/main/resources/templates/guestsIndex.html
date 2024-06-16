@@ -71,7 +71,8 @@
         <div class="container" style="margin-left: 2%;">
             <h2 style="display : inline-block;">Variables</h2>
             <button class="btn btn-primary" id="collapseAllVariablesButton"
-                    onclick=expandAllVariables() style="display : inline-block; vertical-align : top; float : right;" type="button">Expand All
+                    onclick=expandAllVariables() style="display : inline-block; vertical-align : top; float : right;"
+                    type="button">Expand All
             </button>
             <div th:switch="${variables.size}">
                 <h5 th:case='0'>No variables yet!</h5>

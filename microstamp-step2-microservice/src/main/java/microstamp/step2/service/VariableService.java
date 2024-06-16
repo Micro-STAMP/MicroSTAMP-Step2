@@ -2,15 +2,14 @@ package microstamp.step2.service;
 
 import microstamp.step2.data.Variable;
 import microstamp.step2.dto.VariableDto;
+import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.VariableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class VariableService {
@@ -25,46 +24,45 @@ public class VariableService {
         return variableRepository.findAll();
     }
 
-    public Variable findById(long id) {
+    public Variable findById(long id) throws Step2NotFoundException {
         return variableRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new Step2NotFoundException("Variable not found with id: " + id));
     }
 
     public List<Variable> findByControlStructureId(long id) {
         List<microstamp.step2.data.Component> components = componentRepository.findByControlStructureId(id);
-        List<Variable> variables = new ArrayList<>();
-        for (microstamp.step2.data.Component c : components) {
-            if (!c.getVariables().isEmpty()) {
-                variables.addAll(variableRepository.findByComponentId(c.getId()));
-            }
-        }
-        return variables;
+
+        return components.stream()
+                .filter(c -> !c.getVariables().isEmpty())
+                .flatMap(c -> variableRepository.findByComponentId(c.getId()).stream())
+                .collect(Collectors.toList());
     }
 
-    public Variable create(VariableDto variableDto) {
+    public Variable insert(VariableDto variableDto) throws Step2NotFoundException {
+        microstamp.step2.data.Component component = componentRepository.findById(variableDto.getComponentId())
+                .orElseThrow(() -> new Step2NotFoundException("Component not found with id: " + variableDto.getComponentId()));
+
         Variable variable = new Variable();
         variable.setName(variableDto.getName());
 
-        Optional<microstamp.step2.data.Component> c = componentRepository.findById(variableDto.getComponentId());
-        c.get().getVariables().add(variable);
-        componentRepository.save(c.get());
+        component.getVariables().add(variable);
+        componentRepository.save(component);
+
         return variable;
     }
 
-    public void update(long id, VariableDto variableDto) {
-        variableRepository.findById(id)
-                .map(record -> {
-                    record.setName(variableDto.getName());
-                    Variable updated = variableRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElseThrow();
+    public void update(long id, VariableDto variableDto) throws Step2NotFoundException {
+        Variable variable = variableRepository.findById(id)
+                .orElseThrow(() -> new Step2NotFoundException("Variable not found with id: " + id));
+
+        variable.setName(variableDto.getName());
+
+        variableRepository.save(variable);
     }
 
-    public void delete(long id) {
-        variableRepository.findById(id)
-                .map(record -> {
-                    variableRepository.deleteById(id);
-                    return ResponseEntity.ok().build();
-                }).orElseThrow();
+    public void delete(long id) throws Step2NotFoundException {
+        Variable variable = variableRepository.findById(id)
+                .orElseThrow(() -> new Step2NotFoundException("Variable not found with id: " + id));
+        variableRepository.deleteById(variable.getId());
     }
 }

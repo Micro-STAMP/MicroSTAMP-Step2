@@ -3,6 +3,7 @@ package microstamp.step2.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import microstamp.step2.data.Connection;
 import microstamp.step2.dto.ConnectionDto;
+import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class ConnectionController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<Connection> findById(@PathVariable long id) {
+    public ResponseEntity<Connection> findById(@PathVariable long id) throws Step2NotFoundException {
         return new ResponseEntity<>(connectionService.findById(id), HttpStatus.OK);
     }
 
@@ -35,18 +36,18 @@ public class ConnectionController {
     }
 
     @PostMapping
-    public ResponseEntity<Connection> create(@RequestBody ConnectionDto connectionDto) {
-        return new ResponseEntity<>(connectionService.create(connectionDto), HttpStatus.CREATED);
+    public ResponseEntity<Connection> insert(@RequestBody ConnectionDto connectionDto) throws Step2NotFoundException {
+        return new ResponseEntity<>(connectionService.insert(connectionDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ConnectionDto connectionDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ConnectionDto connectionDto) throws Step2NotFoundException {
         connectionService.update(id, connectionDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) throws Step2NotFoundException {
         connectionService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

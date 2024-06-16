@@ -35,11 +35,11 @@ public class Connection {
         labels.add(label);
     }
 
-    public String getSourceName(){
+    public String getSourceName() {
         return source.getName();
     }
 
-    public String getTargetName(){
+    public String getTargetName() {
         return target.getName();
     }
 }

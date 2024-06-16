@@ -117,5 +117,4 @@ public class PageController {
 
         return "guestsIndex";
     }
-
 }

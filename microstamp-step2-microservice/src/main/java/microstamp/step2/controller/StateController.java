@@ -3,6 +3,7 @@ package microstamp.step2.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import microstamp.step2.data.State;
 import microstamp.step2.dto.StateDto;
+import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,25 +26,24 @@ public class StateController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<State> findById(@PathVariable long id) {
+    public ResponseEntity<State> findById(@PathVariable long id) throws Step2NotFoundException {
         return new ResponseEntity<>(stateService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<State> create(@RequestBody StateDto stateDto) {
-        return new ResponseEntity<>(stateService.create(stateDto), HttpStatus.CREATED);
+    public ResponseEntity<State> insert(@RequestBody StateDto stateDto) throws Step2NotFoundException {
+        return new ResponseEntity<>(stateService.insert(stateDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody StateDto stateDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody StateDto stateDto) throws Step2NotFoundException {
         stateService.update(id, stateDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) throws Step2NotFoundException {
         stateService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

@@ -4,6 +4,7 @@ package microstamp.step2.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import microstamp.step2.data.ControlledProcess;
 import microstamp.step2.dto.ControlledProcessDto;
+import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.service.ControlledProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ControlledProcessController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<ControlledProcess> findById(@PathVariable long id) {
+    public ResponseEntity<ControlledProcess> findById(@PathVariable long id) throws Step2NotFoundException {
         return new ResponseEntity<>(controlledProcessService.findById(id), HttpStatus.OK);
     }
 
@@ -36,20 +37,19 @@ public class ControlledProcessController {
     }
 
     @PostMapping
-    public ResponseEntity<ControlledProcess> create(@RequestBody ControlledProcessDto controlledProcessDto) {
-        return new ResponseEntity<>(controlledProcessService.create(controlledProcessDto), HttpStatus.CREATED);
+    public ResponseEntity<ControlledProcess> insert(@RequestBody ControlledProcessDto controlledProcessDto) throws Step2NotFoundException {
+        return new ResponseEntity<>(controlledProcessService.insert(controlledProcessDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ControlledProcessDto controlledProcessDto) {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ControlledProcessDto controlledProcessDto) throws Step2NotFoundException {
         controlledProcessService.update(id, controlledProcessDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) throws Step2NotFoundException {
         controlledProcessService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

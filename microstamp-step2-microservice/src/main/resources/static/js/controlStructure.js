@@ -7,7 +7,7 @@ $(window).ready(function () {
     var user_id = document.getElementById("user_id").innerText;
     $.ajax({
         "type": 'get',
-        "url": '/controlstructures/user/' + user_id,
+        "url": '/control-structures/user/' + user_id,
         "dataType": "json",
         "success": function (data) {
             $.each(data, function (idx, obj) {
@@ -37,7 +37,7 @@ function addControlStructure() {
         $("#namelessRestrictionModal").modal("show");
     }else{
         $.ajax({
-            url: '/controlstructures',
+            url: '/control-structures',
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
@@ -52,7 +52,7 @@ function addControlStructure() {
 function loadEditControlStructure(id){
     controlStructureSelected = id;
     $.ajax({
-    url: '/controlstructures/'+ id,
+    url: '/control-structures/'+ id,
     type: 'get',
     success: function (data) {
         $("#control_structure-edit-name").val(data.name);
@@ -73,7 +73,7 @@ function editControlStructure() {
         $("#namelessRestrictionModal").modal("show");
     }else{
         $.ajax({
-            url: '/controlstructures/' + controlStructureSelected,
+            url: '/control-structures/' + controlStructureSelected,
             type: 'put',
             dataType: 'json',
             contentType: 'application/json',
@@ -88,7 +88,7 @@ function editControlStructure() {
 function loadControlStructureToBeDeleted(id){
     controlStructureToBeDeleted = id;
     $.ajax({
-        url: '/controlstructures/'+ id,
+        url: '/control-structures/'+ id,
         type: 'get',
         success: function (data) {
              $("#control_structure_delete_name").text(data.name);
@@ -98,7 +98,7 @@ function loadControlStructureToBeDeleted(id){
 
 function deleteControlStructure(){
     $.ajax({
-        url: '/controlstructures/'+ controlStructureToBeDeleted,
+        url: '/control-structures/'+ controlStructureToBeDeleted,
         type: 'delete',
         success: function (data) {
             location.reload();

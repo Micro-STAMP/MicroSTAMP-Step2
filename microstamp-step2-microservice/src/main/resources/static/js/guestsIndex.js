@@ -2,7 +2,7 @@ $(window).ready(function () {
     var cs_id = $("#control_structure_id").val();
     $.ajax({
         "type": 'get',
-        "url": '/guests/components/controlstructure/' + cs_id,
+        "url": '/guests/components/control-structure/' + cs_id,
         "dataType": "json",
         "success": function (data) {
             var backup = data;
@@ -22,7 +22,7 @@ $(window).ready(function () {
     });
     $.ajax({
         "type": 'get',
-        "url": '/guests/connections/controlstructure/' + cs_id,
+        "url": '/guests/connections/control-structure/' + cs_id,
         "dataType": "json",
         "success": function (data) {
             $.each(data, function (idx, obj) {
@@ -41,7 +41,7 @@ $(window).ready(function () {
     });
     $.ajax({
         "type": 'get',
-        "url": '/guests/components/controlstructure/' + cs_id,
+        "url": '/guests/components/control-structure/' + cs_id,
         "dataType": "json",
         "success": function (data) {
             $.each(data, function (idx, obj) {

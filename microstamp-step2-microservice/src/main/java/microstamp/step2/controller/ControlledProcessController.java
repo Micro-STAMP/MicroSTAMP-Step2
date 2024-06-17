@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/controlledprocesses")
+@RequestMapping("/controlled-processes")
 @Tag(name = "ControlledProcess")
 public class ControlledProcessController {
 
@@ -31,7 +31,7 @@ public class ControlledProcessController {
         return new ResponseEntity<>(controlledProcessService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"controlstructure/{id}"})
+    @GetMapping(path = {"control-structure/{id}"})
     public ResponseEntity<List<ControlledProcess>> findByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(controlledProcessService.findByControlStructureId(id), HttpStatus.OK);
     }

@@ -30,7 +30,7 @@ public class ControllerController {
         return new ResponseEntity<>(controllerService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"controlstructure/{id}"})
+    @GetMapping(path = {"control-structure/{id}"})
     public ResponseEntity<List<Controller>> findByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(controllerService.findByControlStructureId(id), HttpStatus.OK);
     }

@@ -32,17 +32,17 @@ public class GuestController {
     @Autowired
     private ConnectionService connectionService;
 
-    @GetMapping(path = {"controlstructures"})
+    @GetMapping(path = {"control-structures"})
     public ResponseEntity<List<ControlStructure>> findControlStructures() {
         return new ResponseEntity<>(controlStructureService.findByUserId(3), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"components/controlstructure/{id}"})
+    @GetMapping(path = {"components/control-structure/{id}"})
     public ResponseEntity<List<Component>> findComponentsByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(componentService.findByControlStructureId(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"connections/controlstructure/{id}"})
+    @GetMapping(path = {"connections/control-structure/{id}"})
     public ResponseEntity<List<Connection>> findConnectionsByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(connectionService.findByControlStructureId(id), HttpStatus.OK);
     }

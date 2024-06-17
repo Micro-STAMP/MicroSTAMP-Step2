@@ -30,7 +30,7 @@ public class ConnectionController {
         return new ResponseEntity<>(connectionService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"controlstructure/{id}"})
+    @GetMapping(path = {"control-structure/{id}"})
     public ResponseEntity<List<Connection>> findByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(connectionService.findByControlStructureId(id), HttpStatus.OK);
     }

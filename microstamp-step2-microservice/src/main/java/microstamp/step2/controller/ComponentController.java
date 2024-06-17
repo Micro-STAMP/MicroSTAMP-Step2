@@ -29,7 +29,7 @@ public class ComponentController {
         return new ResponseEntity<>(componentService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"controlstructure/{id}"})
+    @GetMapping(path = {"control-structure/{id}"})
     public ResponseEntity<List<Component>> findByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(componentService.findByControlStructureId(id), HttpStatus.OK);
     }

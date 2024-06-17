@@ -13,7 +13,7 @@ function addComponent(){
         controlStructureId: $("#control_structure_id").val(),
     }
 
-    if($("#component-type").val() == "controlledProcess")
+    if($("#component-type").val() == "controlled-process")
         var componentType = $("#component-type").val() + "es";
     else var componentType = $("#component-type").val() + "s";
 
@@ -57,7 +57,7 @@ function editComponent(id){
                     $("#component-edit-type").val("sensor");
                     break;
                 case "ControlledProcess":
-                    $("#component-edit-type").val("controlledProcess");
+                    $("#component-edit-type").val("controlled-process");
                     break;
             }
             $("#component-edit-border").val(data.border);
@@ -94,7 +94,7 @@ function sendEditedComponent(){
         type: type,
     }
 
-    if(componentSelectedOriginalType == "controlledProcess")
+    if(componentSelectedOriginalType == "controlled-process")
         var componentType = componentSelectedOriginalType + "es";
     else var componentType = componentSelectedOriginalType + "s";
 

@@ -31,7 +31,7 @@ public class SensorController {
         return new ResponseEntity<>(sensorService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"controlstructure/{id}"})
+    @GetMapping(path = {"control-structure/{id}"})
     public ResponseEntity<List<Sensor>> findByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(sensorService.findByControlStructureId(id), HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package microstamp.step2.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import microstamp.step2.data.Connection;
 import microstamp.step2.dto.ConnectionDto;
 import microstamp.step2.exception.Step2NotFoundException;
@@ -36,12 +37,12 @@ public class ConnectionController {
     }
 
     @PostMapping
-    public ResponseEntity<Connection> insert(@RequestBody ConnectionDto connectionDto) throws Step2NotFoundException {
+    public ResponseEntity<Connection> insert(@Valid @RequestBody ConnectionDto connectionDto) throws Step2NotFoundException {
         return new ResponseEntity<>(connectionService.insert(connectionDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ConnectionDto connectionDto) throws Step2NotFoundException {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @Valid @RequestBody ConnectionDto connectionDto) throws Step2NotFoundException {
         connectionService.update(id, connectionDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

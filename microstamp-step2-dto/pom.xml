@@ -24,10 +24,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>microstamp</groupId>
-            <artifactId>microstamp-step2-data</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>microstamp</groupId>

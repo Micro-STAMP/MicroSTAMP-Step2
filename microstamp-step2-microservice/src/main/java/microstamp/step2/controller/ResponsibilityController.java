@@ -1,6 +1,7 @@
 package microstamp.step2.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import microstamp.step2.data.Responsibility;
 import microstamp.step2.dto.ResponsibilityDto;
 import microstamp.step2.exception.Step2NotFoundException;
@@ -31,12 +32,12 @@ public class ResponsibilityController {
     }
 
     @PostMapping
-    public ResponseEntity<Responsibility> insert(@RequestBody ResponsibilityDto responsibilityDto) throws Exception {
+    public ResponseEntity<Responsibility> insert(@Valid @RequestBody ResponsibilityDto responsibilityDto) throws Exception {
         return new ResponseEntity<>(responsibilityService.insert(responsibilityDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") long id, @RequestBody ResponsibilityDto responsibilityDto) throws Step2NotFoundException {
+    public ResponseEntity<Void> update(@PathVariable("id") long id, @Valid @RequestBody ResponsibilityDto responsibilityDto) throws Step2NotFoundException {
         responsibilityService.update(id, responsibilityDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

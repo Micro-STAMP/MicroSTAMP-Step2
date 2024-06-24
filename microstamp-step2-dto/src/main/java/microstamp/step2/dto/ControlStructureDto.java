@@ -1,20 +1,16 @@
 package microstamp.step2.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import microstamp.step2.data.Component;
-import microstamp.step2.data.Connection;
-
-import java.util.List;
 
 @Data
 public class ControlStructureDto {
 
-    private List<Component> componentsIds;
-
-    private List<Connection> connectionsIds;
-
+    @NotBlank
     private String name;
 
+    @NotNull
     private Long userId;
 
 }

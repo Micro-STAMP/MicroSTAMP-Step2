@@ -8,6 +8,7 @@ import microstamp.step2.data.ControlStructure;
 import microstamp.step2.service.ComponentService;
 import microstamp.step2.service.ConnectionService;
 import microstamp.step2.service.ControlStructureService;
+import microstamp.step2.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,26 +25,20 @@ import java.util.List;
 public class GuestController {
 
     @Autowired
-    private ControlStructureService controlStructureService;
-
-    @Autowired
-    private ComponentService componentService;
-
-    @Autowired
-    private ConnectionService connectionService;
+    private GuestService guestService;
 
     @GetMapping(path = {"control-structures"})
     public ResponseEntity<List<ControlStructure>> findControlStructures() {
-        return new ResponseEntity<>(controlStructureService.findByUserId(3), HttpStatus.OK);
+        return new ResponseEntity<>(guestService.findControlStructures(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"components/control-structure/{id}"})
     public ResponseEntity<List<Component>> findComponentsByControlStructureId(@PathVariable long id) {
-        return new ResponseEntity<>(componentService.findByControlStructureId(id), HttpStatus.OK);
+        return new ResponseEntity<>(guestService.findComponentsByControlStructureId(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"connections/control-structure/{id}"})
     public ResponseEntity<List<Connection>> findConnectionsByControlStructureId(@PathVariable long id) {
-        return new ResponseEntity<>(connectionService.findByControlStructureId(id), HttpStatus.OK);
+        return new ResponseEntity<>(guestService.findConnectionsByControlStructureId(id), HttpStatus.OK);
     }
 }

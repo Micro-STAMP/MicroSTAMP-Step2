@@ -1,5 +1,6 @@
 package microstamp.step2.dto;
 
+import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -22,4 +23,9 @@ public abstract class ComponentDto {
 
     @NotBlank
     private String type;
+
+    @AssertFalse(message = "Cannot create a Component named 'Environment'. Use the default Environment Component for operations involving the Environment.")
+    private boolean isNameEqualsEnvironment() {
+        return ("Environment").equals(name);
+    }
 }

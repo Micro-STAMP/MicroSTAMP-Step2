@@ -1,8 +1,8 @@
 package microstamp.step2.data;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Style {
 
@@ -11,12 +11,8 @@ public enum Style {
     ETCHED;
 
     public static List<String> loadStyles() {
-        List<Style> list = Arrays.asList(Style.values());
-        List<String> listReturn = new ArrayList<String>();
-
-        for (Style s : list)
-            listReturn.add(s.name());
-
-        return listReturn;
+        return Arrays.stream(values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 }

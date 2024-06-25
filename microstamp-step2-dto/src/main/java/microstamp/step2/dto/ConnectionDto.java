@@ -8,8 +8,6 @@ import microstamp.step2.data.Style;
 @Data
 public class ConnectionDto {
 
-    private Long id;
-
     @NotNull
     private ConnectionType connectionType;
 

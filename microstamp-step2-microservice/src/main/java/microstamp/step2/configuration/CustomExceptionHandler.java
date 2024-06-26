@@ -5,6 +5,7 @@ import microstamp.step2.data.Style;
 import microstamp.step2.exception.Step2Error;
 import microstamp.step2.exception.Step2ErrorResponse;
 import microstamp.step2.exception.Step2NotFoundException;
+import microstamp.step2.exception.Step2OrphanException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -66,6 +67,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleStep2NotFound(Step2NotFoundException ex, WebRequest request) {
         Step2ErrorResponse errorResponse = new Step2ErrorResponse();
         errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"NotFound",ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = { Step2OrphanException.class })
+    protected ResponseEntity<Object> handleStep2Orphan(Step2OrphanException ex, WebRequest request) {
+        Step2ErrorResponse errorResponse = new Step2ErrorResponse();
+        errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"OrphanException",ex.getMessage()));
         return handleExceptionInternal(ex, errorResponse,
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }

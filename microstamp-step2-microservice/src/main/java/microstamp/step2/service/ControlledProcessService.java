@@ -4,6 +4,7 @@ import microstamp.step2.data.ControlStructure;
 import microstamp.step2.data.ControlledProcess;
 import microstamp.step2.dto.ControlledProcessDto;
 import microstamp.step2.exception.Step2NotFoundException;
+import microstamp.step2.exception.Step2OrphanException;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ControlStructureRepository;
 import microstamp.step2.repository.ControlledProcessRepository;
@@ -19,10 +20,10 @@ public class ControlledProcessService {
     private ControlledProcessRepository controlledProcessRepository;
 
     @Autowired
-    private ComponentRepository componentRepository;
+    private ComponentService componentService;
 
     @Autowired
-    private ControlStructureRepository controlStructureRepository;
+    private ControlStructureService controlStructureService;
 
     public List<ControlledProcess> findAll() {
         return controlledProcessRepository.findAll();
@@ -38,8 +39,7 @@ public class ControlledProcessService {
     }
 
     public ControlledProcess insert(ControlledProcessDto controlledProcessDto) throws Step2NotFoundException {
-        ControlStructure controlStructure = controlStructureRepository.findById(controlledProcessDto.getControlStructureId())
-                .orElseThrow(() -> new Step2NotFoundException("ControlStructure not found with id: " + controlledProcessDto.getControlStructureId()));
+        ControlStructure controlStructure = controlStructureService.findById(controlledProcessDto.getControlStructureId());
 
         ControlledProcess controlledProcess = new ControlledProcess();
         controlledProcess.setName(controlledProcessDto.getName());
@@ -47,8 +47,7 @@ public class ControlledProcessService {
         controlledProcess.setIsVisible(controlledProcessDto.getIsVisible());
 
         if (controlledProcessDto.getFatherId() != null) {
-            microstamp.step2.data.Component father = componentRepository.findById(controlledProcessDto.getFatherId())
-                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + controlledProcessDto.getFatherId()));
+            microstamp.step2.data.Component father = componentService.findById(controlledProcessDto.getFatherId());
             controlledProcess.setFather(father);
             father.setIsControlStructure(true);
         } else {
@@ -56,31 +55,34 @@ public class ControlledProcessService {
         }
 
         controlStructure.getComponents().add(controlledProcess);
-        controlStructureRepository.save(controlStructure);
+        controlStructureService.save(controlStructure);
 
         return controlledProcess;
     }
 
     public void update(long id, ControlledProcessDto controlledProcessDto) throws Step2NotFoundException {
-        microstamp.step2.data.Component controlledProcess = componentRepository.findById(id)
-                .orElseThrow(() -> new Step2NotFoundException("ControlledProcess not found with id: " + id));
-
-        controlledProcess.setName(controlledProcessDto.getName());
-        controlledProcess.setBorder(controlledProcessDto.getBorder());
-        controlledProcess.setIsVisible(controlledProcessDto.getIsVisible());
+        microstamp.step2.data.Component controlledProcess = componentService.findById(id);
 
         if (controlledProcessDto.getFatherId() != null) {
-            microstamp.step2.data.Component father = componentRepository.findById(controlledProcessDto.getFatherId())
-                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + controlledProcessDto.getFatherId()));
+            microstamp.step2.data.Component father = componentService.findById(controlledProcessDto.getFatherId());
+
+            List<microstamp.step2.data.Component> children = componentService.getComponentChildren(id);
+            if(children.contains(father))
+                throw new Step2OrphanException();
+
             controlledProcess.setFather(father);
         } else {
             controlledProcess.setFather(null);
         }
 
         if (!controlledProcessDto.getType().equals("ControlledProcess"))
-            componentRepository.updateComponentType(id, controlledProcessDto.getType());
+            componentService.updateType(id, controlledProcessDto.getType());
 
-        componentRepository.save(controlledProcess);
+        controlledProcess.setName(controlledProcessDto.getName());
+        controlledProcess.setBorder(controlledProcessDto.getBorder());
+        controlledProcess.setIsVisible(controlledProcessDto.getIsVisible());
+
+        componentService.save(controlledProcess);
     }
 
     public void delete(long id) throws Step2NotFoundException {

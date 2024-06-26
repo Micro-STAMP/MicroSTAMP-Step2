@@ -21,5 +21,5 @@ public interface ComponentRepository extends JpaRepository<Component, Long> {
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE components SET dtype = ?2 WHERE id = ?1", nativeQuery = true)
-    void updateComponentType(long id, String type);
+    void updateType(long id, String type);
 }

@@ -2,6 +2,7 @@ package microstamp.step2.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import microstamp.step2.data.Component;
+import microstamp.step2.dto.ComponentDependenciesDto;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +41,15 @@ public class ComponentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(path = {"listComponentsAndConnectionsToBeDeleted/{id}"})
-    public ResponseEntity<List<Object>> getComponentsAndConnections(@PathVariable long id) throws Step2NotFoundException {
-        List<Object> list = componentService.getComponentsAndConnectionsRecursive(id);
-        list.remove(componentService.findById(id));
+    @GetMapping(path = {"{id}/children"})
+    public ResponseEntity<List<Component>> getComponentChildren(@PathVariable long id) throws Step2NotFoundException {
+        List<Component> list = componentService.getComponentChildren(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping(path = {"listComponentsChildren/{id}"})
-    public ResponseEntity<List<Object>> getComponentsChildren(@PathVariable long id) throws Step2NotFoundException {
-        List<Object> list = componentService.getComponentsRecursive(id);
-        list.remove(componentService.findById(id));
-
+    @GetMapping(path = {"{id}/dependencies"})
+    public ResponseEntity<ComponentDependenciesDto> getComponentDependencies(@PathVariable long id) throws Step2NotFoundException {
+        ComponentDependenciesDto list = componentService.getComponentDependencies(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

@@ -78,6 +78,10 @@ public class ControlStructureService {
         controlStructureRepository.deleteById(controlStructure.getId());
     }
 
+    public void save(ControlStructure controlStructure){
+        controlStructureRepository.save(controlStructure);
+    }
+
     private void deleteImages(long id) throws IOException {
         String deleteDir = "MicroSTAMP-Step2/microstamp-step2-microservice/src/main/resources/static/cs-images/" + id + "/";
         Path uploadDeletePath;

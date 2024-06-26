@@ -4,6 +4,7 @@ import microstamp.step2.data.Actuator;
 import microstamp.step2.data.ControlStructure;
 import microstamp.step2.dto.ActuatorDto;
 import microstamp.step2.exception.Step2NotFoundException;
+import microstamp.step2.exception.Step2OrphanException;
 import microstamp.step2.repository.ActuatorRepository;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ControlStructureRepository;
@@ -19,10 +20,10 @@ public class ActuatorService {
     private ActuatorRepository actuatorRepository;
 
     @Autowired
-    private ComponentRepository componentRepository;
+    private ComponentService componentService;
 
     @Autowired
-    private ControlStructureRepository controlStructureRepository;
+    private ControlStructureService controlStructureService;
 
     public List<Actuator> findAll() {
         return actuatorRepository.findAll();
@@ -38,8 +39,7 @@ public class ActuatorService {
     }
 
     public Actuator insert(ActuatorDto actuatorDto) throws Step2NotFoundException {
-        ControlStructure controlStructure = controlStructureRepository.findById(actuatorDto.getControlStructureId())
-                .orElseThrow(() -> new Step2NotFoundException("ControlStructure not found with id: " + actuatorDto.getControlStructureId()));
+        ControlStructure controlStructure = controlStructureService.findById(actuatorDto.getControlStructureId());
 
         Actuator actuator = new Actuator();
         actuator.setName(actuatorDto.getName());
@@ -47,8 +47,7 @@ public class ActuatorService {
         actuator.setIsVisible(actuatorDto.getIsVisible());
 
         if (actuatorDto.getFatherId() != null) {
-            microstamp.step2.data.Component father = componentRepository.findById(actuatorDto.getFatherId())
-                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + actuatorDto.getFatherId()));
+            microstamp.step2.data.Component father = componentService.findById(actuatorDto.getFatherId());
             actuator.setFather(father);
             father.setIsControlStructure(true);
         } else {
@@ -56,31 +55,34 @@ public class ActuatorService {
         }
 
         controlStructure.getComponents().add(actuator);
-        controlStructureRepository.save(controlStructure);
+        controlStructureService.save(controlStructure);
 
         return actuator;
     }
 
     public void update(long id, ActuatorDto actuatorDto) throws Step2NotFoundException {
-        microstamp.step2.data.Component actuator = componentRepository.findById(id)
-                .orElseThrow(() -> new Step2NotFoundException("Actuator not found with id: " + id));
-
-        actuator.setName(actuatorDto.getName());
-        actuator.setBorder(actuatorDto.getBorder());
-        actuator.setIsVisible(actuatorDto.getIsVisible());
+        microstamp.step2.data.Component actuator = componentService.findById(id);
 
         if (actuatorDto.getFatherId() != null) {
-            microstamp.step2.data.Component father = componentRepository.findById(actuatorDto.getFatherId())
-                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + actuatorDto.getFatherId()));
+            microstamp.step2.data.Component father = componentService.findById(actuatorDto.getFatherId());
+
+            List<microstamp.step2.data.Component> children = componentService.getComponentChildren(id);
+            if(children.contains(father))
+                throw new Step2OrphanException();
+
             actuator.setFather(father);
         } else {
             actuator.setFather(null);
         }
 
         if (!actuatorDto.getType().equals("Actuator"))
-            componentRepository.updateComponentType(id, actuatorDto.getType());
+            componentService.updateType(id, actuatorDto.getType());
 
-        componentRepository.save(actuator);
+        actuator.setName(actuatorDto.getName());
+        actuator.setBorder(actuatorDto.getBorder());
+        actuator.setIsVisible(actuatorDto.getIsVisible());
+
+        componentService.save(actuator);
     }
 
     public void delete(long id) throws Step2NotFoundException {

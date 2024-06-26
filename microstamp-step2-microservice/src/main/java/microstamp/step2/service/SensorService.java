@@ -4,6 +4,7 @@ import microstamp.step2.data.ControlStructure;
 import microstamp.step2.data.Sensor;
 import microstamp.step2.dto.SensorDto;
 import microstamp.step2.exception.Step2NotFoundException;
+import microstamp.step2.exception.Step2OrphanException;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ControlStructureRepository;
 import microstamp.step2.repository.SensorRepository;
@@ -19,10 +20,10 @@ public class SensorService {
     private SensorRepository sensorRepository;
 
     @Autowired
-    private ComponentRepository componentRepository;
+    private ComponentService componentService;
 
     @Autowired
-    private ControlStructureRepository controlStructureRepository;
+    private ControlStructureService controlStructureService;
 
     public List<Sensor> findAll() {
         return sensorRepository.findAll();
@@ -38,8 +39,7 @@ public class SensorService {
     }
 
     public Sensor insert(SensorDto sensorDto) throws Step2NotFoundException {
-        ControlStructure controlStructure = controlStructureRepository.findById(sensorDto.getControlStructureId())
-                .orElseThrow(() -> new Step2NotFoundException("ControlStructure not found with id: " + sensorDto.getControlStructureId()));
+        ControlStructure controlStructure = controlStructureService.findById(sensorDto.getControlStructureId());
 
         Sensor sensor = new Sensor();
         sensor.setName(sensorDto.getName());
@@ -47,8 +47,7 @@ public class SensorService {
         sensor.setIsVisible(sensorDto.getIsVisible());
 
         if (sensorDto.getFatherId() != null) {
-            microstamp.step2.data.Component father = componentRepository.findById(sensorDto.getFatherId())
-                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + sensorDto.getFatherId()));
+            microstamp.step2.data.Component father = componentService.findById(sensorDto.getFatherId());
             sensor.setFather(father);
             father.setIsControlStructure(true);
         } else {
@@ -56,31 +55,34 @@ public class SensorService {
         }
 
         controlStructure.getComponents().add(sensor);
-        controlStructureRepository.save(controlStructure);
+        controlStructureService.save(controlStructure);
 
         return sensor;
     }
 
     public void update(long id, SensorDto sensorDto) throws Step2NotFoundException {
-        microstamp.step2.data.Component sensor = componentRepository.findById(id)
-                .orElseThrow(() -> new Step2NotFoundException("Sensor not found with id: " + id));
-
-        sensor.setName(sensorDto.getName());
-        sensor.setBorder(sensorDto.getBorder());
-        sensor.setIsVisible(sensorDto.getIsVisible());
+        microstamp.step2.data.Component sensor = componentService.findById(id);
 
         if (sensorDto.getFatherId() != null) {
-            microstamp.step2.data.Component father = componentRepository.findById(sensorDto.getFatherId())
-                    .orElseThrow(() -> new Step2NotFoundException("Father component not found with id: " + sensorDto.getFatherId()));
+            microstamp.step2.data.Component father = componentService.findById(sensorDto.getFatherId());
+
+            List<microstamp.step2.data.Component> children = componentService.getComponentChildren(id);
+            if(children.contains(father))
+                throw new Step2OrphanException();
+
             sensor.setFather(father);
         } else {
             sensor.setFather(null);
         }
 
         if (!sensorDto.getType().equals("Sensor"))
-            componentRepository.updateComponentType(id, sensorDto.getType());
+            componentService.updateType(id, sensorDto.getType());
 
-        componentRepository.save(sensor);
+        sensor.setName(sensorDto.getName());
+        sensor.setBorder(sensorDto.getBorder());
+        sensor.setIsVisible(sensorDto.getIsVisible());
+
+        componentService.save(sensor);
     }
 
     public void delete(long id) throws Step2NotFoundException {

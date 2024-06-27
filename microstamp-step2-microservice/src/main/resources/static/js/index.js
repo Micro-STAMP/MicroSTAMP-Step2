@@ -15,11 +15,11 @@ var componentToResponsibility;
 var responsibilityToBeEdited;
 var responsibilityToBeDeleted;
 var wrapped = false;
-var orphan = false; // orphanRestriction
-var actual_modal; // 0 -> addComponent 1 -> editComponent //control the restrictions return
+var lastOpenedModal;
 
 $(window).ready(function () {
     var cs_id = $("#control_structure_id").val();
+
     $.ajax({
         "type": 'get',
         "url": '/components/control-structure/' + cs_id,
@@ -51,6 +51,7 @@ $(window).ready(function () {
             });
         }
     });
+
     $.ajax({
         "type": 'get',
         "url": '/connections/control-structure/' + cs_id,
@@ -70,6 +71,7 @@ $(window).ready(function () {
             });
         }
     });
+
     $.ajax({
         "type": 'get',
         "url": '/components/control-structure/' + cs_id,
@@ -94,6 +96,19 @@ $(window).ready(function () {
             });
         }
     });
+
+    $(".modal").on("show.bs.modal", function (e) {
+        if($(this).attr('id') !== "errorModal"){
+            lastOpenedModal = $(this).attr('id');
+        }
+    });
+
+    $("#errorModal").on("hidden.bs.modal", function () {
+        if (lastOpenedModal) {
+            $("#" + lastOpenedModal).modal("show");
+        }
+    });
+
 });
 
 function addChildren(id, backup){

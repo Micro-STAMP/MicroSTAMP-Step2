@@ -21,7 +21,7 @@ public abstract class ComponentDto {
 
     private Style border;
 
-    @NotBlank
+    //@NotBlank
     private String type;
 
     @AssertFalse(message = "Cannot create a Component named 'Environment'. Use the default Environment Component for operations involving the Environment.")

@@ -17,26 +17,16 @@ function addComponent(){
         var componentType = $("#component-type").val() + "es";
     else var componentType = $("#component-type").val() + "s";
 
-    if($("#component-name").val() == "Environment"){
-        $("#addComponentModal").modal("hide");
-        actual_modal = 0;
-        $("#environmentRestrictionModal").modal("show");
-    }else if($("#component-name").val() == ""){
-        $("#addComponentModal").modal("hide");
-        actual_modal = 0;
-        $("#namelessRestrictionModal").modal("show");
-    }else{
-        $.ajax({
-            url: '/'+ componentType,
-            type: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {
-                location.reload();
-            },
-            data: JSON.stringify(component)
-        });
-    }
+    $.ajax({
+        url: '/'+ componentType,
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (data) {
+            location.reload();
+        },
+        data: JSON.stringify(component)
+    });
 }
 
 function editComponent(id){
@@ -100,33 +90,15 @@ function sendEditedComponent(){
 
     var father_id = $("#component-edit-father").val();
 
-    $.when(checkOrphanRestriction(componentSelected, father_id)).done(function(a1){
-        if($("#component-edit-name").val() == "Environment"){
-            $("#editComponentModal").modal("hide");
-            actual_modal = 1;
-            $("#environmentRestrictionModal").modal("show");
-        }else if($("#component-edit-name").val() == ""){
-            $("#editComponentModal").modal("hide");
-            actual_modal = 1;
-            $("#namelessRestrictionModal").modal("show");
-        }else if(orphan){
-            $("#editComponentModal").modal("hide");
-            actual_modal = 1;
-            $("#orphanRestrictionModal").modal("show");
-            orphan = false;
-        }else{
-            console.log(component);
-            $.ajax({
-                url: '/'+ componentType + '/' + componentSelected,
-                type: 'put',
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (data) {
-                    location.reload();
-                },
-                data: JSON.stringify(component)
-            });
-        }
+    $.ajax({
+        url: '/'+ componentType + '/' + componentSelected,
+        type: 'put',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(component),
+        success: function (data) {
+            location.reload();
+        },
     });
 }
 

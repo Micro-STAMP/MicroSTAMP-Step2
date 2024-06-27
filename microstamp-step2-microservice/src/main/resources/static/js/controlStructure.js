@@ -1,7 +1,6 @@
 var controlStructureSelected;
 var controlStructureToBeDeleted;
-
-var actual_modal; // 0 -> addControlStructure 1 -> editControlStructure //control the restrictions return
+var lastOpenedModal;
 
 $(window).ready(function () {
     var user_id = document.getElementById("user_id").innerText;
@@ -21,6 +20,18 @@ $(window).ready(function () {
             });
         }
     });
+
+    $(".modal").on("show.bs.modal", function (e) {
+        if($(this).attr('id') !== "errorModal"){
+            lastOpenedModal = $(this).attr('id');
+        }
+    });
+
+    $("#errorModal").on("hidden.bs.modal", function () {
+        if (lastOpenedModal) {
+            $("#" + lastOpenedModal).modal("show");
+        }
+    });
 });
 
 function addControlStructure() {
@@ -29,24 +40,17 @@ function addControlStructure() {
         userId: document.getElementById("user_id").innerText,
     }
 
-    $('#target').html('sending..');
+    $.ajax({
+        url: '/control-structures',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (data) {
+            location.reload();
+        },
+        data: JSON.stringify(control_structure)
+    });
 
-    if($("#control_structure-name").val() == ""){
-        $("#addControlStructureModal").modal("hide");
-        actual_modal = 0;
-        $("#namelessRestrictionModal").modal("show");
-    }else{
-        $.ajax({
-            url: '/control-structures',
-            type: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {
-                location.reload();
-            },
-            data: JSON.stringify(control_structure)
-        });
-    }
 }
 
 function loadEditControlStructure(id){
@@ -65,24 +69,16 @@ function editControlStructure() {
         name: $("#control_structure-edit-name").val(),
     }
 
-    $('#target').html('sending..');
-
-    if($("#control_structure-edit-name").val() == ""){
-        $("#editControlStructureModal").modal("hide");
-        actual_modal = 1;
-        $("#namelessRestrictionModal").modal("show");
-    }else{
-        $.ajax({
-            url: '/control-structures/' + controlStructureSelected,
-            type: 'put',
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {
-                location.reload();
-            },
-            data: JSON.stringify(control_structure)
-        });
-    }
+    $.ajax({
+        url: '/control-structures/' + controlStructureSelected,
+        type: 'put',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (data) {
+            location.reload();
+        },
+        data: JSON.stringify(control_structure)
+    });
 }
 
 function loadControlStructureToBeDeleted(id){
@@ -104,12 +100,4 @@ function deleteControlStructure(){
             location.reload();
         },
     });
-}
-
-function returnNamelessRestriction(){
-    $("#namelessRestrictionModal").modal("hide");
-    if(actual_modal == 0)
-        $("#addControlStructureModal").modal("show");
-    else
-        $("#editControlStructureModal").modal("show");
 }

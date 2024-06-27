@@ -17,8 +17,6 @@ function addConnection() {
         controlStructureId: $("#control_structure_id").val(),
     }
 
-    $('#target').html('sending..');
-
     $.ajax({
         url: '/connections',
         type: 'post',

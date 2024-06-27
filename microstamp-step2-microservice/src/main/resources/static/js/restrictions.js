@@ -143,40 +143,26 @@ $("#component-edit-father").on('focusout', function () {
     $("#component-edit-father option[value="+componentSelected+"]").unwrap();
 });
 
-function returnEnvironmentRestriction(){
-    $("#environmentRestrictionModal").modal("hide");
-    if(actual_modal == 0)
-        $("#addComponentModal").modal("show");
-    else
-        $("#editComponentModal").modal("show");
+$(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+    var modalMessage = "An unexpected error occurred.";
+
+    try {
+        const errorMessage = JSON.parse(jqxhr.responseText);
+        if (errorMessage.errors.length > 0) {
+            modalMessage = errorMessage.errors
+                .map(function(error) {
+                     return error.message;
+                }).join('<br>');
+        }
+        showErrorModal(modalMessage);
+    } catch (e) {
+        showErrorModal(modalMessage);
+    }
+});
+
+function showErrorModal(message) {
+    $(".modal").modal("hide");
+    $("#errorModal .modal-body").html(message);
+    $("#errorModal").modal("show");
 }
 
-function returnNamelessRestriction(){
-    $("#namelessRestrictionModal").modal("hide");
-    if(actual_modal == 0)
-        $("#addComponentModal").modal("show");
-    else
-        $("#editComponentModal").modal("show");
-}
-
-function returnOrphanRestriction(){
-    $("#orphanRestrictionModal").modal("hide");
-    if(actual_modal == 0)
-        $("#addComponentModal").modal("show");
-    else
-        $("#editComponentModal").modal("show");
-}
-
-function checkOrphanRestriction(componentId, fatherId){
-     return $.ajax({
-                url: '/components/listComponentsChildren/'+ componentId,
-                type: 'get',
-                success: function (data) {
-                     $.each(data, function (idx, obj) {
-                        if(obj.id == fatherId){
-                            orphan = true;
-                        }
-                    });
-                },
-            });
-}

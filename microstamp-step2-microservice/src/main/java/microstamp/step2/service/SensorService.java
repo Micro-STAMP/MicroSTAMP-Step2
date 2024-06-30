@@ -75,14 +75,14 @@ public class SensorService {
             sensor.setFather(null);
         }
 
-        if (!sensorDto.getType().equals("Sensor"))
-            componentService.updateType(id, sensorDto.getType());
-
         sensor.setName(sensorDto.getName());
         sensor.setBorder(sensorDto.getBorder());
         sensor.setIsVisible(sensorDto.getIsVisible());
 
         componentService.save(sensor);
+
+        if (!sensorDto.getType().equals("Sensor"))
+            componentService.updateType(id, sensorDto.getType());
     }
 
     public void delete(long id) throws Step2NotFoundException {

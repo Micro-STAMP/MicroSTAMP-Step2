@@ -72,9 +72,8 @@ function editControlStructure() {
     $.ajax({
         url: '/control-structures/' + controlStructureSelected,
         type: 'put',
-        dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
         data: JSON.stringify(control_structure)
@@ -96,7 +95,7 @@ function deleteControlStructure(){
     $.ajax({
         url: '/control-structures/'+ controlStructureToBeDeleted,
         type: 'delete',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
     });

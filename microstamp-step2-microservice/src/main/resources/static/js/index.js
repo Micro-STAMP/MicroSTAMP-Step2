@@ -14,7 +14,6 @@ var stateToBeDeleted;
 var componentToResponsibility;
 var responsibilityToBeEdited;
 var responsibilityToBeDeleted;
-var wrapped = false;
 var lastOpenedModal;
 
 $(window).ready(function () {
@@ -109,6 +108,9 @@ $(window).ready(function () {
         }
     });
 
+     $('#connection-source, #connection-target').change(validateConnectionType);
+     $('#connection-edit-source, #connection-edit-target').change(validateEditConnectionType);
+     validateConnectionType();
 });
 
 function addChildren(id, backup){

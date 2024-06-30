@@ -10,7 +10,7 @@ public enum Style {
     SOLID,
     ETCHED;
 
-    public static List<String> loadStyles() {
+    public static List<String> getStyleNames() {
         return Arrays.stream(values())
                 .map(Enum::name)
                 .collect(Collectors.toList());

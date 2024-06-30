@@ -2,10 +2,7 @@ package microstamp.step2.configuration;
 
 import microstamp.step2.data.ConnectionType;
 import microstamp.step2.data.Style;
-import microstamp.step2.exception.Step2Error;
-import microstamp.step2.exception.Step2ErrorResponse;
-import microstamp.step2.exception.Step2NotFoundException;
-import microstamp.step2.exception.Step2OrphanException;
+import microstamp.step2.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -76,6 +73,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         Step2ErrorResponse errorResponse = new Step2ErrorResponse();
         errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"OrphanException",ex.getMessage()));
         return handleExceptionInternal(ex, errorResponse,
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = { Step2InvalidConnectionException.class })
+    protected ResponseEntity<Object> handleStep2InvalidConnection(Step2InvalidConnectionException ex, WebRequest request) {
+        Step2ErrorResponse errorResponse = new Step2ErrorResponse();
+        errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"InvalidConnection",ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }

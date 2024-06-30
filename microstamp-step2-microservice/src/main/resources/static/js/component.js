@@ -73,6 +73,9 @@ function sendEditedComponent(){
     }
 
     var type = $("#component-edit-type").val();
+    if(type == "controlled-process")
+        type = "ControlledProcess"
+
     type = type.charAt(0).toUpperCase() + type.slice(1);
 
     var component = {
@@ -84,19 +87,19 @@ function sendEditedComponent(){
         type: type,
     }
 
+    var componentType = componentSelectedOriginalType + "s";
+
     if(componentSelectedOriginalType == "controlled-process")
-        var componentType = componentSelectedOriginalType + "es";
-    else var componentType = componentSelectedOriginalType + "s";
+        componentType = componentSelectedOriginalType + "es";
 
     var father_id = $("#component-edit-father").val();
 
     $.ajax({
         url: '/'+ componentType + '/' + componentSelected,
         type: 'put',
-        dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(component),
-        success: function (data) {
+        success: function () {
             location.reload();
         },
     });
@@ -108,8 +111,10 @@ function loadComponentsAndConnectionsToBeDeleted(id){
     $("#itemsToBeDeletedSpan").css("display","flex");
     $("#componentsToBeDeleted").css("display","grid");
     $("#connectionsToBeDeleted").css("display","grid");
+    $("#variablesToBeDeleted").css("display","grid");
     $("#componentsToBeDeletedLi").css("display","");
     $("#connectionsToBeDeletedLi").css("display","");
+    $("#variablesToBeDeletedLi").css("display","");
 
     $.ajax({
         url: '/components/'+ id,
@@ -121,31 +126,55 @@ function loadComponentsAndConnectionsToBeDeleted(id){
 
     $("#componentsToBeDeleted").empty();
     $("#connectionsToBeDeleted").empty();
+    $("#variablesToBeDeleted").empty();
 
     $.ajax({
-        url: '/components/listComponentsAndConnectionsToBeDeleted/'+ id,
+        url: '/components/'+ id + '/dependencies',
         type: 'get',
         success: function (data) {
-            var numComp = 0;
-            var numConn = 0;
-            $.each(data, function (idx, obj) {
-                if(obj.name != null){
-                    $("#componentsToBeDeleted").append("<li>" + obj.name + "</li>");
-                    numComp++;
-                }else{
-                    $("#connectionsToBeDeleted").append("<li>" + obj.source.name + " ---> " + obj.target.name + "</li>");
-                    numConn++;
-                }
-            });
-            if((numComp == 0) && (numConn == 0)){
+            var haveComponents = false;
+            var haveConnections = false;
+            var haveVariables = false;
+
+            if (data.components.length > 0) {
+                data.components.map(function(component) {
+                    $("#componentsToBeDeleted").append("<li>" + component.name + "</li>");
+                });
+                haveComponents = true;
+            }
+
+            if (data.connections.length > 0) {
+                data.connections.map(function(connection) {
+                    $("#connectionsToBeDeleted").append("<li>" + connection.source.name + " ---> " + connection.target.name + "</li>");
+                });
+                haveConnections = true;
+            }
+
+            if (data.variables.length > 0) {
+                data.variables.map(function(variable) {
+                    $("#variablesToBeDeleted").append("<li>" + variable.name + "</li>");
+                });
+                haveVariables = true;
+            }
+
+            if(!haveComponents && !haveConnections && !haveVariables){
                 $("#itemsToBeDeleted").css("display","none");
                 $("#itemsToBeDeletedSpan").css("display","none");
-            }else if(numComp == 0){
+            }
+
+            if(!haveComponents){
                 $("#componentsToBeDeleted").css("display","none");
                 $("#componentsToBeDeletedLi").css("display","none");
-            }else if(numConn == 0){
+            }
+
+            if(!haveConnections){
                 $("#connectionsToBeDeleted").css("display","none");
                 $("#connectionsToBeDeletedLi").css("display","none");
+            }
+
+            if(!haveVariables){
+                $("#variablesToBeDeleted").css("display","none");
+                $("#variablesToBeDeletedLi").css("display","none");
             }
         },
     });
@@ -155,7 +184,7 @@ function deleteComponent(){
     $.ajax({
         url: '/components/'+ componentToBeDeleted,
         type: 'delete',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
     });

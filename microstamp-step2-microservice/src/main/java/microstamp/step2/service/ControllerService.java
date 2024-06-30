@@ -75,14 +75,14 @@ public class ControllerService {
             controller.setFather(null);
         }
 
-        if (!controllerDto.getType().equals("Controller"))
-            componentService.updateType(id, controllerDto.getType());
-
         controller.setName(controllerDto.getName());
         controller.setBorder(controllerDto.getBorder());
         controller.setIsVisible(controllerDto.getIsVisible());
 
         componentService.save(controller);
+
+        if (!controllerDto.getType().equals("Controller"))
+            componentService.updateType(id, controllerDto.getType());
     }
 
     public void delete(long id) throws Step2NotFoundException {

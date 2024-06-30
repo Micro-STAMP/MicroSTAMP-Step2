@@ -75,14 +75,14 @@ public class ActuatorService {
             actuator.setFather(null);
         }
 
-        if (!actuatorDto.getType().equals("Actuator"))
-            componentService.updateType(id, actuatorDto.getType());
-
         actuator.setName(actuatorDto.getName());
         actuator.setBorder(actuatorDto.getBorder());
         actuator.setIsVisible(actuatorDto.getIsVisible());
 
         componentService.save(actuator);
+
+        if (!actuatorDto.getType().equals("Actuator"))
+            componentService.updateType(id, actuatorDto.getType());
     }
 
     public void delete(long id) throws Step2NotFoundException {

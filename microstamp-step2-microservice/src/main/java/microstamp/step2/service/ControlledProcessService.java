@@ -75,14 +75,14 @@ public class ControlledProcessService {
             controlledProcess.setFather(null);
         }
 
-        if (!controlledProcessDto.getType().equals("ControlledProcess"))
-            componentService.updateType(id, controlledProcessDto.getType());
-
         controlledProcess.setName(controlledProcessDto.getName());
         controlledProcess.setBorder(controlledProcessDto.getBorder());
         controlledProcess.setIsVisible(controlledProcessDto.getIsVisible());
 
         componentService.save(controlledProcess);
+
+        if (!controlledProcessDto.getType().equals("ControlledProcess"))
+            componentService.updateType(id, controlledProcessDto.getType());
     }
 
     public void delete(long id) throws Step2NotFoundException {

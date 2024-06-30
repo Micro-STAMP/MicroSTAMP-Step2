@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -39,14 +40,12 @@ public class PageController {
         model.addAttribute("components", components);
         model.addAttribute("connections", connectionService.findByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
-        model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
-        model.addAttribute("process_input", ConnectionType.getProcessInputDisturbance());
-        model.addAttribute("process_output", ConnectionType.getProcessOutput());
+        model.addAttribute("connectionType", ConnectionType.values());
         model.addAttribute("variables", variableService.findByControlStructureId(controlStructureId));
 
         model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
 
-        model.addAttribute("style", Style.loadStyles());
+        model.addAttribute("style", Style.getStyleNames());
 
         List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
         if (!componentsWithoutEnvironment.isEmpty())
@@ -93,14 +92,9 @@ public class PageController {
         model.addAttribute("components", components);
         model.addAttribute("connections", connectionService.findByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
-        model.addAttribute("connectionType", ConnectionType.loadConnectionTypes());
-        model.addAttribute("process_input", ConnectionType.getProcessInputDisturbance());
-        model.addAttribute("process_output", ConnectionType.getProcessOutput());
         model.addAttribute("variables", variableService.findByControlStructureId(controlStructureId));
 
         model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
-
-        model.addAttribute("style", Style.loadStyles());
 
         List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
         if (!componentsWithoutEnvironment.isEmpty())

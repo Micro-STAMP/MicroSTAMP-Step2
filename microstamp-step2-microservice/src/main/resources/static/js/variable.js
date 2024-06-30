@@ -36,9 +36,8 @@ function sendEditedVariable() {
     $.ajax({
         url: '/variables/' + variableToBeEdited,
         type: 'put',
-        dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
         data: JSON.stringify(variable)
@@ -60,7 +59,7 @@ function deleteVariable(){
     $.ajax({
         url: '/variables/'+ variableToBeDeleted,
         type: 'delete',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
     });

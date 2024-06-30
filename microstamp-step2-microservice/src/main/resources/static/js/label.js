@@ -39,9 +39,8 @@ function editLabel() {
     $.ajax({
         url: '/labels/' + labelToBeEdited,
         type: 'put',
-        dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
         data: JSON.stringify(label)
@@ -63,7 +62,7 @@ function deleteLabel(){
     $.ajax({
         url: '/labels/'+ labelToBeDeleted,
         type: 'delete',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
     });

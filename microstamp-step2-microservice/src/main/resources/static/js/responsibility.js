@@ -42,9 +42,8 @@ function sendEditedResponsibility() {
     $.ajax({
         url: '/responsibilities/' + responsibilityToBeEdited,
         type: 'put',
-        dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
         data: JSON.stringify(responsibility)
@@ -66,7 +65,7 @@ function deleteResponsibility(){
     $.ajax({
         url: '/responsibilities/'+ responsibilityToBeDeleted,
         type: 'delete',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
     });

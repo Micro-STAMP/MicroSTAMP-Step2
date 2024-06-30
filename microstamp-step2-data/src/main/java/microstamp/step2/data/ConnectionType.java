@@ -12,22 +12,22 @@ public enum ConnectionType {
     PROCESS_OUTPUT,
     DISTURBANCE;
 
-    public static List<String> loadConnectionTypes() {
+    public static List<ConnectionType> getDefaultTypes() {
         return Arrays.asList(
-                CONTROL_ACTION.name(),
-                FEEDBACK.name(),
-                COMMUNICATION_CHANNEL.name()
+                CONTROL_ACTION,
+                FEEDBACK,
+                COMMUNICATION_CHANNEL
         );
     }
 
-    public static List<String> getProcessInputDisturbance() {
+    public static List<ConnectionType> getSourceEnvironmentTypes() {
         return Arrays.asList(
-                PROCESS_INPUT.name(),
-                DISTURBANCE.name()
+                PROCESS_INPUT,
+                DISTURBANCE
         );
     }
 
-    public static String getProcessOutput() {
-        return PROCESS_OUTPUT.name();
+    public static List<ConnectionType> getTargetEnvironmentTypes() {
+        return List.of(PROCESS_OUTPUT);
     }
 }

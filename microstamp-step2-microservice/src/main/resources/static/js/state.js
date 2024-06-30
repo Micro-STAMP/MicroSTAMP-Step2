@@ -39,9 +39,8 @@ function sendEditedState() {
     $.ajax({
         url: '/states/' + stateToBeEdited,
         type: 'put',
-        dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
         data: JSON.stringify(state)
@@ -63,7 +62,7 @@ function deleteState(){
     $.ajax({
         url: '/states/'+ stateToBeDeleted,
         type: 'delete',
-        success: function (data) {
+        success: function () {
             location.reload();
         },
     });

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.Style;
 
 @Data
@@ -21,8 +22,7 @@ public abstract class ComponentDto {
 
     private Style border;
 
-    //@NotBlank
-    private String type;
+    private ComponentType type;
 
     @AssertFalse(message = "Cannot create a Component named 'Environment'. Use the default Environment Component for operations involving the Environment.")
     private boolean isNameEqualsEnvironment() {

@@ -1,5 +1,6 @@
 package microstamp.step2.service;
 
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.ControlStructure;
 import microstamp.step2.data.Controller;
 import microstamp.step2.dto.ControllerDto;
@@ -81,7 +82,7 @@ public class ControllerService {
 
         componentService.save(controller);
 
-        if (!controllerDto.getType().equals("Controller"))
+        if (controllerDto.getType() != ComponentType.Controller)
             componentService.updateType(id, controllerDto.getType());
     }
 

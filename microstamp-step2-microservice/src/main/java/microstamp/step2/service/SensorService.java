@@ -1,5 +1,6 @@
 package microstamp.step2.service;
 
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.ControlStructure;
 import microstamp.step2.data.Sensor;
 import microstamp.step2.dto.SensorDto;
@@ -81,7 +82,7 @@ public class SensorService {
 
         componentService.save(sensor);
 
-        if (!sensorDto.getType().equals("Sensor"))
+        if (sensorDto.getType() != ComponentType.Sensor)
             componentService.updateType(id, sensorDto.getType());
     }
 

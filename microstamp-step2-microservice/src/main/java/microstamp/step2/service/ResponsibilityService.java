@@ -1,5 +1,6 @@
 package microstamp.step2.service;
 
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.ControlledProcess;
 import microstamp.step2.data.Controller;
 import microstamp.step2.data.Responsibility;
@@ -38,10 +39,10 @@ public class ResponsibilityService {
         responsibility.setResponsibility(responsibilityDto.getResponsibility());
         responsibility.setSystemSafetyConstraintAssociated(responsibilityDto.getSystemSafetyConstraintAssociated());
 
-        if (component.getType().equals("Controller")) {
+        if (component.getType().equals(ComponentType.Controller.name())) {
             Controller controller = (Controller) component;
             controller.getResponsibilities().add(responsibility);
-        } else if (component.getType().equals("ControlledProcess")) {
+        } else if (component.getType().equals(ComponentType.ControlledProcess.name())) {
             ControlledProcess controlledProcess = (ControlledProcess) component;
             controlledProcess.getResponsibilities().add(responsibility);
         } else {

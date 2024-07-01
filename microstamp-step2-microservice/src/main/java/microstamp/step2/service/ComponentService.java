@@ -1,5 +1,6 @@
 package microstamp.step2.service;
 
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.Connection;
 import microstamp.step2.data.Variable;
 import microstamp.step2.dto.ComponentDependenciesDto;
@@ -41,8 +42,8 @@ public class ComponentService {
         return componentRepository.findByControlStructureId(id);
     }
 
-    public void updateType(long id, String type){
-        componentRepository.updateType(id, type);
+    public void updateType(long id, ComponentType type){
+        componentRepository.updateType(id, type.name());
     }
 
     public void delete(long id) {

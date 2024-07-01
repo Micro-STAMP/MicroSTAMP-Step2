@@ -1,5 +1,6 @@
 package microstamp.step2.service;
 
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.ControlStructure;
 import microstamp.step2.data.ControlledProcess;
 import microstamp.step2.dto.ControlledProcessDto;
@@ -81,7 +82,7 @@ public class ControlledProcessService {
 
         componentService.save(controlledProcess);
 
-        if (!controlledProcessDto.getType().equals("ControlledProcess"))
+        if (controlledProcessDto.getType() != ComponentType.ControlledProcess)
             componentService.updateType(id, controlledProcessDto.getType());
     }
 

@@ -1,6 +1,7 @@
 package microstamp.step2.controller;
 
 import microstamp.step2.data.Component;
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.ConnectionType;
 import microstamp.step2.data.Style;
 import microstamp.step2.service.*;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Controller
 public class PageController {
@@ -45,7 +44,7 @@ public class PageController {
 
         model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
 
-        model.addAttribute("style", Style.getStyleNames());
+        model.addAttribute("style", Style.values());
 
         List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
         if (!componentsWithoutEnvironment.isEmpty())
@@ -54,7 +53,7 @@ public class PageController {
 
         List<Component> controllersControlledProcess = new ArrayList<>();
         for (Component c : components) {
-            if (c.getType().equals("Controller") || c.getType().equals("ControlledProcess")) {
+            if (c.getType().equals(ComponentType.Controller.name()) || c.getType().equals(ComponentType.ControlledProcess.name())) {
                 controllersControlledProcess.add(c);
             }
         }
@@ -74,11 +73,6 @@ public class PageController {
         return controlStructures(model);
     }
 
-    @GetMapping("/403")
-    public String error403() {
-        return "403";
-    }
-
     @GetMapping("/guests")
     public String guests(Model model) {
         model.addAttribute("controlStructures", controlStructureService.findControlStructuresForGuests());
@@ -93,21 +87,7 @@ public class PageController {
         model.addAttribute("connections", connectionService.findByControlStructureId(controlStructureId));
         model.addAttribute("control_structure_id", controlStructureId);
         model.addAttribute("variables", variableService.findByControlStructureId(controlStructureId));
-
         model.addAttribute("images", imageService.findByControlStructureId(controlStructureId));
-
-        List<Component> componentsWithoutEnvironment = componentService.findByControlStructureId(controlStructureId);
-        if (!componentsWithoutEnvironment.isEmpty())
-            componentsWithoutEnvironment.removeFirst();
-        model.addAttribute("componentsWithoutEnvironment", componentsWithoutEnvironment);
-
-        List<Component> controllersControlledProcess = new ArrayList<>();
-        for (Component c : components) {
-            if (c.getType().equals("Controller") || c.getType().equals("ControlledProcess")) {
-                controllersControlledProcess.add(c);
-            }
-        }
-        model.addAttribute("controllersControlledProcess", controllersControlledProcess);
 
         return "guestsIndex";
     }

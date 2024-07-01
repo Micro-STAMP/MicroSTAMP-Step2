@@ -1,6 +1,7 @@
 package microstamp.step2.service;
 
 import microstamp.step2.data.Actuator;
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.ControlStructure;
 import microstamp.step2.dto.ActuatorDto;
 import microstamp.step2.exception.Step2NotFoundException;
@@ -81,7 +82,7 @@ public class ActuatorService {
 
         componentService.save(actuator);
 
-        if (!actuatorDto.getType().equals("Actuator"))
+        if (actuatorDto.getType() != ComponentType.Actuator)
             componentService.updateType(id, actuatorDto.getType());
     }
 

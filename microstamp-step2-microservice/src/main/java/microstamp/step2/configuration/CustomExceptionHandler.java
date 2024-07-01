@@ -1,5 +1,6 @@
 package microstamp.step2.configuration;
 
+import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.ConnectionType;
 import microstamp.step2.data.Style;
 import microstamp.step2.exception.*;
@@ -52,6 +53,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(), "InvalidEnumValue", "Invalid enum value, valid fields: " + Arrays.toString(ConnectionType.values())));
         } else if (cause.getMessage().contains(Style.class.getSimpleName())){
             errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(), "InvalidEnumValue", "Invalid enum value, valid fields: " + Arrays.toString(Style.values())));
+        } else if (cause.getMessage().contains(ComponentType.class.getSimpleName())){
+            errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(), "InvalidEnumValue", "Invalid enum value, valid fields: " + Arrays.toString(ComponentType.values())));
         } else {
             errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(), "HttpMessageNotReadableException",ex.getMessage()));
         }

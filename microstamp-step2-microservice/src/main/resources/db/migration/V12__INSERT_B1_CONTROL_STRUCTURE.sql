@@ -72,7 +72,6 @@ INSERT INTO `connections` VALUES (90,1,1,56,50,1);
 INSERT INTO `connections` VALUES (91,1,1,60,59,1);
 INSERT INTO `connections` VALUES (92,1,1,61,60,1);
 
-INSERT INTO `images` VALUES (6,'B1.png',1);
 
 INSERT INTO `labels` VALUES (140,"Policy",68);
 INSERT INTO `labels` VALUES (141,"Certification Information",69);

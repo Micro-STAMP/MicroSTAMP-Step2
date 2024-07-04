@@ -19,9 +19,6 @@ INSERT INTO `connections` VALUES (23,0,1,21,22,8);
 INSERT INTO `connections` VALUES (24,1,1,22,21,8);
 
 
-INSERT INTO `images` VALUES (3,'B8.png',8);
-
-
 INSERT INTO `labels` VALUES (38,"Abort",19);
 INSERT INTO `labels` VALUES (39,"Retreat",19);
 INSERT INTO `labels` VALUES (40,"Hold",19);

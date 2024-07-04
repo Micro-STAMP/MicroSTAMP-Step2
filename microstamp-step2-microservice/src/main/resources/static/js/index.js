@@ -14,6 +14,7 @@ var stateToBeDeleted;
 var componentToResponsibility;
 var responsibilityToBeEdited;
 var responsibilityToBeDeleted;
+var imageToBeDeleted;
 var lastOpenedModal;
 
 $(window).ready(function () {

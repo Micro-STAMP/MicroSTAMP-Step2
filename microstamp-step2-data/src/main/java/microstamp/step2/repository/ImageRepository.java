@@ -13,6 +13,4 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query(value = "SELECT * FROM images i WHERE i.control_structure_id = ?1", nativeQuery = true)
     List<Image> findByControlStructureId(long id);
 
-    @Query(value = "SELECT control_structure_id FROM images i WHERE i.id = ?1", nativeQuery = true)
-    long findControlStructureIdFromImageId(long id);
 }

@@ -29,8 +29,7 @@ public class SecurityConfig {
             "/favicon.ico",
             "/swagger/**",
             "/swagger-ui/**",
-            "/v3/**",
-            "/cs-images/**"
+            "/v3/**"
     };
 
     @Bean

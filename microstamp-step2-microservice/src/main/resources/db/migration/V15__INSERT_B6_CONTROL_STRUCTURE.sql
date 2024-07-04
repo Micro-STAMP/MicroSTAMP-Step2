@@ -60,7 +60,6 @@ INSERT INTO `connections` VALUES (41,0,1,34,31,6);
 INSERT INTO `connections` VALUES (42,1,1,34,35,6);
 INSERT INTO `connections` VALUES (43,2,0,36,30,6);
 
-INSERT INTO `images` VALUES (4,'B6.png',6);
 
 INSERT INTO `labels` VALUES (66,"Brake Cmd",25);
 INSERT INTO `labels` VALUES (67,"Braking Signal",26);

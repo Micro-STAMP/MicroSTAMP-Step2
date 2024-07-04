@@ -48,7 +48,6 @@ INSERT INTO `connections` VALUES (109,0,1,70,71,2);
 INSERT INTO `connections` VALUES (110,1,1,71,70,2);
 INSERT INTO `connections` VALUES (111,1,1,71,69,2);
 
-INSERT INTO `images` VALUES (7,'B2.png',2);
 
 INSERT INTO `labels` VALUES (166,"Doctrine",93);
 INSERT INTO `labels` VALUES (167,"Engagement Criteria",93);

@@ -109,8 +109,10 @@
 
         <br/>
 
-        <div th:each="image : ${images}">
-            <img th:src="@{/cs-images/{control_structure_id}/{imageName}(control_structure_id = ${control_structure_id}, imageName = ${image.name})}">
+        <div th:each="image : ${images}" style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+            <div style="position: relative; margin-right: 10px;">
+                <img th:id="${image.id}" th:src="@{'data:image/png;base64,' + ${image.base64}}" alt="Error loading image" />
+            </div>
         </div>
 
     </div>

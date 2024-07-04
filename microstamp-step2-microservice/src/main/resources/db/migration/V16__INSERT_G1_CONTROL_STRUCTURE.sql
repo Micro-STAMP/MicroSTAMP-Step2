@@ -32,7 +32,6 @@ INSERT INTO `connections` VALUES (179,3,1,9,104,9);
 INSERT INTO `connections` VALUES (180,5,1,9,104,9);
 INSERT INTO `connections` VALUES (181,4,1,104,9,9);
 
-INSERT INTO `images` VALUES (9,'G1.png',9);
 
 INSERT INTO `labels` VALUES (276,"Control input or external information wrong or missing",171);
 INSERT INTO `labels` VALUES (277,"Missing or wrong communication with another components",172);

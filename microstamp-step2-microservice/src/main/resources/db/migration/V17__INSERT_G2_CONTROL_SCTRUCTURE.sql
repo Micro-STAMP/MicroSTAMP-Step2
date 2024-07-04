@@ -114,7 +114,6 @@ INSERT INTO `connections` VALUES (228,3,1,18,126,10);
 INSERT INTO `connections` VALUES (229,5,1,18,126,10);
 INSERT INTO `connections` VALUES (230,4,1,126,18,10);
 
-INSERT INTO `images` VALUES (10,'G2.png',10);
 
 INSERT INTO `labels` VALUES (287,"Written/Trained",182);
 INSERT INTO `labels` VALUES (288,"Procedures",182);

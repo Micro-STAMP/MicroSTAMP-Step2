@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="ISO-8859-1">
     <title>Home</title>
@@ -105,17 +105,22 @@
     <div>
         <div align="Left">
 
-            <button class="btn btn-primary" data-target="#addComponentModal" data-toggle="modal" type="button">Add
-                Component
+            <button class="btn btn-primary" data-target="#addComponentModal" data-toggle="modal" type="button">
+                Add Component
             </button>
 
-            <button class="btn btn-primary" data-target="#addConnectionModal" data-toggle="modal" type="button">Add
-                Connection
+            <button class="btn btn-primary" data-target="#addConnectionModal" data-toggle="modal" type="button">
+                Add Connection
             </button>
 
-            <button class="btn btn-primary" data-target="#addVariableModal" data-toggle="modal" type="button">Add
-                Variable
+            <button class="btn btn-primary" data-target="#addVariableModal" data-toggle="modal" type="button">
+                Add Variable
             </button>
+
+            <label class="btn btn-primary mb-0">
+                Add Image
+                <input type="file" id="image" name="file" accept="image/png, image/jpeg" style="display:none;" onchange="addImage()" />
+            </label>
 
             <a style="float: right;" th:href="@{/home}">
                 <input class="btn btn-secondary" type="button" value="Return"/>
@@ -124,22 +129,14 @@
 
         <br/>
 
-        <div align="Left">
-
-            <label class="btn btn-primary">
-                <button onclick=uploadImage() style="display:none;" type="button"></button>
-                Upload Image
-            </label>
-
-            <label class="btn btn-secondary">
-                <input accept="image/png, image/jpeg" id="image" name="image" style="display:none;" type="file"/>
-                Choose File
-            </label>
-
-        </div>
-
-        <div th:each="image : ${images}">
-            <img th:src="@{/cs-images/{control_structure_id}/{imageName}(control_structure_id = ${control_structure_id}, imageName = ${image.name})}">
+        <div th:each="image : ${images}" style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+            <div style="position: relative; margin-right: 10px;">
+                <img th:id="${image.id}" th:src="@{'data:image/png;base64,' + ${image.base64}}" alt="Error loading image" />
+            </div>
+            <button style="cursor: pointer; border-radius: 5px;" data-toggle="modal" data-target="#confirmImageDeleteModal" th:onclick="'loadImageToBeDeleted(' + ${image.id} + ')'">
+                <span class="fa fa-trash"></span>
+            </button>
+            <br/>
         </div>
 
     </div>
@@ -168,6 +165,8 @@
 <div th:insert="~{modals/responsibility_modals.html :: addResponsibilityModal}"></div>
 <div th:insert="~{modals/responsibility_modals.html :: editResponsibilityModal}"></div>
 <div th:insert="~{modals/responsibility_modals.html :: confirmResponsibilityDeleteModal}"></div>
+
+<div th:insert="~{modals/image_modals.html :: confirmImageDeleteModal}"></div>
 
 <div th:insert="~{modals/error_modals.html :: errorModal}"></div>
 

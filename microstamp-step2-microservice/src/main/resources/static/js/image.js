@@ -1,14 +1,10 @@
-function uploadImage(){
-
-    image = $("#image").val();
+function addImage(){
     var control_structure_id = $("#control_structure_id").val();
-    var myFile = $('#image').prop('files');
-
+    var newFile = $("#image").prop("files")[0];
     var data = new FormData();
-    data.append('image',myFile[0]);
-
+    data.append("file",newFile);
     $.ajax({
-        url: '/images/' + control_structure_id,
+        url: '/images/control-structure/' + control_structure_id,
         type: 'POST',
         cache: false,
         contentType: false,
@@ -17,5 +13,26 @@ function uploadImage(){
             location.reload();
         },
         data:data
+    });
+}
+
+function loadImageToBeDeleted(id){
+    imageToBeDeleted = id;
+    $.ajax({
+            url: '/images/'+ id,
+            type: 'get',
+            success: function (data) {
+                 $("#image_delete_name").text(data.name);
+            },
+        });
+}
+
+function deleteImage(){
+    $.ajax({
+        url: '/images/'+ imageToBeDeleted,
+        type: 'delete',
+        success: function () {
+            location.reload();
+        },
     });
 }

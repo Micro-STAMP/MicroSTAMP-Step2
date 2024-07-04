@@ -29,9 +29,6 @@ INSERT INTO `connections` VALUES (17,1,1,15,13,7);
 INSERT INTO `connections` VALUES (18,0,1,13,14,7);
 
 
-INSERT INTO `images` VALUES (2,'B7.png',7);
-
-
 INSERT INTO `labels` VALUES (16,"Visual cues",8);
 INSERT INTO `labels` VALUES (17,"Physical feedback",8);
 INSERT INTO `labels` VALUES (18,"AH Enable",9);
@@ -54,5 +51,3 @@ INSERT INTO `labels` VALUES (34,"Enable AH",18);
 INSERT INTO `labels` VALUES (35,"Disable AH",18);
 INSERT INTO `labels` VALUES (36,"Brake pedal on",18);
 INSERT INTO `labels` VALUES (37,"Brake pedal off",18);
-
-

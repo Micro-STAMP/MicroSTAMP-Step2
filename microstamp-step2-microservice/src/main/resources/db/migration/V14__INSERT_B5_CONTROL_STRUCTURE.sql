@@ -136,7 +136,6 @@ INSERT INTO `connections` VALUES (168,2,0,83,80,5);
 INSERT INTO `connections` VALUES (169,1,1,81,82,5);
 INSERT INTO `connections` VALUES (170,2,0,82,81,5);
 
-INSERT INTO `images` VALUES (8,'B5.png',5);
 
 INSERT INTO `labels` VALUES (240,"Political pressures mandate(e.g.,FDAAA)",112);
 INSERT INTO `labels` VALUES (241,"Reports",114);

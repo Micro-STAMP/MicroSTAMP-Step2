@@ -50,7 +50,6 @@ INSERT INTO `connections` VALUES (65,1,1,45,43,4);
 INSERT INTO `connections` VALUES (66,1,1,45,44,4);
 INSERT INTO `connections` VALUES (67,1,1,45,37,4);
 
-INSERT INTO `images` VALUES (5,'B4.png',4);
 
 INSERT INTO `labels` VALUES (102,"Capability upgrade request",44);
 INSERT INTO `labels` VALUES (103,"Software revisions",45);

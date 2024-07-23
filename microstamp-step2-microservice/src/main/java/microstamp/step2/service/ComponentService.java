@@ -2,7 +2,6 @@ package microstamp.step2.service;
 
 import microstamp.step2.data.ComponentType;
 import microstamp.step2.data.Connection;
-import microstamp.step2.data.Variable;
 import microstamp.step2.dto.ComponentDependenciesDto;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.ComponentRepository;

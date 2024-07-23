@@ -6,8 +6,7 @@ import microstamp.step2.data.Controller;
 import microstamp.step2.dto.ControllerDto;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.exception.Step2OrphanException;
-import microstamp.step2.repository.ComponentRepository;
-import microstamp.step2.repository.ControlStructureRepository;
+import microstamp.step2.exception.Step2SelfParentingComponentException;
 import microstamp.step2.repository.ControllerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -65,6 +64,10 @@ public class ControllerService {
         microstamp.step2.data.Component controller = componentService.findById(id);
 
         if (controllerDto.getFatherId() != null) {
+
+            if (controllerDto.getFatherId() == id)
+                throw new Step2SelfParentingComponentException();
+
             microstamp.step2.data.Component father = componentService.findById(controllerDto.getFatherId());
 
             List<microstamp.step2.data.Component> children = componentService.getComponentChildren(id);

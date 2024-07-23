@@ -86,4 +86,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, errorResponse,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
+    @ExceptionHandler(value = { Step2SelfParentingComponentException.class })
+    protected ResponseEntity<Object> handleStep2SelfParentingComponentException(Step2SelfParentingComponentException ex, WebRequest request) {
+        Step2ErrorResponse errorResponse = new Step2ErrorResponse();
+        errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"SelfParentingComponentException",ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 }

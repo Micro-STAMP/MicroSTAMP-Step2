@@ -5,9 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import microstamp.step2.data.Component;
 import microstamp.step2.data.Connection;
 import microstamp.step2.data.ControlStructure;
-import microstamp.step2.service.ComponentService;
-import microstamp.step2.service.ConnectionService;
-import microstamp.step2.service.ControlStructureService;
+import microstamp.step2.data.Image;
 import microstamp.step2.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,5 +38,10 @@ public class GuestController {
     @GetMapping(path = {"connections/control-structure/{id}"})
     public ResponseEntity<List<Connection>> findConnectionsByControlStructureId(@PathVariable long id) {
         return new ResponseEntity<>(guestService.findConnectionsByControlStructureId(id), HttpStatus.OK);
+    }
+
+    @GetMapping(path = {"images/control-structure/{id}"})
+    public ResponseEntity<List<Image>> findImagesByControlStructureId(@PathVariable long id) {
+        return new ResponseEntity<>(guestService.findImagesByControlStructureId(id), HttpStatus.OK);
     }
 }
